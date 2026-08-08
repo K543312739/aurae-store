@@ -408,6 +408,7 @@ function renderProductDetail(productId) {
           </div>
           <span id="stockCount" style="font-size:13px;color:var(--color-text-muted);">${product.stock} in stock</span>
         </div>
+        <div id="productQtyTotal" class="product-qty-total" style="margin-bottom:12px;font-size:14px;color:var(--color-text-muted);">1 × ${formatPrice(initialPrice)} = ${formatPrice(initialPrice)}</div>
         <button id="addToCartBtn" class="btn btn-dark btn-lg btn-full" onclick="addToCartDetail()" style="margin-bottom:16px;${stockInfo.cls === 'out' ? 'opacity:.5;cursor:not-allowed;' : ''}" ${stockInfo.cls === 'out' ? 'disabled' : ''}>${stockInfo.cls === 'out' ? 'Sold Out' : 'Add to Cart • ' + formatPrice(initialPrice)}</button>
         <button class="btn btn-outline btn-full" onclick="buyNowDetail()">Buy It Now</button>
         <div style="margin-top:24px;padding:16px;background:var(--color-bg-alt);border-radius:var(--radius-md);font-size:13px;color:var(--color-text-muted);">
@@ -454,7 +455,7 @@ function refreshProductStock(productId) {
           btn.disabled = true; btn.style.opacity = '.5'; btn.style.cursor = 'not-allowed'; btn.textContent = 'Sold Out';
         } else {
           btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
-          btn.textContent = 'Add to Cart • ' + formatPrice(currentProduct ? currentProduct.price : 0);
+          updateProductPriceDisplay();
         }
       }
     })
@@ -532,9 +533,17 @@ function getSelectedVariantPrice() {
 function updateProductPriceDisplay() {
   const price = getSelectedVariantPrice();
   const priceEl = document.getElementById('productDetailPrice');
-  if (priceEl) priceEl.textContent = formatPrice(price);
+  // Preserve the "compare at" strikethrough if present.
+  if (priceEl && !priceEl.querySelector('span[style*="line-through"]')) {
+    priceEl.textContent = formatPrice(price);
+  }
+  const total = price * qty;
   const btn = document.getElementById('addToCartBtn');
-  if (btn) btn.textContent = `Add to Cart • ${formatPrice(price)}`;
+  if (btn && !btn.disabled) {
+    btn.textContent = `Add to Cart • ${formatPrice(total)}`;
+  }
+  const totalEl = document.getElementById('productQtyTotal');
+  if (totalEl) totalEl.textContent = `${qty} × ${formatPrice(price)} = ${formatPrice(total)}`;
 }
 
 function selectVariant(el, name, index, value) {
@@ -545,13 +554,19 @@ function selectVariant(el, name, index, value) {
 }
 
 function changeQty(delta) {
-  qty = Math.max(1, qty + delta);
-  document.getElementById('qtyInput').value = qty;
+  const max = currentProduct && currentProduct.stock > 0 ? currentProduct.stock : Infinity;
+  qty = Math.min(max, Math.max(1, qty + delta));
+  const input = document.getElementById('qtyInput');
+  if (input) input.value = qty;
+  updateProductPriceDisplay();
 }
 
 function syncQty(val) {
-  qty = Math.max(1, parseInt(val) || 1);
-  document.getElementById('qtyInput').value = qty;
+  const max = currentProduct && currentProduct.stock > 0 ? currentProduct.stock : Infinity;
+  qty = Math.min(max, Math.max(1, parseInt(val) || 1));
+  const input = document.getElementById('qtyInput');
+  if (input) input.value = qty;
+  updateProductPriceDisplay();
 }
 
 function addToCartDetail() {
