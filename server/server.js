@@ -16,6 +16,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const multer = require('multer');
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '.env') });
@@ -30,6 +31,27 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static frontend files from parent directory
 const frontendDir = path.join(__dirname, '..');
 app.use(express.static(frontendDir));
+
+// ===== Product image uploads =====
+const UPLOADS_DIR = path.join(frontendDir, 'uploads');
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, UPLOADS_DIR),
+  filename: (req, file, cb) => {
+    const ext = (path.extname(file.originalname) || '').toLowerCase().slice(0, 10);
+    const safeExt = ['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext) ? ext : '.png';
+    const base = 'prod-' + Date.now() + '-' + crypto.randomBytes(4).toString('hex');
+    cb(null, base + safeExt);
+  },
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowed = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+    cb(null, allowed.includes(file.mimetype));
+  },
+});
 
 // Stripe needs raw body for webhook verification
 app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), (req, res) => {
@@ -1043,6 +1065,16 @@ app.get('/api/products/:id', (req, res) => {
   res.json({ id: p.id, name: p.name, stock: Number(p.stock) });
 });
 
+// ===== API: Public — List all products (storefront data source) =====
+app.get('/api/products', (req, res) => {
+  const products = loadProducts().map(p => ({
+    ...p,
+    stock: Number(p.stock),
+    images: Array.isArray(p.images) ? p.images : (p.image ? [p.image] : []),
+  }));
+  res.json({ products });
+});
+
 // ===== API: Public — Validate coupon =====
 app.get('/api/validate-coupon', (req, res) => {
   const code = String(req.query.code || '');
@@ -1100,6 +1132,120 @@ app.post('/api/admin/products/:id/stock', requireAdmin, (req, res) => {
   const p = products.find(x => x.id === req.params.id);
   if (!p) return res.status(404).json({ error: 'Product not found' });
   p.stock = stock;
+  saveProducts(products);
+  res.json({ success: true, product: p });
+});
+
+// ===== API: Admin — Create Product =====
+app.post('/api/admin/products', requireAdmin, (req, res) => {
+  const body = req.body || {};
+  const id = String(body.id || '').trim();
+  if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) return res.status(400).json({ error: 'Valid product id required (letters, numbers, - _)' });
+  const products = loadProducts();
+  if (products.some(p => p.id === id)) return res.status(400).json({ error: 'Product id already exists' });
+  const name = String(body.name || '').trim() || 'Untitled Product';
+  const product = {
+    id,
+    name,
+    nameCN: body.nameCN || '',
+    tagline: body.tagline || '',
+    price: Number(body.price) || 0,
+    compareAt: body.compareAt != null && body.compareAt !== '' ? Number(body.compareAt) : null,
+    category: body.category || 'bracelet',
+    intention: body.intention || '',
+    crystal: body.crystal || '',
+    crystalCN: body.crystalCN || '',
+    chakra: body.chakra || '',
+    element: body.element || '',
+    planet: body.planet || '',
+    description: body.description || '',
+    ritual: body.ritual || '',
+    properties: Array.isArray(body.properties) ? body.properties : (body.properties ? String(body.properties).split('\n').map(s => s.trim()).filter(Boolean) : []),
+    rating: Number(body.rating) || 5,
+    reviews: Number(body.reviews) || 0,
+    stock: Number(body.stock) || 0,
+    badge: body.badge || '',
+    image: body.image || '',
+    images: Array.isArray(body.images) ? body.images.filter(Boolean) : (body.image ? [body.image] : []),
+  };
+  products.push(product);
+  saveProducts(products);
+  res.json({ success: true, product });
+});
+
+// ===== API: Admin — Update Product =====
+app.put('/api/admin/products/:id', requireAdmin, (req, res) => {
+  const body = req.body || {};
+  const products = loadProducts();
+  const p = products.find(x => x.id === req.params.id);
+  if (!p) return res.status(404).json({ error: 'Product not found' });
+  const fields = ['name', 'nameCN', 'tagline', 'price', 'compareAt', 'category', 'intention', 'crystal', 'crystalCN', 'chakra', 'element', 'planet', 'description', 'ritual', 'rating', 'reviews', 'stock', 'badge', 'image'];
+  for (const f of fields) {
+    if (body[f] !== undefined) {
+      if (['price', 'compareAt', 'rating', 'reviews', 'stock'].includes(f)) {
+        p[f] = (f === 'compareAt' && (body[f] === '' || body[f] == null)) ? null : Number(body[f]);
+      } else {
+        p[f] = body[f];
+      }
+    }
+  }
+  if (body.properties !== undefined) {
+    p.properties = Array.isArray(body.properties) ? body.properties : String(body.properties).split('\n').map(s => s.trim()).filter(Boolean);
+  }
+  if (body.images !== undefined) {
+    const imgs = Array.isArray(body.images) ? body.images.map(String).filter(Boolean) : String(body.images || '').split('\n').map(s => s.trim()).filter(Boolean);
+    p.images = imgs;
+    p.image = imgs[0] || '';
+  }
+  saveProducts(products);
+  res.json({ success: true, product: p });
+});
+
+// ===== API: Admin — Delete Product =====
+app.delete('/api/admin/products/:id', requireAdmin, (req, res) => {
+  const products = loadProducts();
+  const idx = products.findIndex(x => x.id === req.params.id);
+  if (idx < 0) return res.status(404).json({ error: 'Product not found' });
+  const removed = products[idx];
+  // delete its uploaded images (only files under /uploads)
+  for (const img of (removed.images || [])) {
+    if (typeof img === 'string' && img.startsWith('/uploads/')) {
+      const fp = path.join(frontendDir, img);
+      try { if (fs.existsSync(fp)) fs.unlinkSync(fp); } catch (e) {}
+    }
+  }
+  products.splice(idx, 1);
+  saveProducts(products);
+  res.json({ success: true });
+});
+
+// ===== API: Admin — Upload Product Image =====
+app.post('/api/admin/products/:id/images', requireAdmin, upload.single('image'), (req, res) => {
+  const products = loadProducts();
+  const p = products.find(x => x.id === req.params.id);
+  if (!p) return res.status(404).json({ error: 'Product not found' });
+  if (!req.file) return res.status(400).json({ error: 'No image file provided' });
+  const url = '/uploads/' + req.file.filename;
+  p.images = Array.isArray(p.images) ? p.images : (p.image ? [p.image] : []);
+  p.images.push(url);
+  if (!p.image) p.image = url;
+  saveProducts(products);
+  res.json({ success: true, url, product: p });
+});
+
+// ===== API: Admin — Delete Product Image =====
+app.delete('/api/admin/products/:id/images/:index', requireAdmin, (req, res) => {
+  const idx = parseInt(req.params.index, 10);
+  const products = loadProducts();
+  const p = products.find(x => x.id === req.params.id);
+  if (!p || !Array.isArray(p.images)) return res.status(404).json({ error: 'Product or image not found' });
+  if (idx < 0 || idx >= p.images.length) return res.status(400).json({ error: 'Invalid image index' });
+  const [removed] = p.images.splice(idx, 1);
+  if (removed && typeof removed === 'string' && removed.startsWith('/uploads/')) {
+    const fp = path.join(frontendDir, removed);
+    try { if (fs.existsSync(fp)) fs.unlinkSync(fp); } catch (e) {}
+  }
+  p.image = p.images[0] || '';
   saveProducts(products);
   res.json({ success: true, product: p });
 });

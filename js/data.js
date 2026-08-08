@@ -1,7 +1,7 @@
 // ===== Aurae Product Data =====
 // 纯水晶饰品品类 + 玄学能量文案 + 1688供应商信息
 
-const PRODUCTS = [
+var PRODUCTS = [
   // ==================== 粉晶系列 ====================
   {
     id: "p001",
@@ -950,3 +950,25 @@ const BLOG_POSTS = [
       <p>The bathroom is a space of release. Place Clear Quartz or Amethyst here to support energetic cleansing and spiritual renewal during baths.</p>`
   }
 ];
+
+window.PRODUCTS = PRODUCTS;
+
+// Load the latest product data (incl. images/stock managed in the admin panel)
+// from the backend API. Falls back to the embedded PRODUCTS above if the API
+// is unavailable. The admin panel is the single source of truth for products.
+async function refreshProducts() {
+  try {
+    const resp = await fetch('/api/products');
+    if (resp.ok) {
+      const data = await resp.json();
+      if (Array.isArray(data.products) && data.products.length) {
+        PRODUCTS = data.products;
+        window.PRODUCTS = PRODUCTS;
+        return true;
+      }
+    }
+  } catch (e) {
+    console.warn('[Aurae] Could not load products from API, using local data.', e);
+  }
+  return false;
+}

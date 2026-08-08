@@ -156,6 +156,36 @@
     .add-form .checkbox { display: flex; align-items: center; gap: 8px; }
     .add-form .checkbox input { width: auto; }
 
+    /* Product manager */
+    .product-card { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: 14px; padding: 16px; display: flex; gap: 16px; margin-bottom: 14px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
+    .product-thumb { width: 96px; height: 96px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: #f3f1ec; }
+    .product-info { flex: 1; min-width: 0; }
+    .product-info h4 { margin: 0 0 4px; font-size: 16px; }
+    .product-info .meta { font-size: 13px; color: var(--admin-muted); }
+    .product-actions { display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+    .modal-box { background: #fff; border-radius: 16px; width: 100%; max-width: 760px; max-height: 92vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid var(--admin-border); }
+    .modal-head h3 { margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--admin-primary-dark); }
+    .modal-close { background: none; border: none; font-size: 28px; line-height: 1; cursor: pointer; color: var(--admin-muted); }
+    .modal-close:hover { color: #c0392b; }
+    .modal-body { padding: 24px; overflow-y: auto; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .form-field label { font-size: 12px; color: var(--admin-muted); display: block; margin-bottom: 4px; }
+    .form-field input, .form-field select, .form-field textarea { width: 100%; padding: 10px 12px; border: 1.5px solid var(--admin-border); border-radius: 8px; font-family: inherit; font-size: 14px; }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--admin-primary); }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field textarea { resize: vertical; min-height: 80px; }
+    .img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; margin-bottom: 12px; }
+    .img-cell { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; border: 1px solid var(--admin-border); background: #f3f1ec; }
+    .img-cell img { width: 100%; height: 100%; object-fit: cover; }
+    .img-cell.cover::after { content: 'COVER'; position: absolute; top: 4px; left: 4px; font-size: 9px; font-weight: 700; background: var(--admin-primary); color: #fff; padding: 2px 6px; border-radius: 6px; }
+    .img-cell .del { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 50%; background: rgba(192,57,43,0.92); color: #fff; border: none; cursor: pointer; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center; }
+    .img-cell .setcover { position: absolute; bottom: 4px; left: 4px; font-size: 10px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 6px; padding: 2px 6px; cursor: pointer; }
+    .img-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
     @media (max-width: 600px) {
       .admin-toolbar h2 { font-size: 26px; }
       .msg-reply { margin-left: 12px; }
@@ -218,6 +248,12 @@
 
       <!-- Products / Inventory panel -->
       <div class="admin-panel" id="panel-products">
+        <div class="admin-toolbar" style="margin-bottom:16px;">
+          <div id="productCountNote" class="admin-count" style="margin:0;"></div>
+          <div>
+            <button class="btn btn-dark btn-sm" onclick="openProductEditor()">+ Add Product</button>
+          </div>
+        </div>
         <div id="adminProducts"></div>
       </div>
 
@@ -241,6 +277,65 @@
     </section>
 
   </main>
+
+  <!-- Product Editor Modal -->
+  <div id="productModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 id="productModalTitle">Edit Product</h3>
+        <button class="modal-close" onclick="closeProductEditor()">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="productForm" onsubmit="return saveProduct(event)">
+          <div class="form-grid">
+            <div class="form-field"><label>Product ID (unique, letters/numbers/-_)</label><input type="text" id="pf_id" placeholder="amethyst-bracelet"></div>
+            <div class="form-field"><label>Name (EN)</label><input type="text" id="pf_name" placeholder="Amethyst Bracelet"></div>
+            <div class="form-field"><label>Name (CN)</label><input type="text" id="pf_nameCN"></div>
+            <div class="form-field"><label>Tagline</label><input type="text" id="pf_tagline"></div>
+            <div class="form-field"><label>Price ($)</label><input type="number" step="0.01" min="0" id="pf_price"></div>
+            <div class="form-field"><label>Compare-at ($)</label><input type="number" step="0.01" min="0" id="pf_compareAt" placeholder="optional"></div>
+            <div class="form-field"><label>Category</label>
+              <select id="pf_category">
+                <option value="bracelet">bracelet</option>
+                <option value="necklace">necklace</option>
+                <option value="ring">ring</option>
+                <option value="earring">earring</option>
+                <option value="raw">raw</option>
+                <option value="decor">decor</option>
+                <option value="set">set</option>
+              </select>
+            </div>
+            <div class="form-field"><label>Intention</label><input type="text" id="pf_intention"></div>
+            <div class="form-field"><label>Crystal (EN)</label><input type="text" id="pf_crystal"></div>
+            <div class="form-field"><label>Crystal (CN)</label><input type="text" id="pf_crystalCN"></div>
+            <div class="form-field"><label>Chakra</label><input type="text" id="pf_chakra"></div>
+            <div class="form-field"><label>Element</label><input type="text" id="pf_element"></div>
+            <div class="form-field"><label>Planet</label><input type="text" id="pf_planet"></div>
+            <div class="form-field"><label>Stock</label><input type="number" min="0" id="pf_stock"></div>
+            <div class="form-field"><label>Rating (1-5)</label><input type="number" step="0.1" min="0" max="5" id="pf_rating"></div>
+            <div class="form-field"><label>Reviews count</label><input type="number" min="0" id="pf_reviews"></div>
+            <div class="form-field"><label>Badge</label><input type="text" id="pf_badge" placeholder="e.g. Bestseller"></div>
+            <div class="form-field full"><label>Description</label><textarea id="pf_description"></textarea></div>
+            <div class="form-field full"><label>Ritual / Usage</label><textarea id="pf_ritual"></textarea></div>
+            <div class="form-field full"><label>Properties (one per line)</label><textarea id="pf_properties" placeholder="Calming&#10;Clarity&#10;Protection"></textarea></div>
+
+            <div class="form-field full">
+              <label>Images — upload to server, click × to delete, click SET COVER to change main image</label>
+              <div id="imageManager" class="img-grid"></div>
+              <div class="img-actions">
+                <input type="file" id="pf_imageFile" accept="image/*">
+                <button type="button" class="btn btn-outline btn-sm" onclick="uploadProductImage()">⬆ Upload Image</button>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;">
+            <button type="button" class="btn btn-outline" onclick="closeProductEditor()">Cancel</button>
+            <button type="submit" class="btn btn-dark">💾 Save Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <script>
     const ADMIN_TOKEN_KEY = 'auraeAdminToken';
@@ -474,34 +569,198 @@
         const data = await resp.json();
         const products = data.products || [];
         document.getElementById('adminCount').textContent = `${products.length} product(s)`;
-        if (products.length === 0) { container.innerHTML = '<div class="empty-box">No products.</div>'; return; }
-        const rows = products.map(p => {
-          const cls = p.stock <= 0 ? 'out' : (p.stock <= 5 ? 'low' : 'in');
-          const label = p.stock <= 0 ? 'Sold Out' : (p.stock <= 5 ? 'Low Stock' : 'In Stock');
-          return `<tr>
-            <td>${escapeHtml(p.id)}</td>
-            <td>${escapeHtml(p.name)}</td>
-            <td><span class="pill ${cls === 'in' ? 'on' : (cls === 'out' ? 'off' : '')}">${label}</span></td>
-            <td><input type="number" min="0" id="stock-${escapeHtml(p.id)}" value="${p.stock}"></td>
-            <td><button class="btn btn-dark btn-sm" onclick="saveStock('${escapeHtml(p.id)}')">Save</button></td>
-          </tr>`;
-        }).join('');
-        container.innerHTML = `<table class="admin-table"><thead><tr><th>ID</th><th>Product</th><th>Status</th><th>Stock</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+        document.getElementById('productCountNote').textContent = `${products.length} product(s) total`;
+        if (products.length === 0) {
+          container.innerHTML = '<div class="empty-box">No products yet. Click "+ Add Product" to create your first one.</div>';
+          return;
+        }
+        container.innerHTML = products.map(renderProductCard).join('');
       } catch (e) { container.innerHTML = '<div class="empty-box">Could not load inventory.</div>'; }
     }
 
-    async function saveStock(id) {
-      const val = parseInt(document.getElementById('stock-' + id).value, 10);
-      if (!Number.isFinite(val) || val < 0) { alert('Invalid stock value'); return; }
+    function renderProductCard(p) {
+      const imgs = Array.isArray(p.images) ? p.images : (p.image ? [p.image] : []);
+      const thumb = imgs[0] || p.image || '';
+      const cls = p.stock <= 0 ? 'out' : (p.stock <= 5 ? 'low' : 'in');
+      const label = p.stock <= 0 ? 'Sold Out' : (p.stock <= 5 ? 'Low Stock' : 'In Stock');
+      return `
+        <div class="product-card" id="pcard-${escapeHtml(p.id)}">
+          ${thumb ? `<img class="product-thumb" src="${escapeHtml(thumb)}" alt="">` : '<div class="product-thumb"></div>'}
+          <div class="product-info">
+            <h4>${escapeHtml(p.name)} <span style="color:var(--admin-muted);font-weight:400;font-size:13px;">(${escapeHtml(p.id)})</span></h4>
+            <div class="meta">${money(p.price)}${p.compareAt ? ' <s style="color:#b0aba0;">' + money(p.compareAt) + '</s>' : ''} · <span class="pill ${cls === 'in' ? 'on' : (cls === 'out' ? 'off' : '')}">${label}</span> · ${escapeHtml(p.category || '')}</div>
+            <div class="meta" style="margin-top:4px;">${imgs.length} image(s)</div>
+          </div>
+          <div class="product-actions">
+            <button class="btn btn-dark btn-sm" onclick="openProductEditor('${escapeHtml(p.id)}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteProduct('${escapeHtml(p.id)}')">Delete</button>
+          </div>
+        </div>`;
+    }
+
+    let editingProductId = null;
+
+    async function openProductEditor(id) {
+      editingProductId = id || null;
+      const form = document.getElementById('productForm');
+      form.reset();
+      document.getElementById('imageManager').innerHTML = '<div style="color:var(--admin-muted);font-size:13px;padding:8px 0;">No images yet. Upload below.</div>';
+      const idEl = document.getElementById('pf_id');
+      idEl.readOnly = false;
+      if (id) {
+        document.getElementById('productModalTitle').textContent = 'Edit Product · ' + id;
+        try {
+          const resp = await fetch('/api/admin/products', { headers: { 'x-admin-token': token } });
+          const data = await resp.json();
+          const p = (data.products || []).find(x => x.id === id);
+          if (p) fillProductForm(p);
+        } catch (e) {}
+      } else {
+        document.getElementById('productModalTitle').textContent = 'Add Product';
+      }
+      document.getElementById('productModal').style.display = 'flex';
+    }
+
+    function fillProductForm(p) {
+      const set = (fid, val) => { const el = document.getElementById(fid); if (el) el.value = (val == null ? '' : val); };
+      set('pf_id', p.id);
+      set('pf_name', p.name);
+      set('pf_nameCN', p.nameCN);
+      set('pf_tagline', p.tagline);
+      set('pf_price', p.price);
+      set('pf_compareAt', p.compareAt);
+      set('pf_category', p.category);
+      set('pf_intention', p.intention);
+      set('pf_crystal', p.crystal);
+      set('pf_crystalCN', p.crystalCN);
+      set('pf_chakra', p.chakra);
+      set('pf_element', p.element);
+      set('pf_planet', p.planet);
+      set('pf_description', p.description);
+      set('pf_ritual', p.ritual);
+      set('pf_rating', p.rating);
+      set('pf_reviews', p.reviews);
+      set('pf_stock', p.stock);
+      set('pf_badge', p.badge);
+      set('pf_properties', Array.isArray(p.properties) ? p.properties.join('\n') : (p.properties || ''));
+      renderImageManager(p.images || (p.image ? [p.image] : []));
+      document.getElementById('pf_id').readOnly = true;
+    }
+
+    function renderImageManager(images) {
+      const wrap = document.getElementById('imageManager');
+      const imgs = (images || []).map(String).filter(Boolean);
+      if (imgs.length === 0) {
+        wrap.innerHTML = '<div style="color:var(--admin-muted);font-size:13px;padding:8px 0;">No images yet. Upload below.</div>';
+        return;
+      }
+      wrap.innerHTML = imgs.map((img, i) => `
+        <div class="img-cell ${i === 0 ? 'cover' : ''}" id="imgcell-${i}">
+          <img src="${escapeHtml(img)}" alt="">
+          <button class="del" title="Delete" onclick="deleteProductImage(${i})">×</button>
+          ${i !== 0 ? `<button class="setcover" onclick="setCoverImage(${i})">SET COVER</button>` : ''}
+        </div>`).join('');
+    }
+
+    async function uploadProductImage() {
+      if (!editingProductId) { alert('Save the product first (click Save Product), then upload images.'); return; }
+      const input = document.getElementById('pf_imageFile');
+      if (!input.files || !input.files[0]) { alert('Choose an image file first.'); return; }
+      const fd = new FormData();
+      fd.append('image', input.files[0]);
       try {
-        const resp = await fetch('/api/admin/products/' + id + '/stock', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
-          body: JSON.stringify({ stock: val }),
+        const resp = await fetch('/api/admin/products/' + encodeURIComponent(editingProductId) + '/images', {
+          method: 'POST', headers: { 'x-admin-token': token }, body: fd,
         });
-        if (resp.ok) { loadProducts(); }
+        if (resp.ok) {
+          const data = await resp.json();
+          renderImageManager(data.product.images);
+          input.value = '';
+        } else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Upload failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    async function deleteProductImage(index) {
+      if (!editingProductId) return;
+      if (!confirm('Delete this image?')) return;
+      try {
+        const resp = await fetch('/api/admin/products/' + encodeURIComponent(editingProductId) + '/images/' + index, {
+          method: 'DELETE', headers: { 'x-admin-token': token },
+        });
+        if (resp.ok) { const d = await resp.json(); renderImageManager(d.product.images); }
         else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed'); }
       } catch (e) { alert('Connection error'); }
+    }
+
+    async function setCoverImage(index) {
+      if (!editingProductId) return;
+      try {
+        const resp = await fetch('/api/admin/products', { headers: { 'x-admin-token': token } });
+        const data = await resp.json();
+        const p = (data.products || []).find(x => x.id === editingProductId);
+        if (!p) return;
+        const imgs = (p.images || []).slice();
+        if (index < 0 || index >= imgs.length) return;
+        const [sel] = imgs.splice(index, 1);
+        imgs.unshift(sel);
+        const r2 = await fetch('/api/admin/products/' + encodeURIComponent(editingProductId), {
+          method: 'PUT', headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify({ images: imgs }),
+        });
+        if (r2.ok) { const d = await r2.json(); renderImageManager(d.product.images); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    async function saveProduct(e) {
+      e.preventDefault();
+      const fields = ['id','name','nameCN','tagline','price','compareAt','category','intention','crystal','crystalCN','chakra','element','planet','description','ritual','rating','reviews','stock','badge','properties'];
+      const payload = {};
+      for (const f of fields) {
+        const el = document.getElementById('pf_' + f);
+        if (!el) continue;
+        let v = el.value;
+        if (['price','compareAt','rating','reviews','stock'].includes(f)) {
+          if (v === '') v = (f === 'compareAt' ? null : (f === 'rating' ? 5 : 0));
+          else v = Number(v);
+        }
+        payload[f] = v;
+      }
+      const isEdit = !!editingProductId;
+      const url = isEdit ? '/api/admin/products/' + encodeURIComponent(editingProductId) : '/api/admin/products';
+      const method = isEdit ? 'PUT' : 'POST';
+      try {
+        const resp = await fetch(url, {
+          method, headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify(payload),
+        });
+        if (resp.ok) {
+          const d = await resp.json();
+          if (!isEdit && d.product) {
+            editingProductId = d.product.id;
+            document.getElementById('pf_id').value = d.product.id;
+            document.getElementById('pf_id').readOnly = true;
+            document.getElementById('productModalTitle').textContent = 'Edit Product · ' + d.product.id;
+          }
+          if (d.product && d.product.images) renderImageManager(d.product.images);
+          loadProducts();
+          alert(isEdit ? 'Product updated.' : 'Product created. You can now upload images.');
+        } else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed to save'); }
+      } catch (err) { alert('Connection error'); }
+      return false;
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm('Delete product ' + id + '? This also removes its uploaded images.')) return;
+      try {
+        const resp = await fetch('/api/admin/products/' + encodeURIComponent(id), { method: 'DELETE', headers: { 'x-admin-token': token } });
+        if (resp.ok) loadProducts();
+        else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    function closeProductEditor() {
+      document.getElementById('productModal').style.display = 'none';
+      editingProductId = null;
     }
 
     // ===== Coupons =====

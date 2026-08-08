@@ -1990,7 +1990,10 @@ function saveOrder(orderId, items, customer, provider) {
 }
 
 // ===== Initialize =====
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Load the latest product data (admin-managed images/stock) from the backend
+  // before the first render, so the storefront reflects admin changes.
+  await refreshProducts();
   const isStorePage = !!document.getElementById('homeView');
   if (isStorePage) {
     renderHome();
