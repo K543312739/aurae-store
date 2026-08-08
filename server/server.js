@@ -1214,14 +1214,27 @@ app.delete('/api/admin/orders/:id', requireAdmin, (req, res) => {
 
 // ===== API: Admin — List Users =====
 app.get('/api/admin/users', requireAdmin, (req, res) => {
-  const users = loadUsers().map(u => ({
-    id: u.id,
-    name: u.name,
-    email: u.email,
-    createdAt: u.createdAt,
-    orderCount: loadOrders().filter(o => (o.userId && o.userId === u.id) || (o.userEmail && o.userEmail.toLowerCase() === u.email.toLowerCase())).length,
-  })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  res.json({ users });
+  try {
+    const orders = loadOrders();
+    const users = loadUsers()
+      .filter(u => u && typeof u === 'object')
+      .map(u => {
+        const id = u.id || '';
+        const name = u.name || '';
+        const email = (u.email || '').toLowerCase();
+        const createdAt = u.createdAt || new Date().toISOString();
+        const orderCount = orders.filter(o =>
+          (id && o.userId && o.userId === id) ||
+          (email && o.userEmail && typeof o.userEmail === 'string' && o.userEmail.toLowerCase() === email)
+        ).length;
+        return { id, name, email, createdAt, orderCount };
+      })
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json({ users });
+  } catch (err) {
+    console.error('[Admin Users] Error listing users:', err.message);
+    res.status(500).json({ error: 'Failed to list users' });
+  }
 });
 
 // ===== API: Admin — Delete User =====
