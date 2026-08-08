@@ -17,6 +17,8 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const multer = require('multer');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '.env') });
@@ -47,6 +49,27 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowed = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+    cb(null, allowed.includes(file.mimetype));
+  },
+});
+
+// ===== Review photo uploads (separate dir from product images) =====
+const REVIEWS_UPLOAD_DIR = path.join(frontendDir, 'uploads', 'reviews');
+if (!fs.existsSync(REVIEWS_UPLOAD_DIR)) fs.mkdirSync(REVIEWS_UPLOAD_DIR, { recursive: true });
+const reviewStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, REVIEWS_UPLOAD_DIR),
+  filename: (req, file, cb) => {
+    const ext = (path.extname(file.originalname) || '').toLowerCase().slice(0, 10);
+    const safeExt = ['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext) ? ext : '.png';
+    const base = 'rev-' + Date.now() + '-' + crypto.randomBytes(4).toString('hex');
+    cb(null, base + safeExt);
+  },
+});
+const reviewUpload = multer({
+  storage: reviewStorage,
+  limits: { fileSize: 5 * 1024 * 1024, files: 5 },
   fileFilter: (req, file, cb) => {
     const allowed = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
     cb(null, allowed.includes(file.mimetype));
@@ -186,6 +209,36 @@ function saveReview(review) {
   reviews.push(review);
   fs.writeFileSync(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
   console.log(`[Review] Saved for ${review.productId} by ${review.name} — ${review.rating}★`);
+}
+
+// ===== User Storage (JSON file based) — customer accounts =====
+const USERS_FILE = path.join(__dirname, 'users.json');
+
+function loadUsers() {
+  try {
+    if (fs.existsSync(USERS_FILE)) {
+      return JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+    }
+  } catch (e) {
+    console.error('Error loading users:', e.message);
+  }
+  return [];
+}
+
+function saveUsers(users) {
+  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+}
+
+function saveUser(user) {
+  const users = loadUsers();
+  const idx = users.findIndex(u => u.email === user.email);
+  if (idx >= 0) users[idx] = user;
+  else users.push(user);
+  saveUsers(users);
+}
+
+function publicUser(u) {
+  return { id: u.id, email: u.email, name: u.name, createdAt: u.createdAt };
 }
 
 // ===== Product Storage (JSON file based) — inventory authority =====
@@ -436,6 +489,25 @@ function requireAdmin(req, res, next) {
   next();
 }
 
+// ===== Customer Auth (JWT) =====
+const JWT_SECRET = process.env.JWT_SECRET || 'aurae-dev-secret-change-me';
+
+function signToken(user) {
+  return jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '30d' });
+}
+
+function requireAuth(req, res, next) {
+  const header = req.headers['authorization'] || '';
+  const token = header.startsWith('Bearer ') ? header.slice(7) : (req.headers['x-auth-token'] || '');
+  if (!token) return res.status(401).json({ error: 'Authentication required.' });
+  try {
+    req.user = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch (e) {
+    return res.status(401).json({ error: 'Invalid or expired token.' });
+  }
+}
+
 // ===== Helper: Calculate order totals =====
 function calculateTotals(items, couponCode = '', email = '') {
   const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -517,10 +589,10 @@ app.get('/api/reviews/:productId', (req, res) => {
   res.json({ productId, reviews: all, count, averageRating });
 });
 
-// ===== API: Reviews — Submit a review =====
-app.post('/api/reviews', (req, res) => {
+// ===== API: Reviews — Submit a review (with optional photos, pending moderation) =====
+app.post('/api/reviews', reviewUpload.array('images', 5), (req, res) => {
   try {
-    const { productId, name, email, rating, title, comment } = req.body || {};
+    const { productId, name, email, rating, title, comment, userId, userEmail } = req.body || {};
     if (!productId || !name || !email || !comment) {
       return res.status(400).json({ error: 'Please fill in all required fields (name, email, comment).' });
     }
@@ -531,19 +603,23 @@ app.post('/api/reviews', (req, res) => {
     if (!r || r < 1 || r > 5) {
       return res.status(400).json({ error: 'Please select a rating between 1 and 5 stars.' });
     }
+    const images = (req.files || []).map(f => '/uploads/reviews/' + f.filename);
     const entry = {
       id: 'REV' + Date.now().toString().slice(-8) + crypto.randomInt(100, 999),
       productId: String(productId).slice(0, 50),
       name: String(name).slice(0, 100),
       email: String(email).slice(0, 200),
+      userId: userId || null,
+      userEmail: userEmail || null,
       rating: r,
       title: String(title || '').slice(0, 200),
       comment: String(comment).slice(0, 3000),
+      images,
       createdAt: new Date().toISOString(),
-      status: 'approved',
+      status: 'pending',
     };
     saveReview(entry);
-    res.json({ success: true, review: entry });
+    res.json({ success: true, review: entry, message: 'Your review has been submitted and is awaiting approval.' });
   } catch (error) {
     console.error('[Review] Error saving review:', error.message);
     res.status(500).json({ error: 'Failed to submit review. Please try again later.' });
@@ -739,6 +815,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
       stripeSessionId: session.id,
       items,
       customer: customer || {},
+      userId: (customer && customer.userId) || req.body.userId || null,
+      userEmail: (customer && customer.email) || req.body.userEmail || null,
       totals,
       coupon: coupon || null,
       status: 'pending_payment',
@@ -932,6 +1010,8 @@ app.post('/api/create-paypal-order', async (req, res) => {
       paypalOrderId: paypalData.id,
       items,
       customer: customer || {},
+      userId: (customer && customer.userId) || req.body.userId || null,
+      userEmail: (customer && customer.email) || req.body.userEmail || null,
       totals,
       coupon: coupon || null,
       status: 'pending_payment',
@@ -1305,6 +1385,181 @@ app.delete('/api/admin/coupons/:code', requireAdmin, (req, res) => {
   const removed = coupons.splice(idx, 1)[0];
   saveCoupons(coupons);
   res.json({ success: true, removed });
+});
+
+// ===== API: Customer — Register =====
+app.post('/api/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body || {};
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email and password are required.' });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'Please enter a valid email address.' });
+    }
+    if (String(password).length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters.' });
+    }
+    const emailKey = email.trim().toLowerCase();
+    if (loadUsers().find(u => u.email === emailKey)) {
+      return res.status(409).json({ error: 'An account with this email already exists.' });
+    }
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = {
+      id: 'U' + Date.now().toString().slice(-8) + crypto.randomInt(100, 999),
+      email: emailKey,
+      name: String(name).slice(0, 100),
+      passwordHash,
+      createdAt: new Date().toISOString(),
+    };
+    saveUser(user);
+    const token = signToken(user);
+    res.json({ success: true, token, user: publicUser(user) });
+  } catch (e) {
+    console.error('[Auth] register error:', e.message);
+    res.status(500).json({ error: 'Registration failed. Please try again later.' });
+  }
+});
+
+// ===== API: Customer — Login =====
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body || {};
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required.' });
+    }
+    const emailKey = email.trim().toLowerCase();
+    const user = loadUsers().find(u => u.email === emailKey);
+    if (!user) return res.status(401).json({ error: 'Invalid email or password.' });
+    const ok = await bcrypt.compare(password, user.passwordHash || '');
+    if (!ok) return res.status(401).json({ error: 'Invalid email or password.' });
+    const token = signToken(user);
+    res.json({ success: true, token, user: publicUser(user) });
+  } catch (e) {
+    console.error('[Auth] login error:', e.message);
+    res.status(500).json({ error: 'Login failed. Please try again later.' });
+  }
+});
+
+// ===== API: Customer — Current profile =====
+app.get('/api/me', requireAuth, (req, res) => {
+  const user = loadUsers().find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json({ user: publicUser(user) });
+});
+
+// ===== API: Customer — My orders =====
+app.get('/api/me/orders', requireAuth, (req, res) => {
+  const orders = loadOrders()
+    .filter(o => (o.userId && o.userId === req.user.id) ||
+      (o.userEmail && o.userEmail.toLowerCase() === req.user.email.toLowerCase()))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  res.json({ orders });
+});
+
+// ===== API: Admin — List reviews (optional ?status=pending|approved|rejected) =====
+app.get('/api/admin/reviews', requireAdmin, (req, res) => {
+  let reviews = loadReviews().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  if (req.query.status) reviews = reviews.filter(r => r.status === req.query.status);
+  res.json({ reviews });
+});
+
+// ===== API: Admin — Update review status (moderation) =====
+app.post('/api/admin/reviews/:id/status', requireAdmin, (req, res) => {
+  const { status } = req.body || {};
+  if (!['approved', 'rejected', 'pending'].includes(status)) {
+    return res.status(400).json({ error: 'Invalid status. Use approved, rejected or pending.' });
+  }
+  const reviews = loadReviews();
+  const idx = reviews.findIndex(r => r.id === req.params.id);
+  if (idx < 0) return res.status(404).json({ error: 'Review not found' });
+  reviews[idx].status = status;
+  if (status === 'approved' && !reviews[idx].approvedAt) reviews[idx].approvedAt = new Date().toISOString();
+  fs.writeFileSync(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
+  res.json({ success: true, review: reviews[idx] });
+});
+
+// ===== API: Admin — Delete a review =====
+app.delete('/api/admin/reviews/:id', requireAdmin, (req, res) => {
+  const reviews = loadReviews();
+  const idx = reviews.findIndex(r => r.id === req.params.id);
+  if (idx < 0) return res.status(404).json({ error: 'Review not found' });
+  const removed = reviews.splice(idx, 1)[0];
+  for (const img of (removed.images || [])) {
+    if (typeof img === 'string' && img.startsWith('/uploads/reviews/')) {
+      try { fs.unlinkSync(path.join(frontendDir, img)); } catch (e) {}
+    }
+  }
+  fs.writeFileSync(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
+  res.json({ success: true });
+});
+
+// ===== API: Admin — Dashboard stats =====
+app.get('/api/admin/stats', requireAdmin, (req, res) => {
+  const orders = loadOrders();
+  const products = loadProducts();
+  const reviews = loadReviews();
+  const paid = orders.filter(o => ['paid', 'shipped', 'delivered'].includes(o.status));
+  const revenue = paid.reduce((s, o) => s + (Number(o.total ?? o.totals?.total) || 0), 0);
+  const orderTotal = (o) => Number(o.total ?? o.totals?.total) || 0;
+
+  const salesMap = {};
+  for (const o of paid) {
+    for (const it of (o.items || [])) {
+      const key = it.id || it.name;
+      if (!salesMap[key]) salesMap[key] = { id: it.id, name: it.name, qty: 0, revenue: 0 };
+      salesMap[key].qty += (Number(it.qty) || 1);
+      salesMap[key].revenue += (Number(it.price) || 0) * (Number(it.qty) || 1);
+    }
+  }
+  const topProducts = Object.values(salesMap).sort((a, b) => b.qty - a.qty).slice(0, 5);
+
+  const lowStock = products
+    .filter(p => Number(p.stock) <= 5)
+    .map(p => ({ id: p.id, name: p.name, stock: Number(p.stock) }))
+    .sort((a, b) => a.stock - b.stock);
+
+  const last7 = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    const dayRev = paid
+      .filter(o => (o.createdAt || '').slice(0, 10) === key)
+      .reduce((s, o) => s + orderTotal(o), 0);
+    last7.push({ date: key, revenue: Math.round(dayRev * 100) / 100 });
+  }
+
+  const pendingReviews = reviews.filter(r => r.status === 'pending').length;
+
+  const recentOrders = orders
+    .slice()
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 8)
+    .map(o => ({
+      orderId: o.orderId,
+      status: o.status,
+      createdAt: o.createdAt,
+      total: orderTotal(o),
+      customer: { name: (o.customer || {}).name || '', email: (o.customer || {}).email || '' },
+      itemCount: (o.items || []).reduce((s, i) => s + (Number(i.qty) || 1), 0),
+    }));
+
+  res.json({
+    totalOrders: orders.length,
+    paidOrders: paid.length,
+    pendingOrders: orders.filter(o => o.status === 'pending_payment').length,
+    revenue: Math.round(revenue * 100) / 100,
+    avgOrderValue: paid.length ? Math.round((revenue / paid.length) * 100) / 100 : 0,
+    customers: loadUsers().length,
+    pendingReviews,
+    totalReviews: reviews.length,
+    topProducts,
+    lowStock,
+    last7,
+    recentOrders,
+  });
 });
 
 // ===== Catch-all: serve index.html for SPA routes =====

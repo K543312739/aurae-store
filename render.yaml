@@ -20,6 +20,8 @@ services:
         sync: false        # 部署后填 https://你的域名
       - key: ADMIN_PASSWORD
         sync: false        # 务必改成强密码
+      - key: JWT_SECRET
+        sync: false        # 务必改成随机长字符串（客户账号登录令牌密钥）
       - key: STRIPE_SECRET_KEY
         sync: false        # 留空则 Stripe 不可用（其它功能正常）
       - key: STRIPE_WEBHOOK_SECRET

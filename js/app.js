@@ -1204,9 +1204,13 @@ async function processOrder() {
   }));
   const coupon = cartCoupon.applied ? cartCoupon.code : '';
 
+  const auth = {};
+  const u = JSON.parse(localStorage.getItem('auraeUser') || 'null');
+  if (u) { auth.userId = u.id; auth.userEmail = u.email; }
+
   try {
     const config = await loadPaymentConfig();
-    await processPayPalPayment(items, customer, btn, coupon);
+    await processPayPalPayment(items, customer, btn, coupon, auth);
   } catch (error) {
     console.error('Payment error:', error);
     btn.disabled = false;
@@ -1216,7 +1220,7 @@ async function processOrder() {
 }
 
 // ===== Stripe Payment Flow =====
-async function processStripePayment(items, customer, btn, coupon = '') {
+async function processStripePayment(items, customer, btn, coupon = '', auth = {}) {
   // Check if Stripe is configured
   const config = await loadPaymentConfig();
   if (!config.stripePublishableKey) {
@@ -1244,7 +1248,7 @@ async function processStripePayment(items, customer, btn, coupon = '') {
   const response = await fetch('/api/create-checkout-session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ items, customer, coupon }),
+    body: JSON.stringify({ items, customer, coupon, userId: auth.userId || null, userEmail: auth.userEmail || null }),
   });
 
   const data = await response.json();
@@ -1259,7 +1263,7 @@ async function processStripePayment(items, customer, btn, coupon = '') {
 }
 
 // ===== PayPal Payment Flow =====
-async function processPayPalPayment(items, customer, btn, coupon = '') {
+async function processPayPalPayment(items, customer, btn, coupon = '', auth = {}) {
   const config = await loadPaymentConfig();
 
   if (!config.paypalClientId) {
@@ -1287,7 +1291,7 @@ async function processPayPalPayment(items, customer, btn, coupon = '') {
   const createResp = await fetch('/api/create-paypal-order', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ items, customer, coupon }),
+    body: JSON.stringify({ items, customer, coupon, userId: auth.userId || null, userEmail: auth.userEmail || null }),
   });
 
   const createData = await createResp.json();
@@ -1543,10 +1547,11 @@ function renderProductReviews(reviews, average, count) {
                   <div class="review-stars">${renderReviewStars(r.rating)}</div>
                 </div>
               </div>
-              <div class="review-date">${formatDate(r.date)}</div>
+              <div class="review-date">${formatDate(r.createdAt)}</div>
             </div>
             <div class="review-title">${escapeHtml(r.title)}</div>
             <div class="review-body">${escapeHtml(r.comment)}</div>
+            ${r.images && r.images.length ? `<div class="review-images">${r.images.map(img => `<a href="${escapeHtml(img)}" target="_blank" rel="noopener"><img src="${escapeHtml(img)}" alt="Customer photo"></a>`).join('')}</div>` : ''}
           </div>
         `).join('')}
       </div>
@@ -1581,6 +1586,10 @@ function renderProductReviews(reviews, average, count) {
           <label for="reviewBody">Review</label>
           <textarea id="reviewBody" rows="4" required placeholder="What did you like? How did the crystal feel?"></textarea>
         </div>
+        <div class="form-group">
+          <label for="reviewImages">Photos (optional, up to 5)</label>
+          <input type="file" id="reviewImages" accept="image/*" multiple>
+        </div>
         <button type="submit" class="btn btn-dark btn-full" id="reviewSubmitBtn">Submit Review</button>
       </form>
     </div>
@@ -1611,22 +1620,27 @@ async function submitReview(e) {
   btn.textContent = 'Submitting...';
 
   try {
-    const res = await fetch('/api/reviews', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        productId: currentReviewProductId,
-        name,
-        email,
-        title,
-        comment: body,
-        rating: parseInt(ratingEl.value, 10),
-      }),
-    });
+    const fd = new FormData();
+    fd.append('productId', currentReviewProductId);
+    fd.append('name', name);
+    fd.append('email', email);
+    fd.append('title', title);
+    fd.append('comment', body);
+    fd.append('rating', ratingEl.value);
+    const u = JSON.parse(localStorage.getItem('auraeUser') || 'null');
+    if (u) { fd.append('userId', u.id); fd.append('userEmail', u.email); }
+    const fileInput = document.getElementById('reviewImages');
+    if (fileInput && fileInput.files) {
+      for (const f of fileInput.files) fd.append('images', f);
+    }
+    const headers = {};
+    const token = getAuthToken();
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const res = await fetch('/api/reviews', { method: 'POST', headers, body: fd });
     const data = await res.json();
 
     if (res.ok && data.success) {
-      showToast('Thank you! Your review has been submitted for approval.');
+      showToast('Thank you! Your review has been submitted and is awaiting approval.');
       document.getElementById('reviewForm').reset();
       loadProductReviews(currentReviewProductId);
     } else {
@@ -1823,14 +1837,22 @@ function closeAccount() {
   document.body.style.overflow = '';
 }
 
+function getAuthToken() {
+  return localStorage.getItem('auraeToken') || '';
+}
+
 function renderAccount() {
-  const user = JSON.parse(localStorage.getItem('auraeUser') || 'null');
+  const token = getAuthToken();
+  const userStr = localStorage.getItem('auraeUser');
   const body = document.getElementById('accountBody');
-  if (user) {
-    renderAccountProfile(body, user);
-  } else {
-    renderAccountLogin(body);
+  if (token && userStr) {
+    try {
+      const user = JSON.parse(userStr);
+      renderAccountProfile(body, user);
+      return;
+    } catch (e) {}
   }
+  renderAccountLogin(body);
 }
 
 function renderAccountLogin(body) {
@@ -1851,7 +1873,6 @@ function renderAccountLogin(body) {
         </div>
         <button class="btn btn-dark btn-full" type="submit">Login</button>
       </form>
-      <p style="text-align:center;font-size:12px;color:var(--color-text-muted);margin-top:16px;">Demo accounts are stored locally in your browser.</p>
     ` : `
       <form onsubmit="event.preventDefault(); handleRegister();">
         <div class="form-group">
@@ -1872,8 +1893,7 @@ function renderAccountLogin(body) {
   `;
 }
 
-function renderAccountProfile(body, user) {
-  const orders = JSON.parse(localStorage.getItem('auraeOrders') || '[]');
+async function renderAccountProfile(body, user) {
   const energyResult = JSON.parse(localStorage.getItem('auraeEnergyResult') || 'null');
   const energyHTML = energyResult ? `
     <div class="account-section">
@@ -1895,35 +1915,58 @@ function renderAccountProfile(body, user) {
       </div>
     </div>
   `;
-  const ordersHTML = orders.length ? orders.slice().reverse().map(o => `
-    <div class="account-order">
-      <div class="account-order-header">
-        <span class="account-order-id">${o.id}</span>
-        <span class="account-order-date">${new Date(o.date).toLocaleDateString()}</span>
-      </div>
-      <div class="account-order-items">${o.items.map(i => `${i.name} × ${i.qty}`).join(', ')}</div>
-      <div class="account-order-footer">
-        <span class="account-order-total">${formatPrice(o.total)}</span>
-        <a href="track.html?orderId=${encodeURIComponent(o.id)}&email=${encodeURIComponent(user.email)}" class="account-order-track">Track</a>
-      </div>
-    </div>
-  `).join('') : '<div class="account-empty">No orders yet. Your completed purchases will appear here.</div>';
   body.innerHTML = `
     <div class="account-welcome">
       <div class="avatar">👤</div>
-      <h4>${user.name || user.email}</h4>
-      <p>${user.email}</p>
+      <h4>${escapeHtml(user.name || user.email)}</h4>
+      <p>${escapeHtml(user.email)}</p>
     </div>
     <div class="account-section">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
         <h4 style="margin:0;">Order History</h4>
         <a href="track.html" class="account-order-track">Track an order</a>
       </div>
-      ${ordersHTML}
+      <div id="accountOrders"><div class="account-empty">Loading your orders…</div></div>
     </div>
     ${energyHTML}
     <button class="btn btn-outline btn-full account-logout" onclick="handleLogout()">Log Out</button>
   `;
+
+  const container = document.getElementById('accountOrders');
+  if (!container) return;
+  const token = getAuthToken();
+  if (!token) {
+    container.innerHTML = '<div class="account-empty">Please log in again to view your orders.</div>';
+    return;
+  }
+  try {
+    const resp = await fetch('/api/me/orders', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!resp.ok) { container.innerHTML = '<div class="account-empty">Could not load your orders.</div>'; return; }
+    const data = await resp.json();
+    const orders = data.orders || [];
+    if (!orders.length) {
+      container.innerHTML = '<div class="account-empty">No orders yet. Your completed purchases will appear here.</div>';
+      return;
+    }
+    container.innerHTML = orders.slice().reverse().map(o => {
+      const total = Number(o.total ?? o.totals?.total) || 0;
+      const date = o.createdAt ? new Date(o.createdAt).toLocaleDateString() : '';
+      const items = (o.items || []).map(i => `${i.name} × ${i.qty}`).join(', ');
+      return `<div class="account-order">
+        <div class="account-order-header">
+          <span class="account-order-id">${escapeHtml(o.orderId)}</span>
+          <span class="account-order-date">${escapeHtml(date)}</span>
+        </div>
+        <div class="account-order-items">${escapeHtml(items)}</div>
+        <div class="account-order-footer">
+          <span class="account-order-total">${formatPrice(total)}</span>
+          <a href="track.html?orderId=${encodeURIComponent(o.orderId)}&email=${encodeURIComponent(user.email)}" class="account-order-track">Track</a>
+        </div>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    container.innerHTML = '<div class="account-empty">Connection error loading orders.</div>';
+  }
 }
 
 function switchAccountTab(tab) {
@@ -1931,38 +1974,51 @@ function switchAccountTab(tab) {
   renderAccount();
 }
 
-function handleLogin() {
+async function handleLogin() {
   const email = document.getElementById('accountEmail').value.trim().toLowerCase();
   const password = document.getElementById('accountPassword').value;
-  const users = JSON.parse(localStorage.getItem('auraeUsers') || '[]');
-  const user = users.find(u => u.email === email && u.password === password);
-  if (!user) {
-    showToast('Invalid email or password');
-    return;
+  if (!email || !password) { showToast('Please enter email and password'); return; }
+  try {
+    const resp = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { showToast(data.error || 'Login failed'); return; }
+    localStorage.setItem('auraeToken', data.token);
+    localStorage.setItem('auraeUser', JSON.stringify(data.user));
+    renderAccount();
+    showToast('Welcome back, ' + (data.user.name || data.user.email));
+  } catch (e) {
+    showToast('Network error. Please try again.');
   }
-  localStorage.setItem('auraeUser', JSON.stringify(user));
-  renderAccount();
-  showToast('Welcome back, ' + (user.name || user.email));
 }
 
-function handleRegister() {
+async function handleRegister() {
   const name = document.getElementById('accountName').value.trim();
   const email = document.getElementById('accountEmail').value.trim().toLowerCase();
   const password = document.getElementById('accountPassword').value;
-  const users = JSON.parse(localStorage.getItem('auraeUsers') || '[]');
-  if (users.find(u => u.email === email)) {
-    showToast('An account with this email already exists');
-    return;
+  if (!name || !email || !password) { showToast('Please fill in all fields'); return; }
+  try {
+    const resp = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { showToast(data.error || 'Registration failed'); return; }
+    localStorage.setItem('auraeToken', data.token);
+    localStorage.setItem('auraeUser', JSON.stringify(data.user));
+    renderAccount();
+    showToast('Account created. Welcome to Aurae!');
+  } catch (e) {
+    showToast('Network error. Please try again.');
   }
-  const user = { name, email, password };
-  users.push(user);
-  localStorage.setItem('auraeUsers', JSON.stringify(users));
-  localStorage.setItem('auraeUser', JSON.stringify(user));
-  renderAccount();
-  showToast('Account created. Welcome to Aurae!');
 }
 
 function handleLogout() {
+  localStorage.removeItem('auraeToken');
   localStorage.removeItem('auraeUser');
   accountTab = 'login';
   renderAccount();

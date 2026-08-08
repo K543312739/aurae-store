@@ -24,3 +24,8 @@ _*.js
 server/orders.json
 server/messages.json
 server/reviews.json
+server/users.json
+
+# Uploaded images (product photos, review photos) — runtime data
+uploads/
+server/uploads/

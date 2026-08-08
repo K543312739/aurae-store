@@ -186,6 +186,47 @@
     .img-cell .setcover { position: absolute; bottom: 4px; left: 4px; font-size: 10px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 6px; padding: 2px 6px; cursor: pointer; }
     .img-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
+    /* Dashboard */
+    .dash-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 22px; }
+    .dash-card { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: 14px; padding: 20px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
+    .dash-card-label { font-size: 12px; color: var(--admin-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .dash-card-value { font-size: 28px; font-weight: 700; font-family: 'Cormorant Garamond', serif; color: var(--admin-primary-dark); margin-top: 6px; }
+    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+    .dash-box { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: 14px; padding: 20px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
+    .dash-box h3 { margin: 0 0 14px; font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--admin-primary-dark); }
+    .dash-table { width: 100%; border-collapse: collapse; }
+    .dash-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--admin-muted); padding: 6px 8px; border-bottom: 1px solid var(--admin-border); }
+    .dash-table td { padding: 8px; font-size: 14px; border-bottom: 1px solid var(--admin-border); }
+    .dash-table tr:last-child td { border-bottom: none; }
+    .dash-empty { text-align: center; color: var(--admin-muted); padding: 20px; }
+    .dash-chart { display: flex; align-items: flex-end; gap: 10px; height: 160px; padding: 10px 0; }
+    .dash-bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+    .dash-bar-fill { width: 60%; max-width: 40px; background: linear-gradient(180deg, var(--admin-primary), var(--admin-accent)); border-radius: 6px 6px 0 0; min-height: 2px; transition: 0.3s; }
+    .dash-bar-label { font-size: 11px; color: var(--admin-muted); margin-top: 6px; }
+    .dash-bar-val { font-size: 11px; font-weight: 600; color: var(--admin-primary-dark); }
+
+    /* Reviews / Moderation */
+    .review-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+    .rf-btn { background: transparent; border: 1.5px solid var(--admin-border); color: var(--admin-muted); border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.2s; }
+    .rf-btn:hover { border-color: var(--admin-primary); color: var(--admin-primary-dark); }
+    .rf-btn.active { background: var(--admin-primary); border-color: var(--admin-primary); color: #fff; }
+    .rev-card { background: var(--admin-card); border: 1px solid var(--admin-border); border-left: 4px solid var(--admin-border); border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
+    .rev-card.status-pending { border-left-color: #d9a441; }
+    .rev-card.status-approved { border-left-color: var(--admin-primary); }
+    .rev-card.status-rejected { border-left-color: #c0392b; }
+    .rev-head { display: flex; gap: 12px; align-items: flex-start; }
+    .rev-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: var(--admin-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; }
+    .rev-meta { flex: 1; min-width: 0; }
+    .rev-name { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .rev-rating { color: #d9a441; letter-spacing: 1px; }
+    .rev-status { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; padding: 2px 9px; border-radius: 20px; background: #f0ece4; color: var(--admin-muted); }
+    .rev-sub { font-size: 13px; color: var(--admin-muted); margin-top: 2px; }
+    .rev-title { font-weight: 600; margin: 12px 0 4px; font-size: 15px; }
+    .rev-body { font-size: 14.5px; line-height: 1.7; white-space: pre-wrap; }
+    .rev-imgs { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    .rev-img { width: 84px; height: 84px; border-radius: 8px; object-fit: cover; border: 1px solid var(--admin-border); cursor: pointer; }
+    .rev-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
     @media (max-width: 600px) {
       .admin-toolbar h2 { font-size: 26px; }
       .msg-reply { margin-left: 12px; }
@@ -234,6 +275,8 @@
         <button class="admin-tab" id="tab-orders" onclick="switchTab('orders')">📦 Orders</button>
         <button class="admin-tab" id="tab-products" onclick="switchTab('products')">📊 Inventory</button>
         <button class="admin-tab" id="tab-coupons" onclick="switchTab('coupons')">🏷️ Coupons</button>
+        <button class="admin-tab" id="tab-dashboard" onclick="switchTab('dashboard')">📈 Dashboard</button>
+        <button class="admin-tab" id="tab-reviews" onclick="switchTab('reviews')">⭐ Reviews</button>
       </div>
 
       <!-- Messages panel -->
@@ -273,6 +316,24 @@
           <div><button class="btn btn-dark" type="submit">+ Create Coupon</button></div>
         </form>
         <div id="adminCoupons"></div>
+      </div>
+
+      <!-- Dashboard panel -->
+      <div class="admin-panel" id="panel-dashboard">
+        <div id="adminDashboardContent"></div>
+      </div>
+
+      <!-- Reviews / Moderation panel -->
+      <div class="admin-panel" id="panel-reviews">
+        <div class="admin-toolbar" style="margin-bottom:14px;">
+          <div class="review-filter">
+            <button class="rf-btn active" data-status="pending" onclick="setReviewFilter('pending')">Pending</button>
+            <button class="rf-btn" data-status="approved" onclick="setReviewFilter('approved')">Approved</button>
+            <button class="rf-btn" data-status="rejected" onclick="setReviewFilter('rejected')">Rejected</button>
+            <button class="rf-btn" data-status="all" onclick="setReviewFilter('all')">All</button>
+          </div>
+        </div>
+        <div id="adminReviews"></div>
       </div>
     </section>
 
@@ -373,7 +434,7 @@
       document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
       document.getElementById('tab-' + tab).classList.add('active');
       document.getElementById('panel-' + tab).classList.add('active');
-      const titles = { messages: 'Customer Messages', orders: 'Orders', products: 'Inventory', coupons: 'Coupons' };
+      const titles = { messages: 'Customer Messages', orders: 'Orders', products: 'Inventory', coupons: 'Coupons', dashboard: 'Sales Dashboard', reviews: 'Review Moderation' };
       document.getElementById('panelTitle').textContent = titles[tab];
       refreshCurrentTab();
     }
@@ -383,6 +444,8 @@
       else if (currentTab === 'orders') loadOrders();
       else if (currentTab === 'products') loadProducts();
       else if (currentTab === 'coupons') loadCoupons();
+      else if (currentTab === 'dashboard') loadDashboard();
+      else if (currentTab === 'reviews') loadReviews();
     }
 
     async function adminLogin() {
@@ -555,6 +618,163 @@
         });
         if (resp.ok) { loadOrders(); }
         else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    // ===== Dashboard =====
+    async function loadDashboard() {
+      const container = document.getElementById('adminDashboardContent');
+      container.innerHTML = '<div class="admin-loading">Loading dashboard…</div>';
+      try {
+        const resp = await fetch('/api/admin/stats', { headers: { 'x-admin-token': token } });
+        if (resp.status === 401) { adminLogout(); return; }
+        if (!resp.ok) throw new Error('Failed');
+        const s = await resp.json();
+        document.getElementById('adminCount').textContent = `${s.totalOrders || 0} order(s)`;
+
+        const cards = `
+          <div class="dash-cards">
+            <div class="dash-card"><div class="dash-card-label">Total Revenue</div><div class="dash-card-value">${money(s.revenue || 0)}</div></div>
+            <div class="dash-card"><div class="dash-card-label">Paid Orders</div><div class="dash-card-value">${s.paidOrders || 0}</div></div>
+            <div class="dash-card"><div class="dash-card-label">Avg Order Value</div><div class="dash-card-value">${money(s.avgOrderValue || 0)}</div></div>
+            <div class="dash-card"><div class="dash-card-label">Customers</div><div class="dash-card-value">${s.customers || 0}</div></div>
+            <div class="dash-card"><div class="dash-card-label">Pending Reviews</div><div class="dash-card-value">${s.pendingReviews || 0}</div></div>
+            <div class="dash-card"><div class="dash-card-label">Low Stock</div><div class="dash-card-value">${(s.lowStock || []).length}</div></div>
+          </div>`;
+
+        const topRows = (s.topProducts || []).map((p, i) => `
+          <tr><td>${i + 1}</td><td>${escapeHtml(p.name)}</td><td>${p.qty || 0}</td><td>${money(p.revenue || 0)}</td></tr>`).join('')
+          || '<tr><td colspan="4" class="dash-empty">No sales recorded yet</td></tr>';
+
+        const lowRows = (s.lowStock || []).map(p => `
+          <tr><td>${escapeHtml(p.name)}</td><td><span class="pill ${p.stock <= 0 ? 'off' : (p.stock <= 5 ? '' : 'on')}">${p.stock}</span></td></tr>`).join('')
+          || '<tr><td colspan="2" class="dash-empty">All items sufficiently stocked</td></tr>';
+
+        const recentRows = (s.recentOrders || []).map(o => `
+          <tr>
+            <td>#${escapeHtml(o.orderId)}</td>
+            <td>${escapeHtml((o.customer || {}).name || '—')}</td>
+            <td>${escapeHtml(formatDate(o.createdAt))}</td>
+            <td>${money(o.total || 0)}</td>
+            <td><span class="status-badge ${escapeHtml(o.status)}">${escapeHtml(o.status)}</span></td>
+          </tr>`).join('')
+          || '<tr><td colspan="5" class="dash-empty">No orders yet</td></tr>';
+
+        const maxRev = Math.max(1, ...(s.last7 || []).map(d => d.revenue));
+        const bars = (s.last7 || []).map(d => {
+          const h = Math.round((d.revenue / maxRev) * 100);
+          const label = (d.date || '').slice(5);
+          return `<div class="dash-bar"><div class="dash-bar-fill" style="height:${h}%;" title="${money(d.revenue)}"></div><div class="dash-bar-label">${escapeHtml(label)}</div><div class="dash-bar-val">${d.revenue > 0 ? money(d.revenue) : '—'}</div></div>`;
+        }).join('');
+
+        container.innerHTML = `
+          ${cards}
+          <div class="dash-grid">
+            <div class="dash-box">
+              <h3>🔥 Top Selling Products</h3>
+              <table class="dash-table"><thead><tr><th>#</th><th>Product</th><th>Sold</th><th>Revenue</th></tr></thead><tbody>${topRows}</tbody></table>
+            </div>
+            <div class="dash-box">
+              <h3>⚠️ Low Stock Alert</h3>
+              <table class="dash-table"><thead><tr><th>Product</th><th>Stock</th></tr></thead><tbody>${lowRows}</tbody></table>
+            </div>
+          </div>
+          <div class="dash-box">
+            <h3>📊 Revenue — Last 7 Days</h3>
+            <div class="dash-chart">${bars}</div>
+          </div>
+          <div class="dash-box">
+            <h3>🧾 Recent Orders</h3>
+            <table class="dash-table"><thead><tr><th>Order</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr></thead><tbody>${recentRows}</tbody></table>
+          </div>`;
+      } catch (e) {
+        container.innerHTML = '<div class="empty-box">Could not load dashboard.</div>';
+      }
+    }
+
+    // ===== Reviews / Moderation =====
+    let reviewFilter = 'pending';
+    let reviewProductNames = {};
+    function setReviewFilter(status) {
+      reviewFilter = status;
+      document.querySelectorAll('.rf-btn').forEach(b => b.classList.toggle('active', b.dataset.status === status));
+      loadReviews();
+    }
+    async function loadReviews() {
+      const container = document.getElementById('adminReviews');
+      container.innerHTML = '<div class="admin-loading">Loading reviews…</div>';
+      try {
+        const [prodResp, revResp] = await Promise.all([
+          fetch('/api/admin/products', { headers: { 'x-admin-token': token } }),
+          fetch('/api/admin/reviews' + (reviewFilter === 'all' ? '' : '?status=' + reviewFilter), { headers: { 'x-admin-token': token } }),
+        ]);
+        if (prodResp.status === 401 || revResp.status === 401) { adminLogout(); return; }
+        const products = (await prodResp.json()).products || [];
+        reviewProductNames = {};
+        products.forEach(p => { reviewProductNames[p.id] = p.name; });
+        const reviews = (await revResp.json()).reviews || [];
+        document.getElementById('adminCount').textContent = `${reviews.length} review(s)` + (reviewFilter !== 'all' ? ` · ${reviewFilter}` : '');
+        if (reviews.length === 0) {
+          container.innerHTML = '<div class="empty-box">No ' + (reviewFilter === 'all' ? '' : reviewFilter + ' ') + 'reviews.</div>';
+          return;
+        }
+        container.innerHTML = reviews.map(renderReviewCard).join('');
+      } catch (e) {
+        container.innerHTML = '<div class="empty-box">Could not load reviews.</div>';
+      }
+    }
+    function stars(n) {
+      const r = Number(n) || 0;
+      return '★'.repeat(r) + '☆'.repeat(5 - r);
+    }
+    function renderReviewCard(r) {
+      const imgs = Array.isArray(r.images) ? r.images : [];
+      const imgHtml = imgs.length ? `<div class="rev-imgs">${imgs.map(i => `<a href="${escapeHtml(i)}" target="_blank"><img src="${escapeHtml(i)}" class="rev-img"></a>`).join('')}</div>` : '';
+      const pname = reviewProductNames[r.productId] || r.productId;
+      const isPending = r.status === 'pending';
+      const isApproved = r.status === 'approved';
+      const actions = `
+        <div class="rev-actions">
+          ${isPending ? `<button class="btn btn-dark btn-sm" onclick="moderateReview('${escapeHtml(r.id)}','approved')">✅ Approve</button>` : ''}
+          ${!isApproved ? `<button class="btn btn-outline btn-sm" onclick="moderateReview('${escapeHtml(r.id)}','rejected')">⛔ Reject</button>` : ''}
+          ${isApproved ? `<button class="btn btn-outline btn-sm" onclick="moderateReview('${escapeHtml(r.id)}','pending')">↩ Unpublish</button>` : ''}
+          <button class="btn btn-danger btn-sm" onclick="deleteReview('${escapeHtml(r.id)}')">🗑 Delete</button>
+        </div>`;
+      return `
+        <div class="rev-card status-${escapeHtml(r.status)}" id="rev-${escapeHtml(r.id)}">
+          <div class="rev-head">
+            <div class="rev-avatar">${escapeHtml((r.name || '?').charAt(0).toUpperCase())}</div>
+            <div class="rev-meta">
+              <div class="rev-name">${escapeHtml(r.name)} <span class="rev-rating">${stars(r.rating)}</span> <span class="rev-status">${escapeHtml(r.status)}</span></div>
+              <div class="rev-sub">${escapeHtml(r.email)} · on <strong>${escapeHtml(pname)}</strong> · ${escapeHtml(formatDate(r.createdAt))}</div>
+            </div>
+          </div>
+          ${r.title ? `<div class="rev-title">${escapeHtml(r.title)}</div>` : ''}
+          <div class="rev-body">${escapeHtml(r.comment)}</div>
+          ${imgHtml}
+          ${actions}
+        </div>`;
+    }
+    async function moderateReview(id, status) {
+      try {
+        const resp = await fetch('/api/admin/reviews/' + id + '/status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify({ status }),
+        });
+        if (resp.ok) loadReviews();
+        else { const d = await resp.json().catch(() => ({})); alert(d.error || 'Failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+    async function deleteReview(id) {
+      if (!confirm('Delete this review permanently?')) return;
+      try {
+        const resp = await fetch('/api/admin/reviews/' + id, {
+          method: 'DELETE',
+          headers: { 'x-admin-token': token },
+        });
+        if (resp.ok) loadReviews();
+        else { const d = await resp.json().catch(() => ({})); alert(d.error || 'Failed'); }
       } catch (e) { alert('Connection error'); }
     }
 
