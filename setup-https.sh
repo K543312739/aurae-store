@@ -20,8 +20,8 @@ echo "[1/6] 安装 certbot..."
 apt-get update -y
 apt-get install -y certbot
 
-# 2) 先写好 nginx 配置(含 HTTPS 块, 但暂不启用检测)
-echo "[2/6] 写入 nginx 配置(域名 + 80->443 跳转)..."
+# 2) 先写入临时 80 配置, 让域名访问正常, 同时支持 certbot 验证
+echo "[2/6] 写入临时 nginx 配置(域名 + certbot 验证路径)..."
 mkdir -p /var/www/html
 cat > /etc/nginx/sites-available/aurae << 'EOF'
 server {
@@ -30,6 +30,42 @@ server {
     client_max_body_size 10M;
 
     # Let's Encrypt 验证用
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+EOF
+ln -sf /etc/nginx/sites-available/aurae /etc/nginx/sites-enabled/aurae
+rm -f /etc/nginx/sites-enabled/default
+nginx -t && systemctl reload nginx
+
+# 3) 申请免费证书 (webroot 方式)
+echo "[3/6] 申请 Let's Encrypt 免费证书..."
+certbot certonly --webroot -w /var/www/html \
+    -d aurae.asia -d www.aurae.asia \
+    --non-interactive --agree-tos --register-unsafely-without-email
+
+# 4) 写入完整 HTTPS 配置(80 跳转 + 443 SSL 反代)
+echo "[4/6] 写入完整 nginx 配置(80->443 + SSL)..."
+cat > /etc/nginx/sites-available/aurae << 'EOF'
+server {
+    listen 80;
+    server_name aurae.asia www.aurae.asia;
+    client_max_body_size 10M;
+
+    # Let's Encrypt 验证用(续期时仍需要)
     location /.well-known/acme-challenge/ {
         root /var/www/html;
     }
@@ -64,19 +100,7 @@ server {
     }
 }
 EOF
-ln -sf /etc/nginx/sites-available/aurae /etc/nginx/sites-enabled/aurae
-rm -f /etc/nginx/sites-enabled/default
-
-# 3) 申请免费证书 (webroot 方式, 不修改已有配置)
-echo "[3/6] 申请 Let's Encrypt 免费证书..."
-certbot certonly --webroot -w /var/www/html \
-    -d aurae.asia -d www.aurae.asia \
-    --non-interactive --agree-tos --register-unsafely-without-email
-
-# 4) 校验并重载 nginx
-echo "[4/6] 校验 nginx 并重载..."
-nginx -t
-systemctl reload nginx
+nginx -t && systemctl reload nginx
 systemctl enable nginx
 
 # 5) 更新 .env 的 DOMAIN
