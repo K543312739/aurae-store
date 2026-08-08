@@ -25,14 +25,83 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 
+// ===== Crash resilience: keep the process alive on unexpected errors =====
+// (PM2 will still restart on a real crash; this prevents a single bad request
+//  from taking the whole site down.)
+process.on('uncaughtException', (err) => {
+  console.error('[FATAL] uncaughtException:', (err && err.stack) || err);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('[FATAL] unhandledRejection:', (reason && reason.stack) || reason);
+});
+
+// ===== Security headers =====
+app.disable('x-powered-by');
+app.set('trust proxy', true); // site runs behind nginx / a load balancer
+
 // ===== Middleware =====
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const ALLOWED_ORIGINS = [
+  'https://www.aurae.asia',
+  'https://aurae.asia',
+  'http://localhost:3999',
+  'http://localhost:8080',
+  'http://127.0.0.1:3999',
+  'http://127.0.0.1:8080',
+];
+app.use(cors({
+  origin(origin, cb) {
+    if (!origin) return cb(null, true); // same-origin / non-browser requests
+    if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)) return cb(null, true);
+    cb(null, false);
+  },
+}));
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+// ===== Security: block access to server/runtime/sensitive files =====
+// express.static would otherwise serve anything under the project root
+// (e.g. /server/users.json, /server/server.js, /package.json).
+const SENSITIVE_PREFIXES = ['/server/', '/node_modules/', '/.git/'];
+const SENSITIVE_FILES = ['/package.json', '/package-lock.json', '/server.js', '/.env'];
+app.use((req, res, next) => {
+  const p = (req.path || '').toLowerCase();
+  if (p.startsWith('/.well-known/')) return next(); // Let's Encrypt ACME challenge
+  if (SENSITIVE_PREFIXES.some((s) => p.startsWith(s))) return res.status(404).end();
+  if (SENSITIVE_FILES.includes(p) || p.endsWith('.env')) return res.status(404).end();
+  if (p.split('/').some((seg) => seg.startsWith('.'))) return res.status(404).end();
+  next();
+});
+
+// ===== Simple in-memory rate limiter (no external deps) =====
+const rateBuckets = new Map();
+function rateLimit(windowMs, max) {
+  return (req, res, next) => {
+    const key = (req.ip || req.headers['x-forwarded-for'] || 'unknown') + ':' + (req.baseUrl || req.path);
+    const now = Date.now();
+    const rec = rateBuckets.get(key) || { count: 0, start: now };
+    if (now - rec.start > windowMs) { rec.count = 0; rec.start = now; }
+    rec.count += 1;
+    rateBuckets.set(key, rec);
+    if (rec.count > max) {
+      return res.status(429).json({ error: 'Too many requests. Please slow down and try again.' });
+    }
+    next();
+  };
+}
+const authLimiter = rateLimit(60 * 1000, 15);   // login / register
+const publicLimiter = rateLimit(60 * 1000, 20); // reviews / contact
+app.use('/api/admin', rateLimit(60 * 1000, 200)); // admin surface
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of rateBuckets) {
+    if (now - v.start > 120 * 1000) rateBuckets.delete(k);
+  }
+}, 60 * 1000);
 
 // Serve static frontend files from parent directory
 const frontendDir = path.join(__dirname, '..');
-app.use(express.static(frontendDir));
+app.use(express.static(frontendDir, { dotfiles: 'deny' }));
 
 // ===== Product image uploads =====
 const UPLOADS_DIR = path.join(frontendDir, 'uploads');
@@ -77,7 +146,7 @@ const reviewUpload = multer({
 });
 
 // Stripe needs raw body for webhook verification
-app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), (req, res) => {
+app.post('/api/stripe-webhook', express.raw({ type: 'application/json', limit: '5mb' }), (req, res) => {
   handleStripeWebhook(req, res);
 });
 
@@ -490,7 +559,27 @@ function requireAdmin(req, res, next) {
 }
 
 // ===== Customer Auth (JWT) =====
-const JWT_SECRET = process.env.JWT_SECRET || 'aurae-dev-secret-change-me';
+// Never fall back to a predictable secret. If JWT_SECRET is missing (or is the
+// public placeholder shipped in .env.example) we generate a strong random one
+// and persist it to .env so it survives restarts.
+const JWT_PLACEHOLDER = 'change-me-to-a-long-random-string';
+let JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || JWT_SECRET === JWT_PLACEHOLDER) {
+  const generated = crypto.randomBytes(32).toString('hex');
+  try {
+    const envPath = path.join(__dirname, '.env');
+    const cur = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
+    const next = cur.includes('JWT_SECRET=')
+      ? cur.replace(/^JWT_SECRET=.*$/m, 'JWT_SECRET=' + generated)
+      : cur + `\nJWT_SECRET=${generated}\n`;
+    fs.writeFileSync(envPath, next);
+    console.warn('[SECURITY] JWT_SECRET was missing/weak - generated and saved a strong random secret to .env.');
+  } catch (e) {
+    // If we cannot persist, still use the strong secret for this run.
+    console.warn('[SECURITY] JWT_SECRET missing/weak and could not be persisted; using an in-memory secret for this run:', e.message);
+  }
+  JWT_SECRET = generated;
+}
 
 function signToken(user) {
   return jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '30d' });
@@ -548,7 +637,7 @@ app.get('/api/config', (req, res) => {
 });
 
 // ===== API: Submit Contact Message =====
-app.post('/api/contact', (req, res) => {
+app.post('/api/contact', publicLimiter, (req, res) => {
   try {
     const { name, email, subject, message } = req.body || {};
 
@@ -590,7 +679,7 @@ app.get('/api/reviews/:productId', (req, res) => {
 });
 
 // ===== API: Reviews — Submit a review (with optional photos, pending moderation) =====
-app.post('/api/reviews', reviewUpload.array('images', 5), (req, res) => {
+app.post('/api/reviews', publicLimiter, reviewUpload.array('images', 5), (req, res) => {
   try {
     const { productId, name, email, rating, title, comment, userId, userEmail } = req.body || {};
     if (!productId || !name || !email || !comment) {
@@ -1435,7 +1524,7 @@ app.delete('/api/admin/coupons/:code', requireAdmin, (req, res) => {
 });
 
 // ===== API: Customer — Register =====
-app.post('/api/register', async (req, res) => {
+app.post('/api/register', authLimiter, async (req, res) => {
   try {
     const { name, email, password } = req.body || {};
     if (!name || !email || !password) {
@@ -1469,7 +1558,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 // ===== API: Customer — Login =====
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', authLimiter, async (req, res) => {
   try {
     const { email, password } = req.body || {};
     if (!email || !password) {
@@ -1609,22 +1698,23 @@ app.get('/api/admin/stats', requireAdmin, (req, res) => {
   });
 });
 
-// ===== Catch-all: serve index.html for SPA routes =====
-app.get('/{*splat}', (req, res, next) => {
-  // If the request is for an API endpoint, return 404 JSON
+// ===== Catch-all: SPA fallback (Express 4 safe) =====
+app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'API endpoint not found' });
-  }
-  // Try to serve the file; if it doesn't exist, serve index.html
-  const filePath = path.join(frontendDir, req.path);
-  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-    return res.sendFile(filePath);
   }
   res.sendFile(path.join(frontendDir, 'index.html'));
 });
 
+// ===== Global error handler (must be registered last) =====
+app.use((err, req, res, next) => {
+  console.error('[ERROR] Unhandled error:', (err && err.stack) || err);
+  if (res.headersSent) return next(err);
+  res.status(500).json({ error: 'Internal server error. Please try again later.' });
+});
+
 // ===== Start Server =====
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log('');
   console.log('╔════════════════════════════════════════════════╗');
   console.log('║     Aurae Payment Server Started        ║');
@@ -1640,4 +1730,17 @@ app.listen(PORT, () => {
   console.log('  2. To test payments, use Stripe test card: 4242 4242 4242 4242');
   console.log('  3. Configure webhooks in Stripe/PayPal dashboards for production');
   console.log('');
+});
+
+// ===== Handle fatal listen errors (e.g. port already in use) =====
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(
+      `\n[FATAL] Port ${PORT} is already occupied by another process.\n` +
+      `        Fix: sudo lsof -i :${PORT}  ->  sudo kill -9 <PID>  ->  pm2 restart aurae\n`
+    );
+  } else {
+    console.error('[FATAL] Server failed to start:', err.message);
+  }
+  process.exit(1);
 });
