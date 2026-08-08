@@ -1693,10 +1693,6 @@ function closeSearch() {
   document.body.style.overflow = '';
 }
 
-function escapeHtml(str) {
-  return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-}
-
 function renderSearchResults(query) {
   const container = document.getElementById('searchResults');
   const q = query.trim().toLowerCase();
