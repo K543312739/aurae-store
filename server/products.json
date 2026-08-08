@@ -1,0 +1,82 @@
+[
+  {
+    "id": "p001",
+    "name": "Rose Quartz Love Bracelet",
+    "stock": 50
+  },
+  {
+    "id": "p002",
+    "name": "Strawberry Crystal Attraction Bracelet",
+    "stock": 40
+  },
+  {
+    "id": "p003",
+    "name": "Amethyst Crown of Wisdom Necklace",
+    "stock": 30
+  },
+  {
+    "id": "p004",
+    "name": "Amethyst Serenity Bracelet",
+    "stock": 45
+  },
+  {
+    "id": "p005",
+    "name": "Black Gold Obsidian Shield Bracelet",
+    "stock": 45
+  },
+  {
+    "id": "p006",
+    "name": "Black Obsidian Mirror of Truth Pendant",
+    "stock": 25
+  },
+  {
+    "id": "p007",
+    "name": "Citrine Merchant's Ring",
+    "stock": 22
+  },
+  {
+    "id": "p008",
+    "name": "Rutilated Quartz Power Bracelet",
+    "stock": 28
+  },
+  {
+    "id": "p009",
+    "name": "Tiger's Eye Warrior Bracelet",
+    "stock": 40
+  },
+  {
+    "id": "p010",
+    "name": "Moonstone Divine Feminine Pendant",
+    "stock": 25
+  },
+  {
+    "id": "p011",
+    "name": "Labradorite Magic Weaver Bracelet",
+    "stock": 30
+  },
+  {
+    "id": "p012",
+    "name": "Green Phantom Wealth Bracelet",
+    "stock": 25
+  },
+  {
+    "id": "p013",
+    "name": "Clear Quartz Master Healer Bracelet",
+    "stock": 60
+  },
+  {
+    "id": "p014",
+    "name": "Garnet Phoenix Vitality Bracelet",
+    "stock": 35
+  },
+  {
+    "id": "p015",
+    "name": "Aquamarine Ocean Calm Necklace",
+    "stock": 20
+  },
+  {
+    "id": "p016",
+    "name": "Lapis Lazuli Royal Phoenix Tassel Earrings",
+    "stock": 18
+  }
+]

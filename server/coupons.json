@@ -1,0 +1,12 @@
+[
+  {
+    "code": "CRYSTAL10",
+    "type": "percent",
+    "value": 10,
+    "minSubtotal": 0,
+    "firstOrderOnly": true,
+    "active": true,
+    "usedCount": 0,
+    "description": "10% off your first order"
+  }
+]

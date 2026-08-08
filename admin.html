@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurae · Admin — Management Console</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --admin-bg: #f7f5f2;
+      --admin-card: #ffffff;
+      --admin-border: #e8e4dd;
+      --admin-text: #2b2b2b;
+      --admin-muted: #8a857c;
+      --admin-primary: #4a5d3e;
+      --admin-primary-dark: #2f3d27;
+      --admin-accent: #9b7bd4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--admin-bg); color: var(--admin-text);
+      font-family: 'Inter', sans-serif; line-height: 1.6;
+    }
+    .admin-header {
+      background: var(--admin-primary-dark); color: #fff;
+      padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-header .logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; letter-spacing: 1px; }
+    .admin-header .logo span { color: var(--admin-accent); }
+    .admin-header .sub { font-size: 13px; opacity: 0.8; }
+    .admin-main { max-width: 1040px; margin: 0 auto; padding: 40px 20px 80px; }
+
+    .admin-login { max-width: 400px; margin: 80px auto; }
+    .admin-login-card {
+      background: var(--admin-card); border: 1px solid var(--admin-border);
+      border-radius: 16px; padding: 40px 32px; text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    }
+    .admin-login-icon { font-size: 44px; margin-bottom: 12px; }
+    .admin-login-card h2 { font-family: 'Cormorant Garamond', serif; font-size: 30px; margin: 0 0 8px; color: var(--admin-primary-dark); }
+    .admin-login-card p { color: var(--admin-muted); font-size: 14px; margin: 0 0 24px; }
+    .admin-login-card input {
+      width: 100%; padding: 13px 16px; border: 2px solid var(--admin-border);
+      border-radius: 10px; font-size: 15px; margin-bottom: 18px; transition: 0.2s;
+    }
+    .admin-login-card input:focus { outline: none; border-color: var(--admin-primary); }
+    .admin-error { color: #c0392b; font-size: 13px; min-height: 18px; margin: 10px 0 0; }
+    .btn {
+      display: inline-block; border: none; border-radius: 10px; cursor: pointer;
+      font-size: 14px; font-weight: 600; padding: 12px 22px; transition: 0.2s;
+      font-family: inherit;
+    }
+    .btn-dark { background: var(--admin-primary); color: #fff; }
+    .btn-dark:hover { background: var(--admin-primary-dark); }
+    .btn-full { width: 100%; }
+    .btn-sm { padding: 9px 18px; font-size: 13px; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--admin-border); color: var(--admin-text); }
+    .btn-outline:hover { border-color: var(--admin-primary); color: var(--admin-primary-dark); }
+    .btn-danger { background: #c0392b; color: #fff; }
+
+    .admin-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px; flex-wrap: wrap; gap: 12px;
+    }
+    .admin-toolbar h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; margin: 0; color: var(--admin-primary-dark); }
+    .admin-count { display: block; font-size: 13px; color: var(--admin-muted); margin-top: 2px; }
+    .admin-toolbar > div:last-child { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .admin-tabs { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; border-bottom: 1px solid var(--admin-border); }
+    .admin-tab {
+      background: transparent; border: none; cursor: pointer; font-family: inherit;
+      font-size: 14px; font-weight: 600; color: var(--admin-muted);
+      padding: 12px 18px; border-bottom: 3px solid transparent; transition: 0.2s;
+    }
+    .admin-tab:hover { color: var(--admin-primary-dark); }
+    .admin-tab.active { color: var(--admin-primary-dark); border-bottom-color: var(--admin-primary); }
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+    .admin-loading { text-align: center; color: var(--admin-muted); padding: 50px; }
+    .empty-box { text-align: center; color: var(--admin-muted); padding: 60px 20px; background: var(--admin-card); border-radius: 14px; border: 1px dashed var(--admin-border); }
+
+    /* Messages */
+    .admin-messages { display: flex; flex-direction: column; gap: 18px; }
+    .msg-card {
+      background: var(--admin-card); border: 1px solid var(--admin-border);
+      border-left: 4px solid var(--admin-border); border-radius: 14px; padding: 22px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+    }
+    .msg-card.status-new { border-left-color: #d9a441; }
+    .msg-card.status-read { border-left-color: #6c8ebf; }
+    .msg-card.status-replied { border-left-color: var(--admin-primary); }
+    .msg-head { display: flex; gap: 14px; align-items: flex-start; }
+    .msg-avatar {
+      width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+      background: var(--admin-primary); color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 17px;
+    }
+    .msg-meta { flex: 1; }
+    .msg-name { font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .msg-status {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;
+      padding: 2px 9px; border-radius: 20px; background: #f0ece4; color: var(--admin-muted);
+    }
+    .msg-card.status-new .msg-status { background: #fbf0d9; color: #9a6b16; }
+    .msg-card.status-read .msg-status { background: #e6eef7; color: #3d6296; }
+    .msg-card.status-replied .msg-status { background: #e7ede2; color: var(--admin-primary-dark); }
+    .msg-sub { font-size: 13px; color: var(--admin-muted); margin-top: 2px; }
+    .msg-body { margin: 16px 0; padding: 14px 16px; background: #faf8f5; border-radius: 10px; font-size: 14.5px; white-space: pre-wrap; line-height: 1.7; }
+    .msg-replies { display: flex; flex-direction: column; gap: 12px; margin: 14px 0; }
+    .msg-reply { background: #f1f4ee; border-radius: 10px; padding: 13px 16px; margin-left: 28px; border: 1px solid #e0e6d8; }
+    .msg-reply-meta { font-size: 12px; color: var(--admin-primary-dark); font-weight: 600; margin-bottom: 4px; }
+    .msg-reply-body { font-size: 14px; white-space: pre-wrap; line-height: 1.6; }
+    .msg-reply-box { margin-top: 14px; }
+    .msg-reply-box textarea {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--admin-border);
+      border-radius: 10px; font-size: 14px; font-family: inherit; resize: vertical; min-height: 80px; transition: 0.2s;
+    }
+    .msg-reply-box textarea:focus { outline: none; border-color: var(--admin-primary); }
+
+    /* Orders */
+    .order-card { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
+    .order-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+    .order-id { font-weight: 700; font-size: 16px; }
+    .order-meta { font-size: 13px; color: var(--admin-muted); margin-top: 2px; }
+    .status-badge { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: #eee; color: #555; white-space: nowrap; }
+    .status-badge.paid { background: #e7ede2; color: #2f3d27; }
+    .status-badge.shipped { background: #e6eef7; color: #3d6296; }
+    .status-badge.delivered { background: #fbf0d9; color: #9a6b16; }
+    .status-badge.pending_payment, .status-badge.expired { background: #fae3e1; color: #c0392b; }
+    .order-items { margin: 14px 0; padding: 14px 16px; background: #faf8f5; border-radius: 10px; font-size: 14px; }
+    .order-items div { padding: 2px 0; }
+    .order-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin-top: 12px; }
+    .order-actions input { padding: 10px 12px; border: 1.5px solid var(--admin-border); border-radius: 8px; font-size: 13px; font-family: inherit; }
+    .order-actions label { font-size: 12px; color: var(--admin-muted); display: block; margin-bottom: 4px; }
+
+    /* Tables for products / coupons */
+    table.admin-table { width: 100%; border-collapse: collapse; background: var(--admin-card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.04); }
+    .admin-table th, .admin-table td { padding: 13px 14px; text-align: left; border-bottom: 1px solid var(--admin-border); font-size: 14px; }
+    .admin-table th { background: #f0ece4; color: var(--admin-primary-dark); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table input[type=number] { width: 90px; padding: 8px 10px; border: 1.5px solid var(--admin-border); border-radius: 8px; font-family: inherit; }
+    .admin-table input[type=text] { padding: 8px 10px; border: 1.5px solid var(--admin-border); border-radius: 8px; font-family: inherit; }
+    .pill { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+    .pill.on { background: #e7ede2; color: #2f3d27; }
+    .pill.off { background: #eee; color: #888; }
+    .row-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .add-form { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: 14px; padding: 20px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; align-items: end; }
+    .add-form h3 { grid-column: 1 / -1; margin: 0 0 4px; font-family: 'Cormorant Garamond', serif; color: var(--admin-primary-dark); }
+    .add-form label { font-size: 12px; color: var(--admin-muted); display: block; margin-bottom: 4px; }
+    .add-form input, .add-form select { width: 100%; padding: 10px 12px; border: 1.5px solid var(--admin-border); border-radius: 8px; font-family: inherit; font-size: 14px; }
+    .add-form .checkbox { display: flex; align-items: center; gap: 8px; }
+    .add-form .checkbox input { width: auto; }
+
+    @media (max-width: 600px) {
+      .admin-toolbar h2 { font-size: 26px; }
+      .msg-reply { margin-left: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="admin-header">
+    <div>
+      <div class="logo">Aur<span>ae</span> Admin</div>
+      <div class="sub">Management Console</div>
+    </div>
+    <div style="font-size:13px;opacity:0.85;">🔒 Private Area</div>
+  </header>
+
+  <main class="admin-main">
+
+    <!-- Login -->
+    <section id="adminLogin" class="admin-login">
+      <div class="admin-login-card">
+        <div class="admin-login-icon">🔐</div>
+        <h2>Admin Sign In</h2>
+        <p>Enter your admin password to manage orders, inventory, coupons and messages.</p>
+        <input type="password" id="adminPassword" placeholder="Admin password" onkeydown="if(event.key==='Enter')adminLogin()">
+        <button class="btn btn-dark btn-full" onclick="adminLogin()">Sign In</button>
+        <p class="admin-error" id="adminLoginError"></p>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="adminDashboard" style="display:none;">
+      <div class="admin-toolbar">
+        <div>
+          <h2 id="panelTitle">Customer Messages</h2>
+          <span class="admin-count" id="adminCount"></span>
+        </div>
+        <div>
+          <button class="btn btn-outline" onclick="refreshCurrentTab()">↻ Refresh</button>
+          <button class="btn btn-dark" onclick="adminLogout()">Log Out</button>
+        </div>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" id="tab-messages" onclick="switchTab('messages')">💬 Messages</button>
+        <button class="admin-tab" id="tab-orders" onclick="switchTab('orders')">📦 Orders</button>
+        <button class="admin-tab" id="tab-products" onclick="switchTab('products')">📊 Inventory</button>
+        <button class="admin-tab" id="tab-coupons" onclick="switchTab('coupons')">🏷️ Coupons</button>
+      </div>
+
+      <!-- Messages panel -->
+      <div class="admin-panel active" id="panel-messages">
+        <div id="adminMessages" class="admin-messages"></div>
+      </div>
+
+      <!-- Orders panel -->
+      <div class="admin-panel" id="panel-orders">
+        <div id="adminOrders"></div>
+      </div>
+
+      <!-- Products / Inventory panel -->
+      <div class="admin-panel" id="panel-products">
+        <div id="adminProducts"></div>
+      </div>
+
+      <!-- Coupons panel -->
+      <div class="admin-panel" id="panel-coupons">
+        <form class="add-form" onsubmit="return createCoupon(event)">
+          <h3>Add New Coupon</h3>
+          <div><label>Code</label><input type="text" id="cpCode" placeholder="SUMMER20" required></div>
+          <div><label>Type</label>
+            <select id="cpType"><option value="percent">Percent %</option><option value="fixed">Fixed $</option></select>
+          </div>
+          <div><label>Value</label><input type="number" id="cpValue" step="0.01" min="0" placeholder="10" required></div>
+          <div><label>Min Subtotal $</label><input type="number" id="cpMin" step="0.01" min="0" value="0"></div>
+          <div class="checkbox"><input type="checkbox" id="cpFirst" checked><label style="margin:0;">First order only</label></div>
+          <div class="checkbox"><input type="checkbox" id="cpActive" checked><label style="margin:0;">Active</label></div>
+          <div><label>Description</label><input type="text" id="cpDesc" placeholder="Summer sale 10% off"></div>
+          <div><button class="btn btn-dark" type="submit">+ Create Coupon</button></div>
+        </form>
+        <div id="adminCoupons"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const ADMIN_TOKEN_KEY = 'auraeAdminToken';
+    let token = localStorage.getItem(ADMIN_TOKEN_KEY) || '';
+    let currentTab = 'messages';
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function formatDate(iso) {
+      try {
+        const d = new Date(iso);
+        return d.toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      } catch (e) { return iso || ''; }
+    }
+
+    function money(n) { return '$' + (Number(n) || 0).toFixed(2); }
+
+    function showDashboard() {
+      document.getElementById('adminLogin').style.display = 'none';
+      document.getElementById('adminDashboard').style.display = 'block';
+    }
+
+    function showLogin() {
+      document.getElementById('adminLogin').style.display = 'block';
+      document.getElementById('adminDashboard').style.display = 'none';
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById('panel-' + tab).classList.add('active');
+      const titles = { messages: 'Customer Messages', orders: 'Orders', products: 'Inventory', coupons: 'Coupons' };
+      document.getElementById('panelTitle').textContent = titles[tab];
+      refreshCurrentTab();
+    }
+
+    function refreshCurrentTab() {
+      if (currentTab === 'messages') loadMessages();
+      else if (currentTab === 'orders') loadOrders();
+      else if (currentTab === 'products') loadProducts();
+      else if (currentTab === 'coupons') loadCoupons();
+    }
+
+    async function adminLogin() {
+      const pw = document.getElementById('adminPassword').value;
+      const errEl = document.getElementById('adminLoginError');
+      errEl.textContent = '';
+      if (!pw) { errEl.textContent = 'Please enter your password.'; return; }
+      try {
+        const resp = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pw }),
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          token = data.token;
+          localStorage.setItem(ADMIN_TOKEN_KEY, token);
+          showDashboard();
+          loadMessages();
+        } else {
+          const data = await resp.json().catch(() => ({}));
+          errEl.textContent = data.error || 'Login failed.';
+        }
+      } catch (e) {
+        errEl.textContent = 'Connection error. Please try again.';
+      }
+    }
+
+    function adminLogout() {
+      token = '';
+      localStorage.removeItem(ADMIN_TOKEN_KEY);
+      document.getElementById('adminPassword').value = '';
+      showLogin();
+    }
+
+    // ===== Messages =====
+    async function loadMessages() {
+      const container = document.getElementById('adminMessages');
+      container.innerHTML = '<div class="admin-loading">Loading messages…</div>';
+      try {
+        const resp = await fetch('/api/admin/messages', { headers: { 'x-admin-token': token } });
+        if (resp.status === 401) { adminLogout(); return; }
+        if (!resp.ok) throw new Error('Failed to load');
+        const data = await resp.json();
+        const messages = data.messages || [];
+        const newCount = messages.filter(m => m.status === 'new').length;
+        document.getElementById('adminCount').textContent = `${messages.length} total · ${newCount} unread`;
+        if (messages.length === 0) {
+          container.innerHTML = '<div class="empty-box">No customer messages yet. They will appear here as customers reach out.</div>';
+          return;
+        }
+        container.innerHTML = messages.map(renderMessage).join('');
+      } catch (e) {
+        container.innerHTML = '<div class="empty-box">Could not load messages. Please refresh.</div>';
+      }
+    }
+
+    function renderMessage(m) {
+      const replies = (m.replies || []).map(r => `
+        <div class="msg-reply">
+          <div class="msg-reply-meta">Aurae Team · ${escapeHtml(formatDate(r.createdAt))}</div>
+          <div class="msg-reply-body">${escapeHtml(r.reply)}</div>
+        </div>`).join('');
+      return `
+        <div class="msg-card status-${escapeHtml(m.status)}" id="card-${escapeHtml(m.id)}">
+          <div class="msg-head">
+            <div class="msg-avatar">${escapeHtml((m.name || '?').charAt(0).toUpperCase())}</div>
+            <div class="msg-meta">
+              <div class="msg-name">${escapeHtml(m.name)} <span class="msg-status">${escapeHtml(m.status)}</span></div>
+              <div class="msg-sub">${escapeHtml(m.email)} · ${escapeHtml(m.subject)} · ${escapeHtml(formatDate(m.createdAt))}</div>
+            </div>
+          </div>
+          <div class="msg-body">${escapeHtml(m.message)}</div>
+          ${replies ? `<div class="msg-replies">${replies}</div>` : ''}
+          <div class="msg-reply-box">
+            <textarea id="reply-${escapeHtml(m.id)}" placeholder="Type your reply to ${escapeHtml(m.name)}…"></textarea>
+            <button class="btn btn-dark btn-sm" onclick="sendReply('${escapeHtml(m.id)}')">Send Reply</button>
+          </div>
+        </div>`;
+    }
+
+    async function sendReply(id) {
+      const ta = document.getElementById('reply-' + id);
+      const reply = (ta.value || '').trim();
+      if (!reply) { alert('Please type a reply before sending.'); return; }
+      const card = document.getElementById('card-' + id);
+      const btn = card.querySelector('.msg-reply-box .btn');
+      const original = btn.textContent;
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+      try {
+        const resp = await fetch('/api/admin/messages/' + id + '/reply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify({ reply }),
+        });
+        if (resp.ok) { ta.value = ''; loadMessages(); }
+        else { const data = await resp.json().catch(() => ({})); alert(data.error || 'Failed to send reply.'); btn.textContent = original; btn.disabled = false; }
+      } catch (e) { alert('Connection error. Please try again.'); btn.textContent = original; btn.disabled = false; }
+    }
+
+    // ===== Orders =====
+    async function loadOrders() {
+      const container = document.getElementById('adminOrders');
+      container.innerHTML = '<div class="admin-loading">Loading orders…</div>';
+      try {
+        const resp = await fetch('/api/admin/orders', { headers: { 'x-admin-token': token } });
+        if (resp.status === 401) { adminLogout(); return; }
+        if (!resp.ok) throw new Error('Failed');
+        const data = await resp.json();
+        const orders = data.orders || [];
+        document.getElementById('adminCount').textContent = `${orders.length} order(s)`;
+        if (orders.length === 0) { container.innerHTML = '<div class="empty-box">No orders yet.</div>'; return; }
+        container.innerHTML = orders.map(renderOrder).join('');
+      } catch (e) { container.innerHTML = '<div class="empty-box">Could not load orders.</div>'; }
+    }
+
+    function renderOrder(o) {
+      const id = escapeHtml(o.orderId);
+      const items = (o.items || []).map(i => `<div>${escapeHtml(i.name)} × ${i.qty || 1} — ${money(i.price * (i.qty || 1))}</div>`).join('');
+      const t = o.totals || {};
+      const cust = o.customer || {};
+      const total = (o.total != null) ? o.total : (t.total != null ? t.total : 0);
+      const badge = `<span class="status-badge ${escapeHtml(o.status)}">${escapeHtml(o.status)}</span>`;
+      return `
+        <div class="order-card" id="order-${id}">
+          <div class="order-head">
+            <div>
+              <div class="order-id">#${id}</div>
+              <div class="order-meta">${escapeHtml(formatDate(o.createdAt))} · ${escapeHtml(cust.name || '')} &lt;${escapeHtml(cust.email || '')}&gt;${o.coupon ? ' · coupon ' + escapeHtml(o.coupon) : ''}</div>
+            </div>
+            ${badge}
+          </div>
+          <div class="order-items">
+            ${items}
+            <div style="margin-top:8px;border-top:1px solid var(--admin-border);padding-top:8px;">
+              Subtotal ${money(t.subtotal)} ${t.discount ? '· Discount -' + money(t.discount) : ''} · Shipping ${t.shipping ? money(t.shipping) : 'FREE'} · Tax ${money(t.tax)} · <strong>Total ${money(total)}</strong>
+            </div>
+            ${o.trackingNumber ? `<div style="margin-top:6px;">Carrier: ${escapeHtml(o.carrier || 'Standard Shipping')} · Tracking: <strong>${escapeHtml(o.trackingNumber)}</strong></div>` : ''}
+          </div>
+          <div class="order-actions">
+            <div><label>Tracking #</label><input type="text" id="track-${id}" value="${escapeHtml(o.trackingNumber || '')}" placeholder="1Z999AA..."></div>
+            <div><label>Carrier</label><input type="text" id="carrier-${id}" value="${escapeHtml(o.carrier || 'Standard Shipping')}"></div>
+            <button class="btn btn-dark btn-sm" onclick="markShipped('${id}')">📦 Mark Shipped</button>
+            <button class="btn btn-outline btn-sm" onclick="markDelivered('${id}')">✅ Mark Delivered</button>
+          </div>
+        </div>`;
+    }
+
+    async function markShipped(id) {
+      const tracking = document.getElementById('track-' + id).value.trim();
+      const carrier = document.getElementById('carrier-' + id).value.trim();
+      try {
+        const resp = await fetch('/api/admin/orders/' + id + '/status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify({ status: 'shipped', trackingNumber: tracking, carrier }),
+        });
+        if (resp.ok) { loadOrders(); }
+        else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    async function markDelivered(id) {
+      try {
+        const resp = await fetch('/api/admin/orders/' + id + '/status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify({ status: 'delivered' }),
+        });
+        if (resp.ok) { loadOrders(); }
+        else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    // ===== Products / Inventory =====
+    async function loadProducts() {
+      const container = document.getElementById('adminProducts');
+      container.innerHTML = '<div class="admin-loading">Loading inventory…</div>';
+      try {
+        const resp = await fetch('/api/admin/products', { headers: { 'x-admin-token': token } });
+        if (resp.status === 401) { adminLogout(); return; }
+        if (!resp.ok) throw new Error('Failed');
+        const data = await resp.json();
+        const products = data.products || [];
+        document.getElementById('adminCount').textContent = `${products.length} product(s)`;
+        if (products.length === 0) { container.innerHTML = '<div class="empty-box">No products.</div>'; return; }
+        const rows = products.map(p => {
+          const cls = p.stock <= 0 ? 'out' : (p.stock <= 5 ? 'low' : 'in');
+          const label = p.stock <= 0 ? 'Sold Out' : (p.stock <= 5 ? 'Low Stock' : 'In Stock');
+          return `<tr>
+            <td>${escapeHtml(p.id)}</td>
+            <td>${escapeHtml(p.name)}</td>
+            <td><span class="pill ${cls === 'in' ? 'on' : (cls === 'out' ? 'off' : '')}">${label}</span></td>
+            <td><input type="number" min="0" id="stock-${escapeHtml(p.id)}" value="${p.stock}"></td>
+            <td><button class="btn btn-dark btn-sm" onclick="saveStock('${escapeHtml(p.id)}')">Save</button></td>
+          </tr>`;
+        }).join('');
+        container.innerHTML = `<table class="admin-table"><thead><tr><th>ID</th><th>Product</th><th>Status</th><th>Stock</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+      } catch (e) { container.innerHTML = '<div class="empty-box">Could not load inventory.</div>'; }
+    }
+
+    async function saveStock(id) {
+      const val = parseInt(document.getElementById('stock-' + id).value, 10);
+      if (!Number.isFinite(val) || val < 0) { alert('Invalid stock value'); return; }
+      try {
+        const resp = await fetch('/api/admin/products/' + id + '/stock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify({ stock: val }),
+        });
+        if (resp.ok) { loadProducts(); }
+        else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    // ===== Coupons =====
+    async function loadCoupons() {
+      const container = document.getElementById('adminCoupons');
+      container.innerHTML = '<div class="admin-loading">Loading coupons…</div>';
+      try {
+        const resp = await fetch('/api/admin/coupons', { headers: { 'x-admin-token': token } });
+        if (resp.status === 401) { adminLogout(); return; }
+        if (!resp.ok) throw new Error('Failed');
+        const data = await resp.json();
+        const coupons = data.coupons || [];
+        document.getElementById('adminCount').textContent = `${coupons.length} coupon(s)`;
+        if (coupons.length === 0) { container.innerHTML = '<div class="empty-box">No coupons yet.</div>'; return; }
+        const rows = coupons.map(c => {
+          const val = c.type === 'percent' ? c.value + '%' : '$' + c.value;
+          return `<tr>
+            <td><strong>${escapeHtml(c.code)}</strong></td>
+            <td>${val}</td>
+            <td>${c.minSubtotal ? '$' + c.minSubtotal + '+' : '—'}</td>
+            <td>${c.firstOrderOnly ? 'Yes' : 'No'}</td>
+            <td>${c.usedCount || 0}</td>
+            <td><span class="pill ${c.active ? 'on' : 'off'}">${c.active ? 'Active' : 'Inactive'}</span></td>
+            <td class="row-actions">
+              <button class="btn btn-outline btn-sm" onclick="toggleCoupon('${escapeHtml(c.code)}', ${!c.active})">${c.active ? 'Deactivate' : 'Activate'}</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteCoupon('${escapeHtml(c.code)}')">Delete</button>
+            </td>
+          </tr>`;
+        }).join('');
+        container.innerHTML = `<table class="admin-table"><thead><tr><th>Code</th><th>Value</th><th>Min</th><th>First Order</th><th>Used</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+      } catch (e) { container.innerHTML = '<div class="empty-box">Could not load coupons.</div>'; }
+    }
+
+    async function createCoupon(e) {
+      e.preventDefault();
+      const payload = {
+        code: document.getElementById('cpCode').value.trim(),
+        type: document.getElementById('cpType').value,
+        value: parseFloat(document.getElementById('cpValue').value),
+        minSubtotal: parseFloat(document.getElementById('cpMin').value) || 0,
+        firstOrderOnly: document.getElementById('cpFirst').checked,
+        active: document.getElementById('cpActive').checked,
+        description: document.getElementById('cpDesc').value.trim(),
+      };
+      try {
+        const resp = await fetch('/api/admin/coupons', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify(payload),
+        });
+        if (resp.ok) { e.target.reset(); loadCoupons(); }
+        else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed to create'); }
+      } catch (err) { alert('Connection error'); }
+      return false;
+    }
+
+    async function toggleCoupon(code, active) {
+      try {
+        const resp = await fetch('/api/admin/coupons/' + encodeURIComponent(code), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify({ active }),
+        });
+        if (resp.ok) loadCoupons();
+        else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    async function deleteCoupon(code) {
+      if (!confirm('Delete coupon ' + code + '?')) return;
+      try {
+        const resp = await fetch('/api/admin/coupons/' + encodeURIComponent(code), {
+          method: 'DELETE',
+          headers: { 'x-admin-token': token },
+        });
+        if (resp.ok) loadCoupons();
+        else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    // On page load, auto-login if token exists
+    if (token) { showDashboard(); loadMessages(); }
+  </script>
+
+</body>
+</html>

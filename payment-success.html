@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Success - Aurae</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .payment-result-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #f8f5f0 0%, #ede8e0 100%);
+    }
+    .payment-result-card {
+      max-width: 600px;
+      width: 100%;
+      background: #fff;
+      border-radius: 16px;
+      padding: 60px 40px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    }
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #4ade80, #22c55e);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      animation: scaleIn 0.5s ease;
+    }
+    @keyframes scaleIn {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .payment-result-card h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      color: #2a2a2a;
+      margin-bottom: 12px;
+    }
+    .payment-result-card .subtitle {
+      font-size: 15px;
+      color: #888;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .order-info-box {
+      background: #f8f5f0;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+    .order-info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e8e0d8;
+      font-size: 14px;
+    }
+    .order-info-row:last-child { border-bottom: none; }
+    .order-info-row .label { color: #888; }
+    .order-info-row .value { color: #2a2a2a; font-weight: 600; }
+    .energy-message {
+      background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 32px;
+      font-size: 14px;
+      color: #6b21a8;
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid #e8e0d8;
+      border-top-color: #8b7355;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 24px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="payment-result-page">
+    <div class="payment-result-card" id="resultCard">
+      <!-- Loading state -->
+      <div class="loading-spinner"></div>
+      <h1>Confirming Payment...</h1>
+      <p class="subtitle">Please wait while we confirm your crystal energy is on its way.</p>
+    </div>
+  </div>
+
+  <script>
+    async function loadSuccessDetails() {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+      const orderId = params.get('order_id');
+      const provider = params.get('provider');
+
+      const card = document.getElementById('resultCard');
+
+      try {
+        let orderData = null;
+
+        if (sessionId) {
+          // Stripe payment - get session details
+          const resp = await fetch(`/api/session/${sessionId}`);
+          if (resp.ok) {
+            orderData = await resp.json();
+          }
+        } else if (orderId) {
+          // PayPal or direct order lookup
+          const resp = await fetch(`/api/order/${orderId}`);
+          if (resp.ok) {
+            orderData = await resp.json();
+          }
+        }
+
+        if (orderData) {
+          const customerName = orderData.customerName || orderData.customer?.name || 'Beautiful Soul';
+          const amount = orderData.amount || orderData.totals?.total || orderData.paymentAmount;
+          const items = orderData.items || [];
+          const email = orderData.customerEmail || orderData.customer?.email || '';
+
+          card.innerHTML = `
+            <div class="success-icon">✓</div>
+            <h1>Your Crystals Are Coming</h1>
+            <p class="subtitle">Thank you, ${customerName}. Your payment has been received and your crystal energy is being prepared for shipment.</p>
+            
+            <div class="energy-message">
+              "The crystals you've chosen have been waiting for you. They will arrive cleansed, charged, and ready to work with your energy field. Trust the journey that brought you here." 🌙
+            </div>
+
+            <div class="order-info-box">
+              <div class="order-info-row">
+                <span class="label">Order Number</span>
+                <span class="value">${orderData.orderId || orderId}</span>
+              </div>
+              ${amount ? `
+              <div class="order-info-row">
+                <span class="label">Amount Paid</span>
+                <span class="value">$${typeof amount === 'number' ? amount.toFixed(2) : amount}</span>
+              </div>` : ''}
+              ${orderData.totals && orderData.totals.discount > 0 ? `
+              <div class="order-info-row">
+                <span class="label">Discount</span>
+                <span class="value" style="color:#16a34a;">-$${orderData.totals.discount.toFixed(2)}</span>
+              </div>` : ''}
+              <div class="order-info-row">
+                <span class="label">Payment Method</span>
+                <span class="value">${provider === 'paypal' ? 'PayPal' : 'Credit Card (Stripe)'}</span>
+              </div>
+              <div class="order-info-row">
+                <span class="label">Status</span>
+                <span class="value" style="color:#22c55e;">✓ Confirmed</span>
+              </div>
+              ${email ? `
+              <div class="order-info-row">
+                <span class="label">Confirmation Email</span>
+                <span class="value">${email}</span>
+              </div>` : ''}
+              ${items && items.length > 0 ? `
+              <div class="order-info-row" style="flex-direction:column;align-items:flex-start;">
+                <span class="label" style="margin-bottom:8px;">Items</span>
+                <div style="width:100%;">
+                  ${items.map(item => `<div style="padding:4px 0;font-size:13px;">${item.qty || item.quantity || 1}× ${item.name}</div>`).join('')}
+                </div>
+              </div>` : ''}
+            </div>
+
+            <p class="subtitle" style="font-size:13px;">
+              📦 Your order will be shipped within 24-48 hours.<br>
+              You'll receive a tracking number via email once your crystals are on their way.
+            </p>
+
+            <a href="/" class="btn btn-dark btn-lg" style="display:inline-block;text-decoration:none;padding:14px 40px;border-radius:8px;color:#fff;background:#2a2a2a;">Continue Shopping</a>
+          `;
+        } else {
+          // Fallback if we can't get details
+          card.innerHTML = `
+            <div class="success-icon">✓</div>
+            <h1>Payment Successful</h1>
+            <p class="subtitle">Your order has been confirmed. Order ID: ${orderId || 'N/A'}</p>
+            <p class="subtitle">A confirmation email will be sent to you shortly.</p>
+            <a href="/" class="btn btn-dark btn-lg" style="display:inline-block;text-decoration:none;padding:14px 40px;border-radius:8px;color:#fff;background:#2a2a2a;">Continue Shopping</a>
+          `;
+        }
+
+        // Persist order to account history (avoid duplicates)
+        try {
+          const existing = JSON.parse(localStorage.getItem('auraeOrders') || '[]');
+          if (orderData && !existing.find(o => o.id === (orderData.orderId || orderId))) {
+            const orderItems = (orderData.items || []).map(i => ({
+              name: i.name,
+              qty: i.qty || i.quantity || 1,
+              price: i.price || (i.amount / (i.qty || i.quantity || 1)) || 0
+            }));
+            const orderTotal = orderData.amount || orderData.totals?.total || orderData.paymentAmount || 0;
+            existing.push({
+              id: orderData.orderId || orderId,
+              date: new Date().toISOString(),
+              items: orderItems,
+              customer: orderData.customer || { email: orderData.customerEmail || '' },
+              provider: provider === 'paypal' ? 'paypal' : 'stripe',
+              total: typeof orderTotal === 'number' ? orderTotal : parseFloat(orderTotal) || 0
+            });
+            localStorage.setItem('auraeOrders', JSON.stringify(existing));
+          }
+        } catch (e) {
+          console.warn('Could not save order to account history:', e);
+        }
+
+        // Clear the cart in localStorage
+        localStorage.removeItem('crystalCart');
+
+        // If a discount was applied server-side, mark the first-order coupon as used
+        try {
+          if (orderData && (orderData.totals?.discount > 0 || orderData.discount > 0)) {
+            localStorage.setItem('auraeCouponUsed', 'true');
+            localStorage.removeItem('auraeCartCoupon');
+          }
+        } catch (e) {}
+
+      } catch (error) {
+        console.error('Error loading payment details:', error);
+        card.innerHTML = `
+          <div class="success-icon">✓</div>
+          <h1>Payment Successful</h1>
+          <p class="subtitle">Your order has been confirmed. Order ID: ${orderId || 'N/A'}</p>
+          <a href="/" class="btn btn-dark btn-lg" style="display:inline-block;text-decoration:none;padding:14px 40px;border-radius:8px;color:#fff;background:#2a2a2a;">Continue Shopping</a>
+        `;
+        localStorage.removeItem('crystalCart');
+      }
+    }
+
+    loadSuccessDetails();
+  </script>
+</body>
+</html>

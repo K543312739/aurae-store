@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurae — Where Energy Meets Well-Being</title>
+  <meta name="description" content="Shop healing crystals, crystal jewelry, and energy tools. Where energy meets well-being.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔮</text></svg>">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    ✦ Free shipping on orders over $50 • Use code CRYSTAL10 for 10% off your first order ✦
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo" onclick="navigate('home')">Aur<span>ae</span></div>
+      <nav class="nav">
+        <a id="navHome" onclick="navigate('home')" class="active">Home</a>
+        <a onclick="navigate('shop', 'category:bracelet')">Bracelets</a>
+        <a onclick="navigate('shop', 'category:necklace')">Necklaces</a>
+        <a onclick="navigate('shop', 'all')">All Jewelry</a>
+        <a id="navAbout" onclick="navigate('about')">About</a>
+        <a id="navContact" onclick="navigate('contact')">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="searchBtn" title="Search">🔍</button>
+        <button class="icon-btn" id="accountBtn" title="Account">👤</button>
+        <button class="icon-btn" id="cartBtn" title="Cart">
+          🛍️ <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HOME VIEW ===== -->
+  <div class="view active" id="homeView">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <h1>Where Energy Meets Well-Being</h1>
+        <p>Your next chapter starts here. Discover authentic crystal jewelry crafted with intention — each piece carrying ancient energy to bring balance, protection, and alignment to your daily life.</p>
+        <button class="btn btn-primary btn-lg" onclick="navigate('shop', 'all')">Shop Crystal Jewelry</button>
+      </div>
+    </section>
+
+    <!-- Quick Nav -->
+    <div class="quick-nav">
+      <a onclick="navigate('shop', 'category:bracelet')">Bracelets</a>
+      <a onclick="navigate('shop', 'category:necklace')">Necklaces</a>
+      <a onclick="navigate('shop', 'category:pendant')">Pendants</a>
+      <a onclick="navigate('shop', 'category:ring')">Rings</a>
+      <a onclick="navigate('shop', 'category:earring')">Earrings</a>
+    </div>
+
+    <!-- Best Sellers -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Top Selling</h2>
+        <p class="section-subtitle">Our most loved crystal jewelry, trusted by thousands of energy seekers worldwide</p>
+        <div class="product-grid" id="bestSellersGrid"></div>
+      </div>
+    </section>
+
+    <!-- Shop by Intention -->
+    <section class="section" style="background: var(--color-bg-alt);">
+      <div class="container">
+        <h2 class="section-title">Shop by Energy</h2>
+        <p class="section-subtitle">Find the perfect crystal for your intention — whether you seek wealth, love, protection, or calm</p>
+        <div class="intentions-grid" id="intentionsGrid"></div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Featured Collection</h2>
+        <p class="section-subtitle">Handpicked favorites from our crystal experts</p>
+        <div class="product-grid" id="featuredGrid"></div>
+      </div>
+    </section>
+
+    <!-- Brand Story -->
+    <section class="brand-story">
+      <div class="brand-story-inner">
+        <div class="brand-story-img">
+          <img src="/images/p003.png" alt="Crystal collection">
+        </div>
+        <div class="brand-story-text">
+          <div class="experience-badge">
+            <span class="number">25+</span>
+            <span class="label">Years of<br>Crystal Expertise</span>
+          </div>
+          <h2>We're Here to Help You Feel Better Every Day</h2>
+          <p>Calmer in the chaos. Clearer in your thoughts. And more connected to your energy.</p>
+          <p>Every piece of crystal jewelry is made with purpose, blending beauty and meaning to bring balance, protection, and alignment to the moments that matter most. Because when your energy feels supported, so do you.</p>
+          <button class="btn btn-dark btn-lg" onclick="navigate('about')">Learn More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Energy Profile Quiz -->
+    <section class="energy-quiz-section" id="energyQuizSection">
+      <div class="quiz-intro">
+        <h2>🔮 Find Your Crystal Soulmate</h2>
+        <p>Not sure which crystal is right for you? Let the universe guide you. Answer 6 intuitive questions and our energy analysis system will read your energetic blueprint, revealing the crystals that align with your soul's current needs.</p>
+      </div>
+      <div class="quiz-container" id="quizContainer">
+        <!-- Quiz content rendered by JS -->
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+      <div class="container">
+        <h2 class="section-title">What Our Community Says</h2>
+        <p class="section-subtitle">Real stories from real crystal lovers</p>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <h4>Hold Power in Protection</h4>
+            <p>"I found Aurae and I could not help but be drawn to the crystals. I started using them as little friends who whispered wisdom and guidance, blessing me with positive energy all day."</p>
+            <div class="testimonial-author">— Elaine Youngs</div>
+          </div>
+          <div class="testimonial-card">
+            <h4>Achieve Personal Freedom</h4>
+            <p>"The black tourmaline bracelet changed my life. As an empath, I finally feel protected in crowded spaces. The quality is incredible and the energy is palpable from the moment you open the package."</p>
+            <div class="testimonial-author">— Shannon Gallagher</div>
+          </div>
+          <div class="testimonial-card">
+            <h4>Radiate Positive Energy</h4>
+            <p>"Heather is not only a respected crystal expert, but she also brings a kind of palpable mystical and wildly generous relationship with whatever crystal she touches. This store is pure magic."</p>
+            <div class="testimonial-author">— Colette Baron-Reid</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog -->
+    <section class="blog-section">
+      <div class="container">
+        <h2 class="section-title">From the Journal</h2>
+        <p class="section-subtitle">Guides, tips, and crystal wisdom from our experts</p>
+        <div class="blog-grid" id="blogGrid"></div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+      <div class="container">
+        <h2>Join the Aurae Community</h2>
+        <p>Subscribe for exclusive offers, crystal guides, and energy tips delivered to your inbox</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="Enter your email" required>
+          <button type="submit" class="btn btn-dark">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ===== SHOP VIEW ===== -->
+  <div class="view" id="shopView">
+    <div id="shopContent"></div>
+  </div>
+
+  <!-- ===== PRODUCT DETAIL VIEW ===== -->
+  <div class="view" id="productView">
+    <div id="productDetailContent"></div>
+  </div>
+
+  <!-- ===== ABOUT VIEW ===== -->
+  <div class="view" id="aboutView">
+    <section class="hero" style="height:400px;">
+      <div class="hero-bg" style="background: linear-gradient(135deg, rgba(74,93,62,0.7) 0%, rgba(201,169,110,0.4) 100%), url('/images/p001.png') center/cover;"></div>
+      <div class="hero-content">
+        <h1>Our Story</h1>
+        <p>Aurae — crystals attuned to your energy. A journey of intention, energy, and quiet transformation.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container" style="max-width:800px;text-align:center;">
+        <div class="experience-badge" style="margin:0 auto 32px;">
+          <span class="number">25+</span>
+          <span class="label">Years of<br>Crystal Expertise</span>
+        </div>
+        <h2 class="section-title" style="margin-bottom:24px;">Our Intention</h2>
+        <p style="font-size:18px;line-height:1.8;color:var(--color-text-muted);margin-bottom:24px;">
+          Aurae was born from a simple belief: that the right stone, chosen for your unique energy, can bring more calm, clarity, and balance into everyday life. We're here to help you feel better every day. Calmer in the chaos. Clearer in your thoughts. And more connected to your energy.
+        </p>
+        <p style="font-size:16px;line-height:1.8;color:var(--color-text-muted);margin-bottom:24px;">
+          Every piece is made with purpose, blending beauty and meaning to bring balance, protection, and alignment to the moments that matter most. Because when your energy feels supported, so do you.
+        </p>
+        <p style="font-size:16px;line-height:1.8;color:var(--color-text-muted);margin-bottom:40px;">
+          Our crystals are ethically sourced from around the world, each one hand-selected for quality and energy. We believe in the power of natural stones to transform not just your space, but your life.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-bottom:40px;">
+          <div>
+            <div style="font-size:36px;margin-bottom:8px;">🌿</div>
+            <h4 style="font-size:18px;margin-bottom:8px;">Ethically Sourced</h4>
+            <p style="font-size:14px;color:var(--color-text-muted);">Every crystal is mined and sourced with respect for the earth and the people who extract them.</p>
+          </div>
+          <div>
+            <div style="font-size:36px;margin-bottom:8px;">💎</div>
+            <h4 style="font-size:18px;margin-bottom:8px;">100% Genuine</h4>
+            <p style="font-size:14px;color:var(--color-text-muted);">Natural stones, certified authentic. No synthetic or dyed imitations, ever.</p>
+          </div>
+          <div>
+            <div style="font-size:36px;margin-bottom:8px;">✨</div>
+            <h4 style="font-size:18px;margin-bottom:8px;">Made with Intention</h4>
+            <p style="font-size:14px;color:var(--color-text-muted);">Each piece is crafted and cleansed with purpose, ready to support your journey.</p>
+          </div>
+        </div>
+        <button class="btn btn-dark btn-lg" onclick="navigate('shop','all')">Start Shopping</button>
+      </div>
+    </section>
+
+    <section class="newsletter">
+      <div class="container">
+        <h2>Join Our Community</h2>
+        <p>Subscribe for exclusive offers, crystal guides, and energy tips</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Thank you for subscribing! 🌿');">
+          <input type="email" placeholder="Enter your email" required>
+          <button type="submit" class="btn btn-dark">Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== CHECKOUT VIEW ===== -->
+  <div class="view" id="checkoutView">
+    <div id="checkoutContent"></div>
+  </div>
+
+  <!-- ===== CONTACT VIEW ===== -->
+  <div class="view" id="contactView">
+    <section class="hero" style="height:360px;">
+      <div class="hero-bg" style="background: linear-gradient(135deg, rgba(74,93,62,0.78) 0%, rgba(201,169,110,0.35) 100%), url('/images/p003.png') center/cover;"></div>
+      <div class="hero-content">
+        <h1>Get in Touch</h1>
+        <p>Questions about a crystal, your order, or your energy journey? We're here to help — usually within 24 hours.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h2 class="section-title" style="text-align:left;margin-bottom:16px;">We'd Love to Hear From You</h2>
+            <p style="color:var(--color-text-muted);line-height:1.8;margin-bottom:28px;">Whether you need help choosing the right stone, have a question about your order, or just want to share your crystal story — drop us a message and our team will respond personally.</p>
+            <div class="contact-methods">
+              <div class="contact-method">
+                <div class="contact-icon">✉️</div>
+                <div>
+                  <div class="contact-method-label">Email Us</div>
+                  <div class="contact-method-value">support@aurae.shop</div>
+                </div>
+              </div>
+              <div class="contact-method">
+                <div class="contact-icon">⏱️</div>
+                <div>
+                  <div class="contact-method-label">Response Time</div>
+                  <div class="contact-method-value">Within 24 hours, 7 days a week</div>
+                </div>
+              </div>
+              <div class="contact-method">
+                <div class="contact-icon">🌍</div>
+                <div>
+                  <div class="contact-method-label">Shipping From</div>
+                  <div class="contact-method-value">Worldwide · $5.99 flat-rate shipping per order</div>
+                </div>
+              </div>
+            </div>
+            <div class="contact-faq-note">
+              <strong>Quick help:</strong> Order status, returns, and shipping are answered in our <a href="faq.html">FAQ</a> and <a href="shipping-returns.html">Shipping &amp; Returns</a> pages.
+            </div>
+          </div>
+
+          <div class="contact-form-wrap">
+            <form class="contact-form" id="contactForm" onsubmit="submitContact(event)">
+              <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="contactName" placeholder="Jane Doe" required>
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="contactEmail" placeholder="your@email.com" required>
+              </div>
+              <div class="form-group">
+                <label>Subject</label>
+                <select id="contactSubject" required>
+                  <option value="">Select a topic…</option>
+                  <option value="General Inquiry">General Inquiry</option>
+                  <option value="Order Help">Order Help</option>
+                  <option value="Product Question">Product Question</option>
+                  <option value="Crystal Guidance">Crystal Guidance</option>
+                  <option value="Wholesale">Wholesale</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Message</label>
+                <textarea id="contactMessage" rows="6" placeholder="Tell us how we can help…" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-dark btn-lg btn-full" id="contactSubmitBtn">Send Message</button>
+              <p class="contact-note">By sending a message you agree to be contacted at the email provided above.</p>
+            </form>
+            <div class="contact-success" id="contactSuccess" style="display:none;">
+              <div class="contact-success-icon">✨</div>
+              <h3>Message Sent!</h3>
+              <p>Thank you for reaching out to Aurae. We've received your message and will get back to you within 24 hours.</p>
+              <button class="btn btn-outline" onclick="resetContactForm()">Send Another Message</button>
+            </div>
+
+            <div class="my-messages">
+              <details>
+                <summary>📨 View my messages &amp; replies</summary>
+                <div class="my-messages-body">
+                  <p class="my-messages-hint">Enter the email you used — we'll show your conversation with our team.</p>
+                  <div class="my-messages-input">
+                    <input type="email" id="myMsgEmail" placeholder="your@email.com">
+                    <button class="btn btn-dark btn-sm" onclick="viewMyMessages()">View</button>
+                  </div>
+                  <div id="myMessagesList"></div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== BLOG DETAIL VIEW ===== -->
+  <div class="view" id="blogView">
+    <div id="blogDetailContent"></div>
+  </div>
+
+  <!-- ===== Cart Drawer ===== -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none;"></div>
+  </div>
+
+  <!-- ===== Search Modal ===== -->
+  <div class="search-overlay" id="searchOverlay"></div>
+  <div class="search-modal" id="searchModal">
+    <div class="search-modal-content">
+      <div class="search-header">
+        <h3>Search</h3>
+        <button class="search-close" id="searchClose">✕</button>
+      </div>
+      <div class="search-input-wrap">
+        <input type="text" id="searchInput" placeholder="Search crystals, jewelry, intentions..." autocomplete="off">
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </div>
+
+  <!-- ===== Account Drawer ===== -->
+  <div class="account-overlay" id="accountOverlay"></div>
+  <div class="account-drawer" id="accountDrawer">
+    <div class="account-header">
+      <h3>My Account</h3>
+      <button class="account-close" id="accountClose">✕</button>
+    </div>
+    <div class="account-body" id="accountBody"></div>
+  </div>
+
+  <!-- ===== Success Modal ===== -->
+  <div class="success-modal" id="successModal">
+    <div class="success-modal-content">
+      <div class="success-icon">✨</div>
+      <h2>Order Confirmed!</h2>
+      <p>Thank you for your purchase. Your crystals are on their way to you, full of positive energy.</p>
+      <p style="font-size:13px;color:var(--color-text-muted);margin-bottom:20px;">Order Number: <strong id="successOrderNum" style="color:var(--color-primary-dark);"></strong></p>
+      <button class="btn btn-dark btn-lg" onclick="closeSuccessModal()">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- ===== Size Guide Modal ===== -->
+  <div class="size-guide-overlay" id="sizeGuideOverlay" onclick="closeSizeGuide()"></div>
+  <div class="size-guide-modal" id="sizeGuideModal">
+    <div class="size-guide-modal-content">
+      <div class="size-guide-header">
+        <h3>📏 Size Guide</h3>
+        <button class="size-guide-close" onclick="closeSizeGuide()">✕</button>
+      </div>
+      <div class="size-guide-body" id="sizeGuideBody">
+        <!-- Dynamic content set by openSizeGuide() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Toast ===== -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Aur<span style="color:var(--color-accent);">ae</span></h3>
+        <p>Where energy meets well-being. We're here to help you feel better every day with ethically sourced crystals, healing jewelry, and energy tools crafted with intention.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a onclick="navigate('shop','category:bracelet')">Bracelets</a></li>
+          <li><a onclick="navigate('shop','category:necklace')">Necklaces</a></li>
+          <li><a onclick="navigate('shop','category:pendant')">Pendants</a></li>
+          <li><a onclick="navigate('shop','category:ring')">Rings</a></li>
+          <li><a onclick="navigate('shop','category:earring')">Earrings</a></li>
+          <li><a onclick="navigate('shop','all')">All Jewelry</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a onclick="navigate('contact')">Contact Us</a></li>
+          <li><a href="shipping-returns.html">Shipping Info</a></li>
+          <li><a href="track.html">Track Order</a></li>
+          <li><a href="shipping-returns.html">Returns & Exchanges</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="refund-policy.html">Refund Policy</a></li>
+          <li><a onclick="navigate('shop','all')">Crystal Guide</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a onclick="navigate('about')">About Us</a></li>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="terms-of-service.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Aurae. All rights reserved. Crystals ethically sourced worldwide.</p>
+      <div class="payment-icons">
+        <span>PayPal</span>
+        <span>VISA</span>
+        <span>MASTERCARD</span>
+        <span>AMEX</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+# Render 一键部署蓝图（Blueprint）
+# 用法：把 crystal-store 推到 GitHub 后，在 Render 后台
+#   New + → Blueprint → 关联仓库 → 选本文件 → Create
+# 之后在 Dashboard 的 Environment 里补全下方 sync:false 的密钥即可。
+services:
+  - type: web
+    name: aurae-store
+    runtime: node
+    plan: free            # 免费层；要永远在线改 starter ($7/mo)
+    branch: main
+    buildCommand: npm install
+    startCommand: node server/server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: DOMAIN
+        sync: false        # 部署后填 https://你的域名
+      - key: ADMIN_PASSWORD
+        sync: false        # 务必改成强密码
+      - key: STRIPE_SECRET_KEY
+        sync: false        # 留空则 Stripe 不可用（其它功能正常）
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_MODE
+        value: sandbox
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_SECURE
+        value: "false"
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: EMAIL_FROM
+        sync: false

@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment / secrets
+.env
+server/.env
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporary scripts
+_*.js
+
+# Runtime data (Render free tier is ephemeral; keep local copies untracked)
+server/orders.json
+server/messages.json
+server/reviews.json

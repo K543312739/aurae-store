@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Cancelled - Aurae</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .payment-result-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #f8f5f0 0%, #ede8e0 100%);
+    }
+    .payment-result-card {
+      max-width: 500px;
+      width: 100%;
+      background: #fff;
+      border-radius: 16px;
+      padding: 60px 40px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    }
+    .cancel-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+    .payment-result-card h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      color: #2a2a2a;
+      margin-bottom: 12px;
+    }
+    .payment-result-card p {
+      font-size: 15px;
+      color: #888;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 14px 40px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-dark { color: #fff; background: #2a2a2a; }
+    .btn-dark:hover { background: #1a1a1a; }
+    .btn-outline { color: #2a2a2a; background: transparent; border: 2px solid #2a2a2a; margin-left: 12px; }
+    .btn-outline:hover { background: #f0ece6; }
+  </style>
+</head>
+<body>
+  <div class="payment-result-page">
+    <div class="payment-result-card">
+      <div class="cancel-icon">↩</div>
+      <h1>Payment Cancelled</h1>
+      <p>Your payment was not completed. No charges have been made to your account. Your cart has been saved — you can return to checkout whenever you're ready.</p>
+      <p style="font-size:13px;font-style:italic;color:#b08968;">"The right crystal finds you at the right time. When you're ready, it will be here." 🌙</p>
+      <div style="margin-top:32px;">
+        <a href="/" class="btn btn-dark">Return to Checkout</a>
+        <a href="/" class="btn btn-outline">Browse Crystals</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Get order_id from URL for potential follow-up
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+    if (orderId) {
+      console.log('Cancelled order:', orderId);
+    }
+  </script>
+</body>
+</html>
