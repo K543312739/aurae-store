@@ -29,3 +29,6 @@ server/users.json
 # Uploaded images (product photos, review photos) — runtime data
 uploads/
 server/uploads/
+
+# Local audit/dev artifacts (may contain secrets)
+full-audit.js

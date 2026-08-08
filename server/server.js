@@ -64,12 +64,26 @@ app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 // (e.g. /server/users.json, /server/server.js, /package.json).
 const SENSITIVE_PREFIXES = ['/server/', '/node_modules/', '/.git/'];
 const SENSITIVE_FILES = ['/package.json', '/package-lock.json', '/server.js', '/.env'];
+// Developer / infra / documentation files that must never be web-served.
+// Serving these leaks server architecture and (sandbox) credentials.
+const BLOCKED_EXT = new Set(['.sh', '.yaml', '.yml', '.md', '.log', '.sql', '.bak', '.old', '.tmp']);
+const BLOCKED_FILES = new Set([
+  'full-audit.js', '_extract.js', '_gen_products.js', '_check.html',
+  'deploy.sh', 'setup-https.sh', 'render.yaml', 'render.yml',
+  'deployment.md', 'render-deploy.md',
+  'paypal支付接入指南.md', '支付接入配置指南.md', '供应商方案与运营指南.md', '独立站维护与成本指南.md',
+]);
 app.use((req, res, next) => {
   const p = (req.path || '').toLowerCase();
   if (p.startsWith('/.well-known/')) return next(); // Let's Encrypt ACME challenge
   if (SENSITIVE_PREFIXES.some((s) => p.startsWith(s))) return res.status(404).end();
   if (SENSITIVE_FILES.includes(p) || p.endsWith('.env')) return res.status(404).end();
   if (p.split('/').some((seg) => seg.startsWith('.'))) return res.status(404).end();
+  // Block developer/infra/doc files (info disclosure)
+  if (BLOCKED_FILES.has(p.replace(/^\/+/, '').replace(/\/+$/, ''))) return res.status(404).end();
+  const ext = p.includes('.') ? '.' + p.split('.').pop() : '';
+  if (BLOCKED_EXT.has(ext)) return res.status(404).end();
+  if (p.split('/').some((seg) => seg.startsWith('_'))) return res.status(404).end();
   next();
 });
 
@@ -935,14 +949,15 @@ async function handleStripeWebhook(req, res) {
   const sig = req.headers['stripe-signature'];
   let event;
 
+  // Fail closed: never trust an unverified webhook body. Accepting unverified
+  // events would let an attacker forge "payment succeeded" and get free orders.
+  if (!sig || !process.env.STRIPE_WEBHOOK_SECRET) {
+    console.error('[Stripe Webhook] Missing signature or webhook secret - refusing event.');
+    return res.status(400).send('Webhook signature/secret not configured.');
+  }
+
   try {
-    if (process.env.STRIPE_WEBHOOK_SECRET) {
-      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-    } else {
-      // For development without webhook secret
-      event = JSON.parse(req.body);
-      console.warn('[Stripe Webhook] No webhook secret set - skipping verification (dev mode only!)');
-    }
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error('[Stripe Webhook] Signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
