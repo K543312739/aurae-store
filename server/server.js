@@ -1201,6 +1201,40 @@ app.post('/api/admin/orders/:id/status', requireAdmin, (req, res) => {
   res.json({ success: true, order });
 });
 
+// ===== API: Admin — Delete Order =====
+app.delete('/api/admin/orders/:id', requireAdmin, (req, res) => {
+  const orders = loadOrders();
+  const idx = orders.findIndex(o => o.orderId === req.params.id);
+  if (idx < 0) return res.status(404).json({ error: 'Order not found' });
+  const removed = orders.splice(idx, 1)[0];
+  fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
+  console.log(`[Order] Deleted: ${removed.orderId}`);
+  res.json({ success: true, removed: { orderId: removed.orderId } });
+});
+
+// ===== API: Admin — List Users =====
+app.get('/api/admin/users', requireAdmin, (req, res) => {
+  const users = loadUsers().map(u => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    createdAt: u.createdAt,
+    orderCount: loadOrders().filter(o => (o.userId && o.userId === u.id) || (o.userEmail && o.userEmail.toLowerCase() === u.email.toLowerCase())).length,
+  })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  res.json({ users });
+});
+
+// ===== API: Admin — Delete User =====
+app.delete('/api/admin/users/:id', requireAdmin, (req, res) => {
+  const users = loadUsers();
+  const idx = users.findIndex(u => u.id === req.params.id);
+  if (idx < 0) return res.status(404).json({ error: 'User not found' });
+  const removed = users.splice(idx, 1)[0];
+  saveUsers(users);
+  console.log(`[User] Deleted: ${removed.email}`);
+  res.json({ success: true, removed: { id: removed.id, email: removed.email } });
+});
+
 // ===== API: Admin — List Products (stock) =====
 app.get('/api/admin/products', requireAdmin, (req, res) => {
   res.json({ products: loadProducts() });

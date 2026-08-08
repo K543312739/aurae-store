@@ -1699,7 +1699,9 @@ h1, h2, h3, h4 {
 
 .account-order-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 8px;
   margin-bottom: 8px;
   font-size: 13px;
 }
@@ -1711,6 +1713,29 @@ h1, h2, h3, h4 {
 
 .account-order-date {
   color: var(--color-text-muted);
+}
+
+.account-order-status {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.account-order-status.status-pending { background: #fdf2e9; color: #b9742f; }
+.account-order-status.status-paid { background: #eef4ff; color: #2f6fb9; }
+.account-order-status.status-shipped { background: #eaf6ee; color: #2f8a52; }
+.account-order-status.status-delivered { background: #e7ece4; color: var(--color-primary-dark); }
+
+.account-order-tracking {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: var(--color-bg-alt, #f8f5f0);
+  border-radius: var(--radius-sm, 10px);
+  padding: 7px 10px;
+  margin-bottom: 8px;
 }
 
 .account-order-items {

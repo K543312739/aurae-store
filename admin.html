@@ -227,6 +227,20 @@
     .rev-img { width: 84px; height: 84px; border-radius: 8px; object-fit: cover; border: 1px solid var(--admin-border); cursor: pointer; }
     .rev-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
 
+    /* Users table */
+    .user-table { display: flex; flex-direction: column; gap: 2px; }
+    .user-row { display: grid; grid-template-columns: 1.4fr 2fr 1fr 0.8fr 0.9fr; gap: 12px; align-items: center; padding: 14px 16px; background: #fff; border: 1px solid var(--admin-border); border-radius: 10px; font-size: 14px; }
+    .user-row.user-head { background: transparent; border: none; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--admin-muted); padding-bottom: 4px; }
+    .user-name { font-weight: 600; }
+    .user-email { color: var(--admin-text); word-break: break-all; }
+    .user-date, .user-orders { color: var(--admin-muted); }
+    .user-actions { text-align: right; }
+    @media (max-width: 760px) {
+      .user-row { grid-template-columns: 1fr 1fr; row-gap: 6px; }
+      .user-row.user-head { display: none; }
+      .user-actions { text-align: left; }
+    }
+
     @media (max-width: 600px) {
       .admin-toolbar h2 { font-size: 26px; }
       .msg-reply { margin-left: 12px; }
@@ -277,6 +291,7 @@
         <button class="admin-tab" id="tab-coupons" onclick="switchTab('coupons')">🏷️ Coupons</button>
         <button class="admin-tab" id="tab-dashboard" onclick="switchTab('dashboard')">📈 Dashboard</button>
         <button class="admin-tab" id="tab-reviews" onclick="switchTab('reviews')">⭐ Reviews</button>
+        <button class="admin-tab" id="tab-users" onclick="switchTab('users')">👥 Users</button>
       </div>
 
       <!-- Messages panel -->
@@ -334,6 +349,11 @@
           </div>
         </div>
         <div id="adminReviews"></div>
+      </div>
+
+      <!-- Users panel -->
+      <div class="admin-panel" id="panel-users">
+        <div id="adminUsers"></div>
       </div>
     </section>
 
@@ -434,7 +454,7 @@
       document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
       document.getElementById('tab-' + tab).classList.add('active');
       document.getElementById('panel-' + tab).classList.add('active');
-      const titles = { messages: 'Customer Messages', orders: 'Orders', products: 'Inventory', coupons: 'Coupons', dashboard: 'Sales Dashboard', reviews: 'Review Moderation' };
+      const titles = { messages: 'Customer Messages', orders: 'Orders', products: 'Inventory', coupons: 'Coupons', dashboard: 'Sales Dashboard', reviews: 'Review Moderation', users: 'Registered Users' };
       document.getElementById('panelTitle').textContent = titles[tab];
       refreshCurrentTab();
     }
@@ -446,6 +466,7 @@
       else if (currentTab === 'coupons') loadCoupons();
       else if (currentTab === 'dashboard') loadDashboard();
       else if (currentTab === 'reviews') loadReviews();
+      else if (currentTab === 'users') loadUsers();
     }
 
     async function adminLogin() {
@@ -591,8 +612,21 @@
             <div><label>Carrier</label><input type="text" id="carrier-${id}" value="${escapeHtml(o.carrier || 'Standard Shipping')}"></div>
             <button class="btn btn-dark btn-sm" onclick="markShipped('${id}')">📦 Mark Shipped</button>
             <button class="btn btn-outline btn-sm" onclick="markDelivered('${id}')">✅ Mark Delivered</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteOrder('${id}')">🗑️ Delete</button>
           </div>
         </div>`;
+    }
+
+    async function deleteOrder(id) {
+      if (!confirm('Delete order #' + id + '? This cannot be undone.')) return;
+      try {
+        const resp = await fetch('/api/admin/orders/' + id, {
+          method: 'DELETE',
+          headers: { 'x-admin-token': token },
+        });
+        if (resp.ok) { loadOrders(); }
+        else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed to delete'); }
+      } catch (e) { alert('Connection error'); }
     }
 
     async function markShipped(id) {
@@ -775,6 +809,48 @@
         });
         if (resp.ok) loadReviews();
         else { const d = await resp.json().catch(() => ({})); alert(d.error || 'Failed'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    // ===== Users =====
+    async function loadUsers() {
+      const container = document.getElementById('adminUsers');
+      container.innerHTML = '<div class="admin-loading">Loading users…</div>';
+      try {
+        const resp = await fetch('/api/admin/users', { headers: { 'x-admin-token': token } });
+        if (resp.status === 401) { adminLogout(); return; }
+        if (!resp.ok) throw new Error('Failed');
+        const data = await resp.json();
+        const users = data.users || [];
+        document.getElementById('adminCount').textContent = `${users.length} user(s)`;
+        if (users.length === 0) { container.innerHTML = '<div class="empty-box">No registered users yet.</div>'; return; }
+        container.innerHTML = `
+          <div class="user-table">
+            <div class="user-row user-head">
+              <div>Name</div><div>Email</div><div>Joined</div><div>Orders</div><div></div>
+            </div>
+            ${users.map(u => `
+              <div class="user-row" id="user-${escapeHtml(u.id)}">
+                <div class="user-name">${escapeHtml(u.name || '—')}</div>
+                <div class="user-email">${escapeHtml(u.email)}</div>
+                <div class="user-date">${escapeHtml(formatDate(u.createdAt))}</div>
+                <div class="user-orders">${u.orderCount || 0}</div>
+                <div class="user-actions"><button class="btn btn-danger btn-sm" onclick="deleteUser('${escapeHtml(u.id)}')">🗑 Delete</button></div>
+              </div>
+            `).join('')}
+          </div>`;
+      } catch (e) { container.innerHTML = '<div class="empty-box">Could not load users.</div>'; }
+    }
+
+    async function deleteUser(id) {
+      if (!confirm('Delete this user? Their orders are kept but the account will be removed.')) return;
+      try {
+        const resp = await fetch('/api/admin/users/' + id, {
+          method: 'DELETE',
+          headers: { 'x-admin-token': token },
+        });
+        if (resp.ok) { loadUsers(); }
+        else { const d = await resp.json().catch(() => ({})); alert(d.error || 'Failed to delete'); }
       } catch (e) { alert('Connection error'); }
     }
 

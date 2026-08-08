@@ -1952,12 +1952,20 @@ async function renderAccountProfile(body, user) {
       const total = Number(o.total ?? o.totals?.total) || 0;
       const date = o.createdAt ? new Date(o.createdAt).toLocaleDateString() : '';
       const items = (o.items || []).map(i => `${i.name} × ${i.qty}`).join(', ');
+      const status = o.status || 'pending_payment';
+      const statusLabel = { pending_payment: 'Awaiting Payment', paid: 'Paid', shipped: 'Shipped', delivered: 'Delivered' }[status] || status;
+      const statusClass = status === 'delivered' ? 'delivered' : (status === 'shipped' ? 'shipped' : (status === 'paid' ? 'paid' : 'pending'));
+      const trackingHTML = (status === 'shipped' || status === 'delivered') && o.trackingNumber
+        ? `<div class="account-order-tracking">🚚 ${escapeHtml(o.carrier || 'Standard Shipping')} · Tracking <strong>${escapeHtml(o.trackingNumber)}</strong></div>`
+        : '';
       return `<div class="account-order">
         <div class="account-order-header">
           <span class="account-order-id">${escapeHtml(o.orderId)}</span>
+          <span class="account-order-status status-${statusClass}">${escapeHtml(statusLabel)}</span>
           <span class="account-order-date">${escapeHtml(date)}</span>
         </div>
         <div class="account-order-items">${escapeHtml(items)}</div>
+        ${trackingHTML}
         <div class="account-order-footer">
           <span class="account-order-total">${formatPrice(total)}</span>
           <a href="track.html?orderId=${encodeURIComponent(o.orderId)}&email=${encodeURIComponent(user.email)}" class="account-order-track">Track</a>
