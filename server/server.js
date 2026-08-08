@@ -1058,14 +1058,9 @@ app.get('/checkout-cancel.html', (req, res) => {
   res.sendFile(path.join(frontendDir, 'checkout-cancel.html'));
 });
 
-// ===== API: Public — Product stock (inventory authority) =====
-app.get('/api/products/:id', (req, res) => {
-  const p = loadProducts().find(x => x.id === req.params.id);
-  if (!p) return res.status(404).json({ error: 'Product not found' });
-  res.json({ id: p.id, name: p.name, stock: Number(p.stock) });
-});
-
 // ===== API: Public — List all products (storefront data source) =====
+// IMPORTANT: this must be registered BEFORE /api/products/:id, otherwise Express
+// interprets '/api/products' as the :id parameter and returns 404.
 app.get('/api/products', (req, res) => {
   const products = loadProducts().map(p => ({
     ...p,
@@ -1073,6 +1068,13 @@ app.get('/api/products', (req, res) => {
     images: Array.isArray(p.images) ? p.images : (p.image ? [p.image] : []),
   }));
   res.json({ products });
+});
+
+// ===== API: Public — Product stock (inventory authority) =====
+app.get('/api/products/:id', (req, res) => {
+  const p = loadProducts().find(x => x.id === req.params.id);
+  if (!p) return res.status(404).json({ error: 'Product not found' });
+  res.json({ id: p.id, name: p.name, stock: Number(p.stock) });
 });
 
 // ===== API: Public — Validate coupon =====
