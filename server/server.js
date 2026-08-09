@@ -340,9 +340,55 @@ function saveProducts(products) {
   fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2));
 }
 
+// Build a normalized variant key from the item stored in the cart/order.
+function variantKey(item) {
+  if (!item || !item.variant) return '';
+  // Support both old "Name:Value" strings and future structured objects.
+  if (typeof item.variant === 'string') return item.variant;
+  if (typeof item.variant === 'object') {
+    return Object.entries(item.variant).map(([k, v]) => `${k}:${v}`).sort().join('|');
+  }
+  return '';
+}
+
+// Return available stock for a specific product variant. Falls back to the product's base stock
+// when per-variant inventory has not been configured yet (backward compatible).
+function getVariantStock(product, vKey) {
+  if (!product || !vKey) return Number(product?.stock) || 0;
+  const map = product.variantStock || {};
+  if (map[vKey] != null) return Number(map[vKey]) || 0;
+  // Also try legacy "Name:Value" style if stored differently.
+  const normalized = String(vKey).split('|').sort().join('|');
+  if (map[normalized] != null) return Number(map[normalized]) || 0;
+  return Number(product.stock) || 0;
+}
+
 function getProductStock(id) {
   const p = loadProducts().find(x => x.id === id);
   return p ? Number(p.stock) : null;
+}
+
+// Check whether the requested cart quantities can be fulfilled. Returns { ok, shortfalls }.
+function checkStock(items) {
+  const products = loadProducts();
+  const shortfalls = [];
+  for (const item of (items || [])) {
+    const p = products.find(x => x.id === item.id);
+    if (!p) continue;
+    const vKey = variantKey(item);
+    const available = getVariantStock(p, vKey);
+    const requested = Number(item.qty) || 1;
+    if (available < requested) {
+      shortfalls.push({
+        id: item.id,
+        name: item.name || p.name,
+        variant: vKey,
+        requested,
+        available,
+      });
+    }
+  }
+  return { ok: shortfalls.length === 0, shortfalls };
 }
 
 function decrementStock(items) {
@@ -350,8 +396,35 @@ function decrementStock(items) {
   let changed = false;
   for (const item of (items || [])) {
     const p = products.find(x => x.id === item.id);
-    if (p) {
-      p.stock = Math.max(0, (Number(p.stock) || 0) - (Number(item.qty) || 1));
+    if (!p) continue;
+    const qty = Number(item.qty) || 1;
+    const vKey = variantKey(item);
+    if (p.variantStock && vKey && p.variantStock[vKey] != null) {
+      p.variantStock[vKey] = Math.max(0, (Number(p.variantStock[vKey]) || 0) - qty);
+      changed = true;
+    } else {
+      // Fallback to base stock when per-variant inventory is not configured.
+      p.stock = Math.max(0, (Number(p.stock) || 0) - qty);
+      changed = true;
+    }
+  }
+  if (changed) saveProducts(products);
+  return changed;
+}
+
+function restoreStock(items) {
+  const products = loadProducts();
+  let changed = false;
+  for (const item of (items || [])) {
+    const p = products.find(x => x.id === item.id);
+    if (!p) continue;
+    const qty = Number(item.qty) || 1;
+    const vKey = variantKey(item);
+    if (p.variantStock && vKey && p.variantStock[vKey] != null) {
+      p.variantStock[vKey] = (Number(p.variantStock[vKey]) || 0) + qty;
+      changed = true;
+    } else {
+      p.stock = (Number(p.stock) || 0) + qty;
       changed = true;
     }
   }
@@ -835,6 +908,14 @@ app.post('/api/create-checkout-session', async (req, res) => {
     }
 
     const totals = calculateTotals(items, coupon, customer?.email);
+
+    // Reserve / verify inventory before allowing payment.
+    const stockCheck = checkStock(items);
+    if (!stockCheck.ok) {
+      const names = stockCheck.shortfalls.map(s => `${s.name}${s.variant ? ' (' + s.variant + ')' : ''}: ${s.requested} requested, ${s.available} available`).join('; ');
+      return res.status(409).json({ error: 'Some items are no longer in stock: ' + names, shortfalls: stockCheck.shortfalls });
+    }
+
     const orderId = generateOrderId();
 
     // Build Stripe line items
@@ -1022,6 +1103,14 @@ app.post('/api/create-paypal-order', async (req, res) => {
     }
 
     const totals = calculateTotals(items, coupon, customer?.email);
+
+    // Reserve / verify inventory before allowing payment.
+    const stockCheck = checkStock(items);
+    if (!stockCheck.ok) {
+      const names = stockCheck.shortfalls.map(s => `${s.name}${s.variant ? ' (' + s.variant + ')' : ''}: ${s.requested} requested, ${s.available} available`).join('; ');
+      return res.status(409).json({ error: 'Some items are no longer in stock: ' + names, shortfalls: stockCheck.shortfalls });
+    }
+
     const orderId = generateOrderId();
     const accessToken = await getPayPalAccessToken();
 
@@ -1258,7 +1347,12 @@ app.get('/api/products', (req, res) => {
 app.get('/api/products/:id', (req, res) => {
   const p = loadProducts().find(x => x.id === req.params.id);
   if (!p) return res.status(404).json({ error: 'Product not found' });
-  res.json({ id: p.id, name: p.name, stock: Number(p.stock) });
+  res.json({
+    id: p.id,
+    name: p.name,
+    stock: Number(p.stock),
+    variantStock: p.variantStock || {},
+  });
 });
 
 // ===== API: Public — Validate coupon =====
@@ -1274,6 +1368,51 @@ app.get('/api/validate-coupon', (req, res) => {
 app.get('/api/admin/orders', requireAdmin, (req, res) => {
   const orders = loadOrders().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   res.json({ orders });
+});
+
+// ===== API: Admin — Export Orders to CSV =====
+app.get('/api/admin/orders/export', requireAdmin, (req, res) => {
+  const orders = loadOrders().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const escapeCSV = (val) => {
+    const s = String(val == null ? '' : val).replace(/"/g, '""');
+    return /[",\n]/.test(s) ? `"${s}"` : s;
+  };
+  const header = ['Order ID', 'Date', 'Status', 'Customer Name', 'Customer Email', 'Phone', 'Payment Provider', 'Coupon', 'Items', 'Subtotal', 'Discount', 'Shipping', 'Tax', 'Total', 'Currency', 'Address Line 1', 'Address Line 2', 'City', 'State', 'ZIP', 'Country', 'Tracking #', 'Carrier'];
+  const rows = orders.map(o => {
+    const c = o.customer || {};
+    const t = o.totals || {};
+    const addr = c.addressObj || {};
+    const items = (o.items || []).map(i => `${i.name}${i.variant ? ' [' + i.variant + ']' : ''} x${i.qty} @${(i.price || 0).toFixed(2)}`).join('; ');
+    return [
+      o.orderId,
+      o.createdAt,
+      o.status,
+      c.name,
+      c.email,
+      c.phone,
+      o.paymentProvider,
+      o.coupon || '',
+      items,
+      (t.subtotal ?? '').toString(),
+      (t.discount ?? '').toString(),
+      (t.shipping ?? '').toString(),
+      (t.tax ?? '').toString(),
+      (t.total ?? o.total ?? '').toString(),
+      'USD',
+      addr.line1 || c.address || '',
+      addr.line2 || '',
+      addr.city || c.city || '',
+      addr.state || c.state || '',
+      addr.zip || c.zip || '',
+      addr.country || c.country || '',
+      o.trackingNumber || '',
+      o.carrier || '',
+    ].map(escapeCSV).join(',');
+  });
+  const csv = [header.map(escapeCSV).join(','), ...rows].join('\n');
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', `attachment; filename="aurae-orders-${new Date().toISOString().slice(0, 10)}.csv"`);
+  res.send('\uFEFF' + csv);
 });
 
 // ===== API: Admin — Get single Order =====
@@ -1305,12 +1444,35 @@ app.post('/api/admin/orders/:id/status', requireAdmin, (req, res) => {
   res.json({ success: true, order });
 });
 
+// ===== API: Admin — Manually mark order as paid (useful when a webhook is missed) =====
+app.post('/api/admin/orders/:id/finalize', requireAdmin, (req, res) => {
+  const orders = loadOrders();
+  const order = orders.find(o => o.orderId === req.params.id);
+  if (!order) return res.status(404).json({ error: 'Order not found' });
+  if (order.status === 'paid' || order.status === 'shipped' || order.status === 'delivered') {
+    return res.status(400).json({ error: 'Order is already paid or fulfilled.' });
+  }
+  const stockCheck = checkStock(order.items || []);
+  if (!stockCheck.ok) {
+    return res.status(409).json({ error: 'Insufficient stock to finalize order.', shortfalls: stockCheck.shortfalls });
+  }
+  order.status = 'paid';
+  order.paidAt = new Date().toISOString();
+  fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
+  finalizePaidOrder(order.orderId);
+  res.json({ success: true, order });
+});
+
 // ===== API: Admin — Delete Order =====
 app.delete('/api/admin/orders/:id', requireAdmin, (req, res) => {
   const orders = loadOrders();
   const idx = orders.findIndex(o => o.orderId === req.params.id);
   if (idx < 0) return res.status(404).json({ error: 'Order not found' });
   const removed = orders.splice(idx, 1)[0];
+  // Restore inventory for paid/fulfilled orders that had stock deducted.
+  if (removed && removed.items && removed.status !== 'pending_payment' && removed.status !== 'expired') {
+    restoreStock(removed.items);
+  }
   fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
   console.log(`[Order] Deleted: ${removed.orderId}`);
   res.json({ success: true, removed: { orderId: removed.orderId } });
@@ -1397,6 +1559,7 @@ app.post('/api/admin/products', requireAdmin, (req, res) => {
     rating: Number(body.rating) || 5,
     reviews: Number(body.reviews) || 0,
     stock: Number(body.stock) || 0,
+    variantStock: body.variantStock && typeof body.variantStock === 'object' ? body.variantStock : {},
     badge: body.badge || '',
     image: body.image || '',
     images: Array.isArray(body.images) ? body.images.filter(Boolean) : (body.image ? [body.image] : []),
@@ -1420,6 +1583,17 @@ app.put('/api/admin/products/:id', requireAdmin, (req, res) => {
       } else {
         p[f] = body[f];
       }
+    }
+  }
+  if (body.variantStock !== undefined) {
+    if (body.variantStock && typeof body.variantStock === 'object') {
+      p.variantStock = {};
+      for (const k of Object.keys(body.variantStock)) {
+        const v = body.variantStock[k];
+        p.variantStock[k] = (v === '' || v == null) ? null : Number(v);
+      }
+    } else {
+      p.variantStock = {};
     }
   }
   if (body.properties !== undefined) {
@@ -1947,8 +2121,49 @@ app.post('/api/admin/refund-requests/:id/status', requireAdmin, (req, res) => {
   r.status = status;
   r.note = note || '';
   r.updatedAt = new Date().toISOString();
+  // Restore inventory when a refund is approved.
+  if (status === 'approved') {
+    const orders = loadOrders();
+    const order = orders.find(o => o.orderId === r.orderId);
+    if (order && order.items) restoreStock(order.items);
+  }
   saveRefunds(refunds);
   res.json({ success: true, refund: r });
+});
+
+// ===== SEO: Dynamic sitemap.xml =====
+app.get('/sitemap.xml', (req, res) => {
+  const domain = DOMAIN || `https://${req.headers.host}`;
+  const products = loadProducts();
+  const today = new Date().toISOString().slice(0, 10);
+  const escapeXML = (str) => String(str || '').replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
+  const url = (loc, priority = '0.6', changefreq = 'weekly') => `  <url>\n    <loc>${escapeXML(loc)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+
+  let urls = [
+    url(`${domain}/`, '1.0', 'daily'),
+    url(`${domain}/index.html?view=shop`, '0.9', 'weekly'),
+    url(`${domain}/about.html`, '0.7', 'monthly'),
+    url(`${domain}/contact.html`, '0.6', 'monthly'),
+    url(`${domain}/faq.html`, '0.6', 'monthly'),
+    url(`${domain}/privacy-policy.html`, '0.4', 'monthly'),
+    url(`${domain}/shipping-returns.html`, '0.4', 'monthly'),
+    url(`${domain}/refund-policy.html`, '0.4', 'monthly'),
+    url(`${domain}/terms-of-service.html`, '0.4', 'monthly'),
+    url(`${domain}/track.html`, '0.5', 'monthly'),
+  ];
+
+  products.forEach(p => {
+    urls.push(url(`${domain}/index.html?product=${encodeURIComponent(p.id)}`, '0.8', 'weekly'));
+  });
+
+  const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+  categories.forEach(c => {
+    urls.push(url(`${domain}/index.html?view=shop&category=${encodeURIComponent(c)}`, '0.7', 'weekly'));
+  });
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`;
+  res.set('Content-Type', 'application/xml');
+  res.send(sitemap);
 });
 
 // ===== Catch-all: SPA fallback (Express 4 safe) =====

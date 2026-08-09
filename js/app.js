@@ -31,7 +31,8 @@ function getStars(rating) {
   return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
 }
 
-function saveCart() {
+function saveCart(silent) {
+  capCartQuantities(silent);
   localStorage.setItem('crystalCart', JSON.stringify(cart));
   updateCartCount();
   syncCartToServer();
@@ -75,10 +76,24 @@ async function loadServerCart() {
     const data = await resp.json();
     const serverCart = data.cart || [];
     cart = mergeCarts(cart, serverCart);
-    saveCart();
+    saveCart(true);
     renderCart();
     updateCartCount();
   } catch (e) { /* silent */ }
+}
+
+function capCartQuantities(silent) {
+  let capped = false;
+  for (const item of cart) {
+    const product = PRODUCTS.find(p => p.id === item.id);
+    const available = getVariantStockFrontend(product, item.variant);
+    if (item.qty > available) {
+      item.qty = Math.max(0, available);
+      capped = true;
+    }
+  }
+  cart = cart.filter(item => item.qty > 0);
+  if (capped && !silent) showToast('Some cart items were adjusted due to stock changes.');
 }
 
 function saveCartCoupon() {
@@ -422,7 +437,7 @@ function renderProductDetail(productId) {
 
   document.getElementById('productDetailContent').innerHTML = `
     ${breadcrumb}
-    <div class="product-detail-grid">
+    <div class="product-detail-grid" data-product-id="${product.id}">
       ${gallery}
       <div class="product-detail-info">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
@@ -484,6 +499,59 @@ function renderProductDetail(productId) {
   attachProductCardHandlers();
   loadProductReviews(product.id);
   refreshProductStock(product.id);
+  updateProductSEO(product);
+}
+
+function updateProductSEO(product) {
+  if (!product) return;
+  const base = window.location.origin;
+  const url = `${base}/index.html?product=${encodeURIComponent(product.id)}`;
+  const img = product.image && !product.image.startsWith('http') ? base + product.image : (product.image || `${base}/images/p001.png`);
+  const desc = (product.tagline || product.description || '').slice(0, 160);
+  const title = `${product.name} — Aurae`;
+
+  document.title = title;
+  setMeta('description', desc);
+  setMeta('og:title', title, 'property');
+  setMeta('og:description', desc, 'property');
+  setMeta('og:url', url, 'property');
+  setMeta('og:image', img, 'property');
+  setMeta('twitter:title', title);
+  setMeta('twitter:description', desc);
+  setMeta('twitter:image', img);
+
+  let ld = document.getElementById('aurae-jsonld');
+  if (!ld) { ld = document.createElement('script'); ld.id = 'aurae-jsonld'; ld.type = 'application/ld+json'; document.head.appendChild(ld); }
+  const price = getSelectedVariantPrice();
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    image: Array.isArray(product.images) && product.images.length ? product.images.map(i => i.startsWith('http') ? i : base + i) : [img],
+    description: desc,
+    brand: { '@type': 'Brand', name: 'Aurae' },
+    offers: {
+      '@type': 'Offer',
+      url: url,
+      priceCurrency: 'USD',
+      price: String(price),
+      availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      seller: { '@type': 'Organization', name: 'Aurae' }
+    },
+    aggregateRating: product.rating ? {
+      '@type': 'AggregateRating',
+      ratingValue: String(product.rating),
+      reviewCount: String(product.reviews || 0)
+    } : undefined
+  };
+  if (!schema.aggregateRating) delete schema.aggregateRating;
+  ld.textContent = JSON.stringify(schema);
+}
+
+function setMeta(name, content, attr = 'name') {
+  let el = document.querySelector(`meta[${attr}="${name}"]`);
+  if (!el) { el = document.createElement('meta'); el.setAttribute(attr, name); document.head.appendChild(el); }
+  el.setAttribute('content', content);
 }
 
 // Pull the live (server-authoritative) stock for a product detail page.
@@ -492,23 +560,30 @@ function refreshProductStock(productId) {
     .then(r => r.ok ? r.json() : null)
     .then(data => {
       if (!data) return;
-      const stock = Number(data.stock);
-      const info = getStockStatus(stock);
-      const el = document.getElementById('stockStatus');
-      if (el) { el.className = `stock-status stock-${info.cls}`; el.innerHTML = `<span class="stock-dot"></span>${info.label}`; }
-      const count = document.getElementById('stockCount');
-      if (count) count.textContent = `${stock} in stock`;
-      const btn = document.getElementById('addToCartBtn');
-      if (btn) {
-        if (info.cls === 'out') {
-          btn.disabled = true; btn.style.opacity = '.5'; btn.style.cursor = 'not-allowed'; btn.textContent = 'Sold Out';
-        } else {
-          btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
-          updateProductPriceDisplay();
-        }
-      }
+      // Merge server-side variant stock into the in-memory product so selectors use live data.
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (product && data.variantStock) product.variantStock = data.variantStock;
+      updateStockDisplay();
     })
     .catch(() => {});
+}
+
+function updateStockDisplay() {
+  const stock = getSelectedVariantStock();
+  const info = getStockStatus(stock);
+  const el = document.getElementById('stockStatus');
+  if (el) { el.className = `stock-status stock-${info.cls}`; el.innerHTML = `<span class="stock-dot"></span>${info.label}`; }
+  const count = document.getElementById('stockCount');
+  if (count) count.textContent = `${stock} in stock`;
+  const btn = document.getElementById('addToCartBtn');
+  if (btn) {
+    if (info.cls === 'out') {
+      btn.disabled = true; btn.style.opacity = '.5'; btn.style.cursor = 'not-allowed'; btn.textContent = 'Sold Out';
+    } else {
+      btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
+      updateProductPriceDisplay();
+    }
+  }
 }
 
 // ===== Render Blog Detail =====
@@ -579,6 +654,22 @@ function getSelectedVariantPrice() {
   return product.price;
 }
 
+function getSelectedVariantKey() {
+  const product = currentProduct;
+  if (!product || !product.variants) return '';
+  return Object.entries(selectedVariant).map(([k, v]) => `${k}:${(v && typeof v === 'object') ? v.value : v}`).join('|');
+}
+
+function getSelectedVariantStock() {
+  const product = currentProduct;
+  if (!product) return 0;
+  const vKey = getSelectedVariantKey();
+  if (product.variantStock && vKey && product.variantStock[vKey] != null) {
+    return Number(product.variantStock[vKey]) || 0;
+  }
+  return Number(product.stock) || 0;
+}
+
 function updateProductPriceDisplay() {
   const price = getSelectedVariantPrice();
   const priceEl = document.getElementById('productDetailPrice');
@@ -599,11 +690,11 @@ function selectVariant(el, name, index, value) {
   el.parentElement.querySelectorAll('.variant-option').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   selectedVariant[name] = { index, value };
-  updateProductPriceDisplay();
+  updateStockDisplay();
 }
 
 function changeQty(delta) {
-  const max = currentProduct && currentProduct.stock > 0 ? currentProduct.stock : Infinity;
+  const max = currentProduct && getSelectedVariantStock() > 0 ? getSelectedVariantStock() : Infinity;
   qty = Math.min(max, Math.max(1, qty + delta));
   const input = document.getElementById('qtyInput');
   if (input) input.value = qty;
@@ -611,7 +702,7 @@ function changeQty(delta) {
 }
 
 function syncQty(val) {
-  const max = currentProduct && currentProduct.stock > 0 ? currentProduct.stock : Infinity;
+  const max = currentProduct && getSelectedVariantStock() > 0 ? getSelectedVariantStock() : Infinity;
   qty = Math.min(max, Math.max(1, parseInt(val) || 1));
   const input = document.getElementById('qtyInput');
   if (input) input.value = qty;
@@ -620,6 +711,11 @@ function syncQty(val) {
 
 function addToCartDetail() {
   if (!currentProduct) return;
+  const available = getSelectedVariantStock();
+  if (available < qty) {
+    showToast(`Only ${available} available for the selected option.`);
+    return;
+  }
   const variantKey = Object.entries(selectedVariant).map(([k, v]) => `${k}:${v.value || v}`).join('|');
   addToCart({
     id: currentProduct.id,
@@ -641,6 +737,14 @@ function buyNowDetail() {
 }
 
 // ===== Cart Functions =====
+function getVariantStockFrontend(product, variant) {
+  if (!product) return 0;
+  if (product.variantStock && variant && product.variantStock[variant] != null) {
+    return Number(product.variantStock[variant]) || 0;
+  }
+  return Number(product.stock) || 0;
+}
+
 function quickAddToCart(productId) {
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
@@ -653,6 +757,13 @@ function quickAddToCart(productId) {
     if (Array.isArray(product.variantPrices) && product.variantPrices[0] != null) {
       price = product.variantPrices[0];
     }
+  }
+  const available = getVariantStockFrontend(product, variant);
+  const existing = cart.find(c => c.id === product.id && c.variant === variant);
+  const currentQty = existing ? existing.qty : 0;
+  if (available < currentQty + 1) {
+    showToast(`Only ${available} available for ${product.name}${variant ? ' (' + variant + ')' : ''}.`);
+    return;
   }
   addToCart({
     id: product.id,
@@ -668,7 +779,14 @@ function quickAddToCart(productId) {
 }
 
 function addToCart(item) {
+  const product = PRODUCTS.find(p => p.id === item.id);
   const existing = cart.find(c => c.id === item.id && c.variant === item.variant);
+  const available = getVariantStockFrontend(product, item.variant);
+  const requested = (existing ? existing.qty : 0) + item.qty;
+  if (product && requested > available) {
+    showToast(`Only ${available} available for ${product.name}${item.variant ? ' (' + item.variant + ')' : ''}.`);
+    return;
+  }
   if (existing) {
     existing.qty += item.qty;
   } else {
@@ -685,7 +803,16 @@ function removeFromCart(index) {
 }
 
 function changeCartQty(index, delta) {
-  cart[index].qty = Math.max(1, cart[index].qty + delta);
+  const item = cart[index];
+  if (!item) return;
+  const product = PRODUCTS.find(p => p.id === item.id);
+  const available = getVariantStockFrontend(product, item.variant);
+  const newQty = item.qty + delta;
+  if (newQty > available) {
+    showToast(`Only ${available} available for ${item.name}${item.variant ? ' (' + item.variant + ')' : ''}.`);
+    return;
+  }
+  item.qty = Math.max(1, newQty);
   saveCart();
   renderCart();
 }
@@ -713,6 +840,7 @@ function renderCart() {
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-tagline">${item.tagline}</div>
+        ${item.variant ? `<div class="cart-item-variant">${escapeHtml(item.variant)}</div>` : ''}
         <div class="cart-item-bottom">
           <div class="cart-qty">
             <button onclick="changeCartQty(${i}, -1)">−</button>
@@ -1777,6 +1905,29 @@ function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+// ===== Cookie Consent =====
+function initCookieConsent() {
+  const banner = document.getElementById('cookieConsent');
+  if (!banner) return;
+  const consent = localStorage.getItem('auraeCookieConsent');
+  if (!consent) {
+    banner.style.display = 'block';
+  }
+}
+
+function acceptCookies() {
+  localStorage.setItem('auraeCookieConsent', 'accepted');
+  const banner = document.getElementById('cookieConsent');
+  if (banner) banner.style.display = 'none';
+}
+
+function declineCookies() {
+  localStorage.setItem('auraeCookieConsent', 'declined');
+  const banner = document.getElementById('cookieConsent');
+  if (banner) banner.style.display = 'none';
+  showToast('You can update your choice anytime in Privacy Policy.');
+}
+
 function formatDate(iso) {
   const d = new Date(iso);
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -2441,6 +2592,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderCart();
   updateCartCount();
   renderWishlistIcons();
+  initCookieConsent();
 
   // Handle returning from PayPal success redirect or external page redirects
   const urlParams = new URLSearchParams(window.location.search);

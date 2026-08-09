@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /server/
+Disallow: /api/
+Disallow: /checkout-cancel.html
+Disallow: /payment-success.html
+Disallow: /reset-password.html
+
+Sitemap: https://www.aurae.asia/sitemap.xml

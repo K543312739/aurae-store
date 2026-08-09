@@ -303,6 +303,12 @@
 
       <!-- Orders panel -->
       <div class="admin-panel" id="panel-orders">
+        <div class="admin-toolbar" style="margin-bottom:14px;">
+          <div></div>
+          <div>
+            <button class="btn btn-outline btn-sm" onclick="exportOrdersCSV()">⬇ Export CSV</button>
+          </div>
+        </div>
         <div id="adminOrders"></div>
       </div>
 
@@ -404,7 +410,11 @@
             <div class="form-field"><label>Chakra</label><input type="text" id="pf_chakra"></div>
             <div class="form-field"><label>Element</label><input type="text" id="pf_element"></div>
             <div class="form-field"><label>Planet</label><input type="text" id="pf_planet"></div>
-            <div class="form-field"><label>Stock</label><input type="number" min="0" id="pf_stock"></div>
+            <div class="form-field"><label>Base Stock</label><input type="number" min="0" id="pf_stock"></div>
+            <div class="form-field full" id="variantStockWrap" style="display:none;">
+              <label>Variant Stock (per option — leave blank to fall back to Base Stock)</label>
+              <div id="variantStockInputs" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;"></div>
+            </div>
             <div class="form-field"><label>Rating (1-5)</label><input type="number" step="0.1" min="0" max="5" id="pf_rating"></div>
             <div class="form-field"><label>Reviews count</label><input type="number" min="0" id="pf_reviews"></div>
             <div class="form-field"><label>Badge</label><input type="text" id="pf_badge" placeholder="e.g. Bestseller"></div>
@@ -583,6 +593,26 @@
     }
 
     // ===== Orders =====
+    function exportOrdersCSV() {
+      const url = '/api/admin/orders/export';
+      const a = document.createElement('a');
+      a.href = url;
+      a.setAttribute('download', 'aurae-orders.csv');
+      // Include auth token via a temporary header is not possible with simple link download,
+      // so we fetch as blob and trigger download programmatically.
+      fetch(url, { headers: { 'x-admin-token': token } })
+        .then(r => { if (!r.ok) throw new Error('Export failed'); return r.blob(); })
+        .then(blob => {
+          const objUrl = URL.createObjectURL(blob);
+          a.href = objUrl;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(objUrl);
+        })
+        .catch(() => alert('Failed to export orders. Please log in again.'));
+    }
+
     async function loadOrders() {
       const container = document.getElementById('adminOrders');
       container.innerHTML = '<div class="admin-loading">Loading orders…</div>';
@@ -1034,8 +1064,41 @@
       set('pf_stock', p.stock);
       set('pf_badge', p.badge);
       set('pf_properties', Array.isArray(p.properties) ? p.properties.join('\n') : (p.properties || ''));
+      renderVariantStockInputs(p);
       renderImageManager(p.images || (p.image ? [p.image] : []));
       document.getElementById('pf_id').readOnly = true;
+    }
+
+    function renderVariantStockInputs(p) {
+      const wrap = document.getElementById('variantStockWrap');
+      const container = document.getElementById('variantStockInputs');
+      if (!wrap || !container) return;
+      if (!p.variants || !Array.isArray(p.variants) || p.variants.length === 0 || !p.variants[0].options || p.variants[0].options.length === 0) {
+        wrap.style.display = 'none';
+        container.innerHTML = '';
+        return;
+      }
+      wrap.style.display = 'block';
+      const map = p.variantStock || {};
+      const inputs = [];
+      p.variants.forEach(v => {
+        v.options.forEach(opt => {
+          const key = `${v.name}:${opt}`;
+          const val = map[key] != null ? map[key] : '';
+          inputs.push(`<div><label style="font-size:12px;color:var(--admin-muted);display:block;margin-bottom:4px;">${escapeHtml(key)}</label><input type="number" min="0" class="variant-stock-input" data-key="${escapeHtml(key)}" value="${val === '' ? '' : Number(val)}"></div>`);
+        });
+      });
+      container.innerHTML = inputs.join('');
+    }
+
+    function collectVariantStock() {
+      const out = {};
+      document.querySelectorAll('.variant-stock-input').forEach(el => {
+        const key = el.getAttribute('data-key');
+        const v = el.value.trim();
+        if (key) out[key] = v === '' ? null : Number(v);
+      });
+      return out;
     }
 
     function renderImageManager(images) {
@@ -1116,6 +1179,7 @@
         }
         payload[f] = v;
       }
+      payload.variantStock = collectVariantStock();
       const isEdit = !!editingProductId;
       const url = isEdit ? '/api/admin/products/' + encodeURIComponent(editingProductId) : '/api/admin/products';
       const method = isEdit ? 'PUT' : 'POST';
