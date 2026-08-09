@@ -292,6 +292,8 @@
         <button class="admin-tab" id="tab-dashboard" onclick="switchTab('dashboard')">📈 Dashboard</button>
         <button class="admin-tab" id="tab-reviews" onclick="switchTab('reviews')">⭐ Reviews</button>
         <button class="admin-tab" id="tab-users" onclick="switchTab('users')">👥 Users</button>
+        <button class="admin-tab" id="tab-subscribers" onclick="switchTab('subscribers')">📧 Subscribers</button>
+        <button class="admin-tab" id="tab-refunds" onclick="switchTab('refunds')">↩️ Refunds</button>
       </div>
 
       <!-- Messages panel -->
@@ -354,6 +356,16 @@
       <!-- Users panel -->
       <div class="admin-panel" id="panel-users">
         <div id="adminUsers"></div>
+      </div>
+
+      <!-- Subscribers panel -->
+      <div class="admin-panel" id="panel-subscribers">
+        <div id="adminSubscribers"></div>
+      </div>
+
+      <!-- Refund requests panel -->
+      <div class="admin-panel" id="panel-refunds">
+        <div id="adminRefunds"></div>
       </div>
     </section>
 
@@ -454,7 +466,7 @@
       document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
       document.getElementById('tab-' + tab).classList.add('active');
       document.getElementById('panel-' + tab).classList.add('active');
-      const titles = { messages: 'Customer Messages', orders: 'Orders', products: 'Inventory', coupons: 'Coupons', dashboard: 'Sales Dashboard', reviews: 'Review Moderation', users: 'Registered Users' };
+      const titles = { messages: 'Customer Messages', orders: 'Orders', products: 'Inventory', coupons: 'Coupons', dashboard: 'Sales Dashboard', reviews: 'Review Moderation', users: 'Registered Users', subscribers: 'Newsletter Subscribers', refunds: 'Refund / Return Requests' };
       document.getElementById('panelTitle').textContent = titles[tab];
       refreshCurrentTab();
     }
@@ -467,6 +479,8 @@
       else if (currentTab === 'dashboard') loadDashboard();
       else if (currentTab === 'reviews') loadReviews();
       else if (currentTab === 'users') loadUsers();
+      else if (currentTab === 'subscribers') loadSubscribers();
+      else if (currentTab === 'refunds') loadRefundRequests();
     }
 
     async function adminLogin() {
@@ -851,6 +865,87 @@
         });
         if (resp.ok) { loadUsers(); }
         else { const d = await resp.json().catch(() => ({})); alert(d.error || 'Failed to delete'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    // ===== Subscribers =====
+    async function loadSubscribers() {
+      const container = document.getElementById('adminSubscribers');
+      container.innerHTML = '<div class="admin-loading">Loading subscribers…</div>';
+      try {
+        const resp = await fetch('/api/admin/subscribers', { headers: { 'x-admin-token': token } });
+        if (resp.status === 401) { adminLogout(); return; }
+        if (!resp.ok) throw new Error('Failed');
+        const data = await resp.json();
+        const list = data.subscribers || [];
+        document.getElementById('adminCount').textContent = `${list.length} subscriber(s)`;
+        if (!list.length) { container.innerHTML = '<div class="empty-box">No newsletter subscribers yet.</div>'; return; }
+        container.innerHTML = `
+          <div class="user-table">
+            <div class="user-row user-head"><div>Email</div><div>Subscribed At</div></div>
+            ${list.map(s => `
+              <div class="user-row">
+                <div class="user-email">${escapeHtml(s.email)}</div>
+                <div class="user-date">${escapeHtml(formatDate(s.createdAt))}</div>
+              </div>
+            `).join('')}
+          </div>
+          <button class="btn btn-outline btn-sm" style="margin-top:16px;" onclick="copySubscribers()">📋 Copy email list</button>
+        `;
+      } catch (e) { container.innerHTML = '<div class="empty-box">Could not load subscribers.</div>'; }
+    }
+
+    function copySubscribers() {
+      fetch('/api/admin/subscribers', { headers: { 'x-admin-token': token } })
+        .then(r => r.json())
+        .then(data => {
+          const emails = (data.subscribers || []).map(s => s.email).join(', ');
+          navigator.clipboard.writeText(emails).then(() => alert('Subscriber list copied to clipboard.')).catch(() => alert(emails));
+        });
+    }
+
+    // ===== Refund Requests =====
+    async function loadRefundRequests() {
+      const container = document.getElementById('adminRefunds');
+      container.innerHTML = '<div class="admin-loading">Loading refund requests…</div>';
+      try {
+        const resp = await fetch('/api/admin/refund-requests', { headers: { 'x-admin-token': token } });
+        if (resp.status === 401) { adminLogout(); return; }
+        if (!resp.ok) throw new Error('Failed');
+        const data = await resp.json();
+        const refunds = data.refunds || [];
+        document.getElementById('adminCount').textContent = `${refunds.length} request(s)`;
+        if (!refunds.length) { container.innerHTML = '<div class="empty-box">No refund or return requests yet.</div>'; return; }
+        container.innerHTML = refunds.slice().reverse().map(r => {
+          const statusClass = { pending: 'status-pending', approved: 'status-paid', rejected: 'status-out', resolved: 'status-delivered' }[r.status] || 'status-pending';
+          return `
+            <div class="account-order" style="margin-bottom:14px;">
+              <div class="account-order-header">
+                <span class="account-order-id">${escapeHtml(r.orderId)}</span>
+                <span class="account-order-status ${statusClass}">${escapeHtml(r.status)}</span>
+                <span class="account-order-date">${escapeHtml(formatDate(r.createdAt))}</span>
+              </div>
+              <div style="font-size:13px;margin-bottom:8px;"><strong>Customer:</strong> ${escapeHtml(r.userEmail || '')}</div>
+              <div style="font-size:13px;margin-bottom:12px;background:var(--color-bg-alt);padding:10px;border-radius:8px;">${escapeHtml(r.reason)}</div>
+              ${r.note ? `<div style="font-size:12px;color:var(--color-text-muted);margin-bottom:12px;">Note: ${escapeHtml(r.note)}</div>` : ''}
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                ${['pending','approved','rejected','resolved'].map(st => `<button class="btn btn-sm ${r.status === st ? 'btn-dark' : 'btn-outline'}" onclick="updateRefundStatus('${escapeHtml(r.id)}', '${st}')">Mark ${st}</button>`).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (e) { container.innerHTML = '<div class="empty-box">Could not load refund requests.</div>'; }
+    }
+
+    async function updateRefundStatus(id, status) {
+      try {
+        const resp = await fetch('/api/admin/refund-requests/' + encodeURIComponent(id) + '/status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify({ status }),
+        });
+        if (resp.ok) { loadRefundRequests(); }
+        else { const d = await resp.json().catch(() => ({})); alert(d.error || 'Failed to update'); }
       } catch (e) { alert('Connection error'); }
     }
 

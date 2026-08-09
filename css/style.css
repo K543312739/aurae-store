@@ -389,7 +389,7 @@ h1, h2, h3, h4 {
 
 .product-stock-badge {
   position: absolute;
-  top: 12px;
+  top: 48px;
   right: 12px;
   z-index: 2;
   font-size: 10px;
@@ -408,6 +408,42 @@ h1, h2, h3, h4 {
 .product-stock-badge.out {
   background: #f5eaea;
   color: #a94442;
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.9);
+  color: var(--color-text-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+.wishlist-btn:hover {
+  transform: scale(1.1);
+  background: #fff;
+}
+.wishlist-btn.wishlist-active,
+.wishlist-btn:active {
+  color: #c0392b;
+}
+.wishlist-btn.wishlist-large {
+  position: static;
+  width: 42px;
+  height: 42px;
+  font-size: 24px;
+  background: var(--color-bg-alt);
 }
 
 .product-image {
@@ -1784,6 +1820,26 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-md);
   padding: 16px;
   text-align: center;
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-size: inherit;
+}
+
+.account-tabs {
+  flex-wrap: wrap;
 }
 
 .account-energy-result .result-icon {

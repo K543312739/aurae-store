@@ -1713,6 +1713,244 @@ app.get('/api/admin/stats', requireAdmin, (req, res) => {
   });
 });
 
+// ===== Newsletter / Subscribers =====
+const SUBSCRIBERS_FILE = path.join(__dirname, 'subscribers.json');
+function loadSubscribers() {
+  try { if (fs.existsSync(SUBSCRIBERS_FILE)) return JSON.parse(fs.readFileSync(SUBSCRIBERS_FILE, 'utf8')); } catch (e) { console.error('Error loading subscribers:', e.message); }
+  return [];
+}
+function saveSubscribers(list) { fs.writeFileSync(SUBSCRIBERS_FILE, JSON.stringify(list, null, 2)); }
+
+// ===== Refund Requests =====
+const REFUNDS_FILE = path.join(__dirname, 'refund-requests.json');
+function loadRefunds() {
+  try { if (fs.existsSync(REFUNDS_FILE)) return JSON.parse(fs.readFileSync(REFUNDS_FILE, 'utf8')); } catch (e) { console.error('Error loading refunds:', e.message); }
+  return [];
+}
+function saveRefunds(list) { fs.writeFileSync(REFUNDS_FILE, JSON.stringify(list, null, 2)); }
+
+function escapeHtmlServer(text) {
+  const str = String(text || '');
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// ===== Password Reset Email =====
+function emailPasswordReset(user, resetUrl) {
+  return sendEmail({
+    to: user.email,
+    subject: 'Aurae — Reset your password',
+    html: `<div style="font-family:Inter,Arial,sans-serif;max-width:520px;margin:auto;color:#2a2a2a;">
+      <h2 style="font-family:'Cormorant Garamond',serif;">Reset your password</h2>
+      <p>Hi ${escapeHtmlServer(user.name || 'Beautiful Soul')}, click the link below to reset your Aurae password. This link expires in 1 hour.</p>
+      <a href="${escapeHtmlServer(resetUrl)}" style="display:inline-block;background:#2a2a2a;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;margin:16px 0;">Reset Password</a>
+      <p style="color:#888;font-size:12px;">If you didn't request this, you can safely ignore this email.</p>
+    </div>`,
+  });
+}
+
+// ===== API: Public — Newsletter subscribe =====
+app.post('/api/newsletter', publicLimiter, async (req, res) => {
+  const email = String(req.body?.email || '').trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Please enter a valid email address.' });
+  const list = loadSubscribers();
+  if (list.some(s => s.email === email)) return res.json({ success: true, alreadySubscribed: true });
+  list.push({ email, createdAt: new Date().toISOString() });
+  saveSubscribers(list);
+  await sendEmail({
+    to: email,
+    subject: 'Welcome to Aurae',
+    html: `<div style="font-family:Inter,Arial,sans-serif;max-width:520px;margin:auto;color:#2a2a2a;">
+      <h2 style="font-family:'Cormorant Garamond',serif;">Welcome to Aurae 🌙</h2>
+      <p>Thank you for subscribing. You'll be the first to know about new crystals, rituals, and exclusive offers.</p>
+      <p style="color:#888;font-size:12px;">Aurae Crystal Store</p>
+    </div>`,
+  });
+  res.json({ success: true });
+});
+
+// ===== API: Admin — Subscribers list =====
+app.get('/api/admin/subscribers', requireAdmin, (req, res) => {
+  res.json({ subscribers: loadSubscribers() });
+});
+
+// ===== API: Public — Forgot password =====
+app.post('/api/forgot-password', authLimiter, async (req, res) => {
+  const email = String(req.body?.email || '').trim().toLowerCase();
+  const users = loadUsers();
+  const user = users.find(u => (u.email || '').toLowerCase() === email);
+  if (!user) return res.json({ success: true }); // don't reveal whether email exists
+  const token = crypto.randomBytes(32).toString('hex');
+  user.resetToken = token;
+  user.resetTokenExpiry = Date.now() + 3600000; // 1 hour
+  saveUsers(users);
+  await emailPasswordReset(user, `${DOMAIN}/reset-password.html?token=${token}`);
+  res.json({ success: true });
+});
+
+// ===== API: Public — Reset password =====
+app.post('/api/reset-password', authLimiter, async (req, res) => {
+  const { token, password } = req.body || {};
+  if (!token || !password || password.length < 6) return res.status(400).json({ error: 'Invalid request.' });
+  const users = loadUsers();
+  const user = users.find(u => u.resetToken === token && u.resetTokenExpiry > Date.now());
+  if (!user) return res.status(400).json({ error: 'Reset link expired or invalid.' });
+  user.passwordHash = await bcrypt.hash(password, 10);
+  user.resetToken = null;
+  user.resetTokenExpiry = null;
+  saveUsers(users);
+  res.json({ success: true });
+});
+
+// ===== API: Auth — Change password =====
+app.post('/api/me/password', requireAuth, authLimiter, async (req, res) => {
+  const { currentPassword, newPassword } = req.body || {};
+  if (!currentPassword || !newPassword || newPassword.length < 6) return res.status(400).json({ error: 'Current and new password required (min 6 chars).' });
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found.' });
+  const match = await bcrypt.compare(currentPassword, user.passwordHash || '');
+  if (!match) return res.status(401).json({ error: 'Current password is incorrect.' });
+  user.passwordHash = await bcrypt.hash(newPassword, 10);
+  saveUsers(users);
+  res.json({ success: true });
+});
+
+// ===== API: Auth — Wishlist =====
+app.get('/api/me/wishlist', requireAuth, (req, res) => {
+  const user = loadUsers().find(u => u.id === req.user.id);
+  res.json({ wishlist: user?.wishlist || [] });
+});
+app.post('/api/me/wishlist', requireAuth, (req, res) => {
+  const productId = req.body?.productId;
+  if (!productId) return res.status(400).json({ error: 'productId required' });
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  if (!Array.isArray(user.wishlist)) user.wishlist = [];
+  if (!user.wishlist.includes(productId)) user.wishlist.push(productId);
+  saveUsers(users);
+  res.json({ success: true, wishlist: user.wishlist });
+});
+app.delete('/api/me/wishlist/:productId', requireAuth, (req, res) => {
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  user.wishlist = (user.wishlist || []).filter(id => id !== req.params.productId);
+  saveUsers(users);
+  res.json({ success: true, wishlist: user.wishlist });
+});
+
+// ===== API: Auth — Addresses =====
+app.get('/api/me/addresses', requireAuth, (req, res) => {
+  const user = loadUsers().find(u => u.id === req.user.id);
+  res.json({ addresses: user?.addresses || [] });
+});
+app.post('/api/me/addresses', requireAuth, (req, res) => {
+  const { label, name, line1, line2, city, state, zip, country, phone } = req.body || {};
+  if (!line1 || !city || !zip) return res.status(400).json({ error: 'Address line, city and ZIP required.' });
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  if (!Array.isArray(user.addresses)) user.addresses = [];
+  const isDefault = req.body?.isDefault || user.addresses.length === 0;
+  if (isDefault) user.addresses.forEach(a => a.isDefault = false);
+  const addr = { id: crypto.randomUUID(), label: label || 'Home', name, line1, line2, city, state, zip, country: country || 'US', phone, isDefault, createdAt: new Date().toISOString() };
+  user.addresses.push(addr);
+  saveUsers(users);
+  res.json({ success: true, address: addr });
+});
+app.put('/api/me/addresses/:id', requireAuth, (req, res) => {
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user || !Array.isArray(user.addresses)) return res.status(404).json({ error: 'Not found' });
+  const idx = user.addresses.findIndex(a => a.id === req.params.id);
+  if (idx < 0) return res.status(404).json({ error: 'Address not found' });
+  Object.assign(user.addresses[idx], req.body);
+  if (req.body?.isDefault) user.addresses.forEach((a, i) => { if (i !== idx) a.isDefault = false; });
+  saveUsers(users);
+  res.json({ success: true, address: user.addresses[idx] });
+});
+app.delete('/api/me/addresses/:id', requireAuth, (req, res) => {
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user || !Array.isArray(user.addresses)) return res.status(404).json({ error: 'Not found' });
+  user.addresses = user.addresses.filter(a => a.id !== req.params.id);
+  saveUsers(users);
+  res.json({ success: true });
+});
+
+// ===== API: Auth — Cart sync =====
+app.get('/api/me/cart', requireAuth, (req, res) => {
+  const user = loadUsers().find(u => u.id === req.user.id);
+  res.json({ cart: user?.cart || [] });
+});
+app.put('/api/me/cart', requireAuth, (req, res) => {
+  const cart = req.body?.cart;
+  if (!Array.isArray(cart)) return res.status(400).json({ error: 'cart array required' });
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  user.cart = cart;
+  saveUsers(users);
+  res.json({ success: true });
+});
+app.delete('/api/me/cart', requireAuth, (req, res) => {
+  const users = loadUsers();
+  const user = users.find(u => u.id === req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  user.cart = [];
+  saveUsers(users);
+  res.json({ success: true });
+});
+
+// ===== API: Auth — Refund request =====
+app.post('/api/refund-requests', requireAuth, (req, res) => {
+  const { orderId, reason, items } = req.body || {};
+  if (!orderId || !reason) return res.status(400).json({ error: 'orderId and reason required.' });
+  const orders = loadOrders();
+  const order = orders.find(o => o.orderId === orderId);
+  if (!order) return res.status(404).json({ error: 'Order not found.' });
+  const orderUserId = order.userId;
+  const orderEmail = (order.customer?.email || '').toLowerCase();
+  if (orderUserId && orderUserId !== req.user.id && orderEmail !== req.user.email.toLowerCase()) {
+    return res.status(403).json({ error: 'This order does not belong to you.' });
+  }
+  const refunds = loadRefunds();
+  const existing = refunds.find(r => r.orderId === orderId && r.userId === req.user.id && !['rejected', 'resolved'].includes(r.status));
+  if (existing) return res.status(400).json({ error: 'A refund request for this order is already pending.' });
+  const refund = {
+    id: crypto.randomUUID(),
+    orderId,
+    userId: req.user.id,
+    userEmail: req.user.email,
+    reason,
+    items: items || [],
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  refunds.push(refund);
+  saveRefunds(refunds);
+  res.json({ success: true, refund });
+});
+
+// ===== API: Admin — Refund requests =====
+app.get('/api/admin/refund-requests', requireAdmin, (req, res) => {
+  res.json({ refunds: loadRefunds() });
+});
+app.post('/api/admin/refund-requests/:id/status', requireAdmin, (req, res) => {
+  const { status, note } = req.body || {};
+  if (!['pending', 'approved', 'rejected', 'resolved'].includes(status)) return res.status(400).json({ error: 'Invalid status.' });
+  const refunds = loadRefunds();
+  const r = refunds.find(x => x.id === req.params.id);
+  if (!r) return res.status(404).json({ error: 'Refund request not found.' });
+  r.status = status;
+  r.note = note || '';
+  r.updatedAt = new Date().toISOString();
+  saveRefunds(refunds);
+  res.json({ success: true, refund: r });
+});
+
 // ===== Catch-all: SPA fallback (Express 4 safe) =====
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) {

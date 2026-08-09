@@ -34,6 +34,51 @@ function getStars(rating) {
 function saveCart() {
   localStorage.setItem('crystalCart', JSON.stringify(cart));
   updateCartCount();
+  syncCartToServer();
+}
+
+async function syncCartToServer() {
+  const token = getAuthToken();
+  if (!token) return;
+  try {
+    await fetch('/api/me/cart', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ cart }),
+    });
+  } catch (e) { /* silent */ }
+}
+
+function mergeCarts(localCart, serverCart) {
+  const map = new Map();
+  for (const item of serverCart || []) {
+    const key = `${item.id}:${item.variant || ''}`;
+    map.set(key, { ...item });
+  }
+  for (const item of localCart || []) {
+    const key = `${item.id}:${item.variant || ''}`;
+    if (map.has(key)) {
+      map.get(key).qty = Math.max(map.get(key).qty, item.qty);
+    } else {
+      map.set(key, { ...item });
+    }
+  }
+  return Array.from(map.values());
+}
+
+async function loadServerCart() {
+  const token = getAuthToken();
+  if (!token) return;
+  try {
+    const resp = await fetch('/api/me/cart', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const serverCart = data.cart || [];
+    cart = mergeCarts(cart, serverCart);
+    saveCart();
+    renderCart();
+    updateCartCount();
+  } catch (e) { /* silent */ }
 }
 
 function saveCartCoupon() {
@@ -175,7 +220,7 @@ function navigate(view, param) {
 function renderHome() {
   // Best sellers (badge === 'Best Seller')
   const bestSellers = PRODUCTS.filter(p => p.badge === 'Best Seller').slice(0, 4);
-  document.getElementById('bestSellersGrid').innerHTML = bestSellers.map(p => productCardHTML(p)).join('');
+  document.getElementById('bestSellersGrid').innerHTML = bestSellers.map(p => productCardHTML(p, { showHeart: true })).join('');
 
   // Featured products
   const featured = [
@@ -184,7 +229,7 @@ function renderHome() {
     PRODUCTS.find(p => p.id === 'p010'),
     PRODUCTS.find(p => p.id === 'p013')
   ].filter(Boolean);
-  document.getElementById('featuredGrid').innerHTML = featured.map(p => productCardHTML(p)).join('');
+  document.getElementById('featuredGrid').innerHTML = featured.map(p => productCardHTML(p, { showHeart: true })).join('');
 
   // Intentions
   document.getElementById('intentionsGrid').innerHTML = INTENTIONS.map(i => `
@@ -210,7 +255,7 @@ function renderHome() {
   initQuiz();
 }
 
-function productCardHTML(p) {
+function productCardHTML(p, opts = {}) {
   const badge = p.badge ? `<div class="product-badge">${p.badge}</div>` : '';
   const saleBadge = p.compareAt ? `<div class="product-badge sale">Sale</div>` : '';
   const stock = getStockStatus(p.stock);
@@ -221,10 +266,11 @@ function productCardHTML(p) {
   const priceHTML = p.compareAt
     ? `<span class="product-price">${formatPrice(p.price)}<span class="compare-at">${formatPrice(p.compareAt)}</span></span>`
     : `<span class="product-price">${fromPrefix}${formatPrice(p.price)}</span>`;
+  const heart = opts.showHeart ? `<button class="wishlist-btn" data-wishlist-id="${p.id}" onclick="event.stopPropagation(); toggleWishlist('${p.id}')">${isWishlisted(p.id) ? '♥' : '♡'}</button>` : '';
 
   return `
     <div class="product-card" data-product-id="${p.id}">
-      ${badge}${saleBadge}${stockBadge}
+      ${heart}${badge}${saleBadge}${stockBadge}
       <div class="product-image">
         <img src="${p.image}" alt="${p.name}" loading="lazy">
       </div>
@@ -287,7 +333,7 @@ function renderShop(filter) {
       </div>
       ${filterBar}
       <div class="product-grid" id="shopProductGrid">
-        ${products.map(p => productCardHTML(p)).join('')}
+        ${products.map(p => productCardHTML(p, { showHeart: true })).join('')}
       </div>
       ${products.length === 0 ? '<p style="text-align:center;padding:60px;color:var(--color-text-muted);">No products found in this category.</p>' : ''}
     </div>
@@ -379,7 +425,10 @@ function renderProductDetail(productId) {
     <div class="product-detail-grid">
       ${gallery}
       <div class="product-detail-info">
-        <h1>${product.name}</h1>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <h1 style="margin:0;">${product.name}</h1>
+          <button class="wishlist-btn wishlist-large" data-wishlist-id="${product.id}" onclick="event.stopPropagation(); toggleWishlist('${product.id}')">${isWishlisted(product.id) ? '♥' : '♡'}</button>
+        </div>
         <p class="product-detail-tagline">${product.tagline}</p>
         <div class="product-detail-rating">
           <span class="stars" style="font-size:18px;">${getStars(product.rating)}</span>
@@ -426,7 +475,7 @@ function renderProductDetail(productId) {
       <div style="max-width:1280px;margin:64px auto 0;padding:0 24px;">
         <h3 class="section-title" style="font-size:28px;margin-bottom:32px;">You May Also Like</h3>
         <div class="product-grid">
-          ${related.map(p => productCardHTML(p)).join('')}
+          ${related.map(p => productCardHTML(p, { showHeart: true })).join('')}
         </div>
       </div>
     ` : ''}
@@ -499,7 +548,7 @@ function renderBlogDetail(blogId) {
         <div class="blog-detail-related">
           <h3 class="section-title" style="font-size:28px;margin-bottom:32px;">Featured Crystals From This Guide</h3>
           <div class="product-grid">
-            ${relatedProducts.map(p => productCardHTML(p)).join('')}
+            ${relatedProducts.map(p => productCardHTML(p, { showHeart: true })).join('')}
           </div>
         </div>
       ` : ''}
@@ -1022,6 +1071,7 @@ function renderCheckout() {
         </div>
         <div class="form-section">
           <h3>Shipping Address</h3>
+          <div id="savedAddressSelector"></div>
           <div class="form-group">
             <label>Full Name</label>
             <input type="text" id="checkoutName" placeholder="Jane Doe" value="${user ? user.name : ''}" required>
@@ -1119,6 +1169,59 @@ function renderCheckout() {
       </div>
     </div>
   `;
+  loadCheckoutAddresses();
+}
+
+async function loadCheckoutAddresses() {
+  const container = document.getElementById('savedAddressSelector');
+  if (!container) return;
+  const token = getAuthToken();
+  if (!token) { container.innerHTML = ''; return; }
+  try {
+    const resp = await fetch('/api/me/addresses', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!resp.ok) { container.innerHTML = ''; return; }
+    const data = await resp.json();
+    const addresses = data.addresses || [];
+    if (!addresses.length) { container.innerHTML = ''; return; }
+    container.innerHTML = `
+      <div class="form-group">
+        <label>Use a saved address</label>
+        <select id="checkoutSavedAddress" onchange="fillCheckoutAddress(this.value)">
+          <option value="">-- Type manually --</option>
+          ${addresses.map(a => `<option value="${escapeHtml(a.id)}">${escapeHtml(a.label || 'Address')}${a.isDefault ? ' (Default)' : ''} — ${escapeHtml(a.line1)}, ${escapeHtml(a.city)}</option>`).join('')}
+        </select>
+      </div>
+    `;
+  } catch (e) { container.innerHTML = ''; }
+}
+
+function fillCheckoutAddress(id) {
+  if (!id) return;
+  const select = document.getElementById('checkoutSavedAddress');
+  const option = select?.querySelector(`option[value="${CSS.escape(id)}"]`);
+  if (!option) return;
+  // addresses are not stored in DOM; fetch fresh
+  const token = getAuthToken();
+  fetch('/api/me/addresses', { headers: { 'Authorization': 'Bearer ' + token } })
+    .then(r => r.json())
+    .then(data => {
+      const a = (data.addresses || []).find(x => x.id === id);
+      if (!a) return;
+      document.getElementById('checkoutName').value = a.name || '';
+      document.getElementById('checkoutAddress').value = a.line1 || '';
+      document.getElementById('checkoutCity').value = a.city || '';
+      document.getElementById('checkoutState').value = a.state || '';
+      document.getElementById('checkoutZip').value = a.zip || '';
+      document.getElementById('checkoutPhone').value = a.phone || '';
+      const countrySel = document.getElementById('checkoutCountry');
+      if (countrySel && a.country) {
+        const opts = Array.from(countrySel.options);
+        const map = { US: 'United States', GB: 'United Kingdom', CA: 'Canada', AU: 'Australia', DE: 'Germany', FR: 'France' };
+        const label = map[a.country] || a.country;
+        const found = opts.find(o => o.value === a.country || o.text === label);
+        if (found) countrySel.value = found.value;
+      }
+    });
 }
 
 async function applyCheckoutCoupon() {
@@ -1711,7 +1814,7 @@ function renderSearchResults(query) {
     container.innerHTML = `<div class="search-empty"><div class="icon">🔍</div><p>No products found for "${escapeHtml(query)}"</p><p style="font-size:13px;">Try searching for "amethyst", "bracelet", "protection", or "love".</p></div>`;
     return;
   }
-  container.innerHTML = '<div class="product-grid">' + results.map(p => productCardHTML(p)).join('') + '</div>';
+  container.innerHTML = '<div class="product-grid">' + results.map(p => productCardHTML(p, { showHeart: true })).join('') + '</div>';
   attachProductCardHandlers();
 }
 
@@ -1834,6 +1937,7 @@ async function viewMyMessages() {
 
 // ===== Account =====
 let accountTab = 'login';
+let accountSubTab = 'orders';
 
 function openAccount() {
   document.getElementById('accountDrawer').classList.add('open');
@@ -1867,6 +1971,25 @@ function renderAccount() {
 }
 
 function renderAccountLogin(body) {
+  if (accountTab === 'forgot') {
+    body.innerHTML = `
+      <div class="account-tabs">
+        <button class="account-tab" onclick="switchAccountTab('login')">Login</button>
+        <button class="account-tab" onclick="switchAccountTab('register')">Register</button>
+        <button class="account-tab active">Forgot</button>
+      </div>
+      <form onsubmit="event.preventDefault(); handleForgotPassword();">
+        <p style="font-size:14px;color:var(--color-text-muted);margin-bottom:16px;">Enter your email and we'll send you a reset link.</p>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="forgotEmail" placeholder="your@email.com" required>
+        </div>
+        <button class="btn btn-dark btn-full" type="submit">Send Reset Link</button>
+        <button type="button" class="btn btn-text btn-full" style="margin-top:8px;" onclick="switchAccountTab('login')">Back to login</button>
+      </form>
+    `;
+    return;
+  }
   body.innerHTML = `
     <div class="account-tabs">
       <button class="account-tab ${accountTab === 'login' ? 'active' : ''}" onclick="switchAccountTab('login')">Login</button>
@@ -1883,6 +2006,9 @@ function renderAccountLogin(body) {
           <input type="password" id="accountPassword" placeholder="••••••••" required>
         </div>
         <button class="btn btn-dark btn-full" type="submit">Login</button>
+        <div style="text-align:center;margin-top:12px;">
+          <button type="button" class="btn btn-text" style="font-size:13px;" onclick="switchAccountTab('forgot')">Forgot password?</button>
+        </div>
       </form>
     ` : `
       <form onsubmit="event.preventDefault(); handleRegister();">
@@ -1905,51 +2031,43 @@ function renderAccountLogin(body) {
 }
 
 async function renderAccountProfile(body, user) {
-  const energyResult = JSON.parse(localStorage.getItem('auraeEnergyResult') || 'null');
-  const energyHTML = energyResult ? `
-    <div class="account-section">
-      <h4>Your Energy Profile</h4>
-      <div class="account-energy-result">
-        <div class="result-icon">${energyResult.icon || '✨'}</div>
-        <h5>${energyResult.title}</h5>
-        <p>${energyResult.desc}</p>
-        <button class="btn btn-outline btn-full" onclick="navigate('home'); closeAccount(); document.getElementById('energyQuizSection').scrollIntoView({behavior:'smooth'});">Retake Quiz</button>
-      </div>
-    </div>
-  ` : `
-    <div class="account-section">
-      <h4>Your Energy Profile</h4>
-      <div class="account-empty">
-        <div style="font-size:32px;margin-bottom:8px;">🔮</div>
-        <p>Take the energy quiz to discover your crystal alignment.</p>
-        <button class="btn btn-outline btn-full" style="margin-top:12px;" onclick="navigate('home'); closeAccount(); document.getElementById('energyQuizSection').scrollIntoView({behavior:'smooth'});">Start Quiz</button>
-      </div>
-    </div>
-  `;
   body.innerHTML = `
     <div class="account-welcome">
       <div class="avatar">👤</div>
       <h4>${escapeHtml(user.name || user.email)}</h4>
       <p>${escapeHtml(user.email)}</p>
     </div>
-    <div class="account-section">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <h4 style="margin:0;">Order History</h4>
-        <a href="track.html" class="account-order-track">Track an order</a>
-      </div>
-      <div id="accountOrders"><div class="account-empty">Loading your orders…</div></div>
+    <div class="account-tabs" style="margin-bottom:20px;">
+      <button class="account-tab ${accountSubTab === 'orders' ? 'active' : ''}" onclick="switchAccountSubTab('orders')">Orders</button>
+      <button class="account-tab ${accountSubTab === 'wishlist' ? 'active' : ''}" onclick="switchAccountSubTab('wishlist')">Wishlist</button>
+      <button class="account-tab ${accountSubTab === 'addresses' ? 'active' : ''}" onclick="switchAccountSubTab('addresses')">Addresses</button>
+      <button class="account-tab ${accountSubTab === 'password' ? 'active' : ''}" onclick="switchAccountSubTab('password')">Password</button>
     </div>
-    ${energyHTML}
-    <button class="btn btn-outline btn-full account-logout" onclick="handleLogout()">Log Out</button>
+    <div id="accountSubContent"></div>
+    <button class="btn btn-outline btn-full account-logout" style="margin-top:20px;" onclick="handleLogout()">Log Out</button>
   `;
+  const subBody = document.getElementById('accountSubContent');
+  if (!subBody) return;
+  if (accountSubTab === 'orders') await renderAccountOrders(subBody, user);
+  else if (accountSubTab === 'wishlist') await renderAccountWishlist(subBody, user);
+  else if (accountSubTab === 'addresses') renderAccountAddresses(subBody, user);
+  else if (accountSubTab === 'password') renderAccountPassword(subBody);
+}
 
-  const container = document.getElementById('accountOrders');
-  if (!container) return;
+function switchAccountSubTab(tab) {
+  accountSubTab = tab;
+  renderAccount();
+}
+
+function switchAccountTab(tab) {
+  accountTab = tab;
+  renderAccount();
+}
+
+async function renderAccountOrders(container, user) {
   const token = getAuthToken();
-  if (!token) {
-    container.innerHTML = '<div class="account-empty">Please log in again to view your orders.</div>';
-    return;
-  }
+  container.innerHTML = '<div class="account-empty">Loading your orders…</div>';
+  if (!token) { container.innerHTML = '<div class="account-empty">Please log in again.</div>'; return; }
   try {
     const resp = await fetch('/api/me/orders', { headers: { 'Authorization': 'Bearer ' + token } });
     if (!resp.ok) { container.innerHTML = '<div class="account-empty">Could not load your orders.</div>'; return; }
@@ -1969,6 +2087,7 @@ async function renderAccountProfile(body, user) {
       const trackingHTML = (status === 'shipped' || status === 'delivered') && o.trackingNumber
         ? `<div class="account-order-tracking">🚚 ${escapeHtml(o.carrier || 'Standard Shipping')} · Tracking <strong>${escapeHtml(o.trackingNumber)}</strong></div>`
         : '';
+      const canRefund = ['paid', 'shipped', 'delivered'].includes(status);
       return `<div class="account-order">
         <div class="account-order-header">
           <span class="account-order-id">${escapeHtml(o.orderId)}</span>
@@ -1979,7 +2098,10 @@ async function renderAccountProfile(body, user) {
         ${trackingHTML}
         <div class="account-order-footer">
           <span class="account-order-total">${formatPrice(total)}</span>
-          <a href="track.html?orderId=${encodeURIComponent(o.orderId)}&email=${encodeURIComponent(user.email)}" class="account-order-track">Track</a>
+          <div style="display:flex;gap:12px;align-items:center;">
+            ${canRefund ? `<button class="btn btn-text" style="font-size:13px;" onclick="openRefundModal('${escapeHtml(o.orderId)}')">Request Return</button>` : ''}
+            <a href="track.html?orderId=${encodeURIComponent(o.orderId)}&email=${encodeURIComponent(user.email)}" class="account-order-track">Track</a>
+          </div>
         </div>
       </div>`;
     }).join('');
@@ -1988,9 +2110,88 @@ async function renderAccountProfile(body, user) {
   }
 }
 
-function switchAccountTab(tab) {
-  accountTab = tab;
-  renderAccount();
+async function renderAccountWishlist(container, user) {
+  const token = getAuthToken();
+  container.innerHTML = '<div class="account-empty">Loading your wishlist…</div>';
+  try {
+    const resp = await fetch('/api/me/wishlist', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!resp.ok) { container.innerHTML = '<div class="account-empty">Could not load wishlist.</div>'; return; }
+    const data = await resp.json();
+    const ids = data.wishlist || [];
+    if (!ids.length) { container.innerHTML = '<div class="account-empty">Your wishlist is empty. Save crystals you love for later.</div>'; return; }
+    const items = ids.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
+    if (!items.length) { container.innerHTML = '<div class="account-empty">Some saved items are no longer available.</div>'; return; }
+    container.innerHTML = `<div class="wishlist-grid">${items.map(p => productCardHTML(p, { showHeart: true })).join('')}</div>`;
+  } catch (e) {
+    container.innerHTML = '<div class="account-empty">Connection error.</div>';
+  }
+}
+
+function renderAccountAddresses(container, user) {
+  container.innerHTML = `
+    <div class="account-section">
+      <h4 style="margin-bottom:12px;">Saved Addresses</h4>
+      <div id="addressList"><div class="account-empty">Loading…</div></div>
+      <form id="addAddressForm" style="margin-top:20px;border-top:1px solid var(--color-border);padding-top:20px;" onsubmit="event.preventDefault(); handleAddAddress();">
+        <h5 style="margin-bottom:12px;">Add Address</h5>
+        <div class="form-group"><label>Label</label><input type="text" id="addrLabel" placeholder="Home / Office"></div>
+        <div class="form-group"><label>Full Name</label><input type="text" id="addrName" placeholder="Jane Doe"></div>
+        <div class="form-group"><label>Address Line 1 *</label><input type="text" id="addrLine1" required placeholder="123 Crystal St"></div>
+        <div class="form-group"><label>Address Line 2</label><input type="text" id="addrLine2" placeholder="Apt 4"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="form-group"><label>City *</label><input type="text" id="addrCity" required></div>
+          <div class="form-group"><label>ZIP *</label><input type="text" id="addrZip" required></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="form-group"><label>State</label><input type="text" id="addrState" placeholder="CA"></div>
+          <div class="form-group"><label>Country</label><input type="text" id="addrCountry" value="US"></div>
+        </div>
+        <div class="form-group"><label>Phone</label><input type="tel" id="addrPhone" placeholder="+1 555 123 4567"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:16px;"><input type="checkbox" id="addrDefault"> Set as default</label>
+        <button class="btn btn-dark btn-full" type="submit">Save Address</button>
+      </form>
+    </div>
+  `;
+  loadAddressList();
+}
+
+async function loadAddressList() {
+  const list = document.getElementById('addressList');
+  if (!list) return;
+  const token = getAuthToken();
+  try {
+    const resp = await fetch('/api/me/addresses', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!resp.ok) { list.innerHTML = '<div class="account-empty">Could not load addresses.</div>'; return; }
+    const data = await resp.json();
+    const addresses = data.addresses || [];
+    if (!addresses.length) { list.innerHTML = '<div class="account-empty">No saved addresses yet.</div>'; return; }
+    list.innerHTML = addresses.map(a => `
+      <div class="address-card" style="border:1px solid var(--color-border);border-radius:12px;padding:14px;margin-bottom:12px;position:relative;">
+        <div style="font-weight:700;margin-bottom:4px;">${escapeHtml(a.label || 'Address')} ${a.isDefault ? '<span style="font-size:12px;background:var(--color-accent);color:#fff;padding:2px 8px;border-radius:20px;">Default</span>' : ''}</div>
+        <div style="font-size:14px;color:var(--color-text-muted);line-height:1.5;">
+          ${a.name ? escapeHtml(a.name) + '<br>' : ''}
+          ${escapeHtml(a.line1)}${a.line2 ? '<br>' + escapeHtml(a.line2) : ''}<br>
+          ${escapeHtml(a.city)}, ${escapeHtml(a.state || '')} ${escapeHtml(a.zip)} ${escapeHtml(a.country || '')}<br>
+          ${a.phone ? escapeHtml(a.phone) : ''}
+        </div>
+        <button class="btn btn-text" style="position:absolute;top:12px;right:12px;font-size:13px;" onclick="deleteAddress('${escapeHtml(a.id)}')">Remove</button>
+      </div>
+    `).join('');
+  } catch (e) { list.innerHTML = '<div class="account-empty">Connection error.</div>'; }
+}
+
+function renderAccountPassword(container) {
+  container.innerHTML = `
+    <div class="account-section">
+      <h4 style="margin-bottom:12px;">Change Password</h4>
+      <form onsubmit="event.preventDefault(); handleChangePassword();">
+        <div class="form-group"><label>Current Password</label><input type="password" id="currentPassword" required></div>
+        <div class="form-group"><label>New Password</label><input type="password" id="newPassword" required minlength="6"></div>
+        <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirmPassword" required minlength="6"></div>
+        <button class="btn btn-dark btn-full" type="submit">Update Password</button>
+      </form>
+    </div>
+  `;
 }
 
 async function handleLogin() {
@@ -2007,6 +2208,7 @@ async function handleLogin() {
     if (!resp.ok) { showToast(data.error || 'Login failed'); return; }
     localStorage.setItem('auraeToken', data.token);
     localStorage.setItem('auraeUser', JSON.stringify(data.user));
+    await loadServerCart();
     renderAccount();
     showToast('Welcome back, ' + (data.user.name || data.user.email));
   } catch (e) {
@@ -2029,6 +2231,7 @@ async function handleRegister() {
     if (!resp.ok) { showToast(data.error || 'Registration failed'); return; }
     localStorage.setItem('auraeToken', data.token);
     localStorage.setItem('auraeUser', JSON.stringify(data.user));
+    await loadServerCart();
     renderAccount();
     showToast('Account created. Welcome to Aurae!');
   } catch (e) {
@@ -2036,11 +2239,21 @@ async function handleRegister() {
   }
 }
 
-function handleLogout() {
+async function handleLogout() {
+  const token = getAuthToken();
+  if (token) {
+    try { await fetch('/api/me/cart', { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } }); } catch (e) {}
+  }
   localStorage.removeItem('auraeToken');
   localStorage.removeItem('auraeUser');
+  cart = [];
+  localStorage.removeItem('crystalCart');
+  localStorage.removeItem('auraeCartCoupon');
   accountTab = 'login';
+  accountSubTab = 'orders';
   renderAccount();
+  renderCart();
+  updateCartCount();
   showToast('Logged out successfully');
 }
 
@@ -2064,17 +2277,170 @@ function saveOrder(orderId, items, customer, provider) {
   localStorage.setItem('auraeOrders', JSON.stringify(orders));
 }
 
+// ===== Account action handlers =====
+async function handleForgotPassword() {
+  const email = document.getElementById('forgotEmail')?.value?.trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email'); return; }
+  try {
+    const resp = await fetch('/api/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+    if (resp.ok) { showToast('If this email is registered, a reset link has been sent.'); switchAccountTab('login'); }
+    else { showToast('Failed to send reset link. Try again.'); }
+  } catch (e) { showToast('Network error. Please try again.'); }
+}
+
+async function handleResetPassword() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  const password = document.getElementById('resetPassword')?.value;
+  const confirm = document.getElementById('resetPasswordConfirm')?.value;
+  if (!token) { showToast('Invalid reset link.'); return; }
+  if (!password || password.length < 6) { showToast('Password must be at least 6 characters.'); return; }
+  if (password !== confirm) { showToast('Passwords do not match.'); return; }
+  try {
+    const resp = await fetch('/api/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password }) });
+    if (resp.ok) { showToast('Password updated! Please log in.'); window.location.href = 'index.html'; }
+    else { showToast('Reset link expired or invalid.'); }
+  } catch (e) { showToast('Network error. Please try again.'); }
+}
+
+async function handleChangePassword() {
+  const current = document.getElementById('currentPassword')?.value;
+  const newPass = document.getElementById('newPassword')?.value;
+  const confirm = document.getElementById('confirmPassword')?.value;
+  if (!current || !newPass || newPass.length < 6) { showToast('Please fill all fields (min 6 chars).'); return; }
+  if (newPass !== confirm) { showToast('New passwords do not match.'); return; }
+  const token = getAuthToken();
+  try {
+    const resp = await fetch('/api/me/password', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ currentPassword: current, newPassword: newPass }) });
+    if (resp.ok) { showToast('Password updated successfully.'); document.getElementById('currentPassword').value = ''; document.getElementById('newPassword').value = ''; document.getElementById('confirmPassword').value = ''; }
+    else { const data = await resp.json(); showToast(data.error || 'Failed to update password.'); }
+  } catch (e) { showToast('Network error. Please try again.'); }
+}
+
+async function handleAddAddress() {
+  const token = getAuthToken();
+  const payload = {
+    label: document.getElementById('addrLabel')?.value?.trim() || 'Home',
+    name: document.getElementById('addrName')?.value?.trim(),
+    line1: document.getElementById('addrLine1')?.value?.trim(),
+    line2: document.getElementById('addrLine2')?.value?.trim(),
+    city: document.getElementById('addrCity')?.value?.trim(),
+    state: document.getElementById('addrState')?.value?.trim(),
+    zip: document.getElementById('addrZip')?.value?.trim(),
+    country: document.getElementById('addrCountry')?.value?.trim(),
+    phone: document.getElementById('addrPhone')?.value?.trim(),
+    isDefault: document.getElementById('addrDefault')?.checked || false,
+  };
+  if (!payload.line1 || !payload.city || !payload.zip) { showToast('Please fill required address fields.'); return; }
+  try {
+    const resp = await fetch('/api/me/addresses', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(payload) });
+    if (resp.ok) { showToast('Address saved.'); document.getElementById('addAddressForm').reset(); loadAddressList(); }
+    else { showToast('Failed to save address.'); }
+  } catch (e) { showToast('Network error. Please try again.'); }
+}
+
+async function deleteAddress(id) {
+  if (!confirm('Remove this address?')) return;
+  const token = getAuthToken();
+  try {
+    const resp = await fetch('/api/me/addresses/' + encodeURIComponent(id), { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+    if (resp.ok) { showToast('Address removed.'); loadAddressList(); }
+    else { showToast('Failed to remove address.'); }
+  } catch (e) { showToast('Network error. Please try again.'); }
+}
+
+function isWishlisted(productId) {
+  const raw = localStorage.getItem('auraeWishlist') || '[]';
+  try { return JSON.parse(raw).includes(productId); } catch (e) { return false; }
+}
+
+function setLocalWishlist(list) {
+  localStorage.setItem('auraeWishlist', JSON.stringify(list));
+}
+
+async function toggleWishlist(productId) {
+  const token = getAuthToken();
+  const local = JSON.parse(localStorage.getItem('auraeWishlist') || '[]');
+  const idx = local.indexOf(productId);
+  if (idx >= 0) {
+    local.splice(idx, 1);
+    setLocalWishlist(local);
+    if (token) {
+      try { await fetch('/api/me/wishlist/' + encodeURIComponent(productId), { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } }); } catch (e) {}
+    }
+    showToast('Removed from wishlist');
+  } else {
+    local.push(productId);
+    setLocalWishlist(local);
+    if (token) {
+      try { await fetch('/api/me/wishlist', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ productId }) }); } catch (e) {}
+    }
+    showToast('Saved to wishlist ✨');
+  }
+  renderWishlistIcons();
+  if (accountSubTab === 'wishlist') renderAccount();
+}
+
+async function loadServerWishlist() {
+  const token = getAuthToken();
+  if (!token) return;
+  try {
+    const resp = await fetch('/api/me/wishlist', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const server = data.wishlist || [];
+    const local = JSON.parse(localStorage.getItem('auraeWishlist') || '[]');
+    const merged = Array.from(new Set([...local, ...server]));
+    setLocalWishlist(merged);
+    renderWishlistIcons();
+  } catch (e) {}
+}
+
+function renderWishlistIcons() {
+  document.querySelectorAll('[data-wishlist-id]').forEach(el => {
+    const id = el.dataset.wishlistId;
+    const liked = isWishlisted(id);
+    el.innerHTML = liked ? '♥' : '♡';
+    el.classList.toggle('wishlist-active', liked);
+  });
+}
+
+function openRefundModal(orderId) {
+  const reason = prompt('Please tell us why you would like to return items from order ' + orderId + ':');
+  if (!reason || !reason.trim()) return;
+  submitRefund(orderId, reason.trim());
+}
+
+async function submitRefund(orderId, reason) {
+  const token = getAuthToken();
+  try {
+    const resp = await fetch('/api/refund-requests', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ orderId, reason }),
+    });
+    if (resp.ok) { showToast('Return request submitted.'); }
+    else { const data = await resp.json(); showToast(data.error || 'Failed to submit request.'); }
+  } catch (e) { showToast('Network error. Please try again.'); }
+}
+
 // ===== Initialize =====
 document.addEventListener('DOMContentLoaded', async () => {
   // Load the latest product data (admin-managed images/stock) from the backend
   // before the first render, so the storefront reflects admin changes.
   await refreshProducts();
+  // Sync logged-in user data across devices
+  if (getAuthToken()) {
+    await loadServerCart();
+    await loadServerWishlist();
+  }
   const isStorePage = !!document.getElementById('homeView');
   if (isStorePage) {
     renderHome();
   }
   renderCart();
   updateCartCount();
+  renderWishlistIcons();
 
   // Handle returning from PayPal success redirect or external page redirects
   const urlParams = new URLSearchParams(window.location.search);
@@ -2105,10 +2471,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('cartClose').addEventListener('click', closeCart);
   document.getElementById('cartOverlay').addEventListener('click', closeCart);
   const newsletterForm = document.getElementById('newsletterForm');
-  if (newsletterForm) newsletterForm.addEventListener('submit', (e) => {
+  if (newsletterForm) newsletterForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    showToast('Thank you for subscribing! 🌿');
-    e.target.reset();
+    const input = newsletterForm.querySelector('input[type="email"]');
+    const email = input?.value?.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address'); return; }
+    try {
+      const resp = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+      if (resp.ok) { showToast('Thank you for subscribing! 🌿'); input.value = ''; }
+      else { showToast('Subscription failed. Please try again.'); }
+    } catch (err) { showToast('Network error. Please try again.'); }
   });
   document.getElementById('searchBtn').addEventListener('click', openSearch);
   document.getElementById('searchClose').addEventListener('click', closeSearch);
