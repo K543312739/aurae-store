@@ -2185,6 +2185,15 @@ app.get('*', (req, res) => {
 
 // ===== Global error handler (must be registered last) =====
 app.use((err, req, res, next) => {
+  // Body-parser / request errors (malformed JSON, body too large, bad encoding)
+  // are client-side mistakes. Return the correct 4xx and avoid polluting the
+  // error log with a scary "Unhandled error" — these are expected, not failures.
+  if (err && err.type && typeof err.type === 'string' && err.type.startsWith('entity.')) {
+    const status = (err.status && err.status >= 400 && err.status < 500) ? err.status : 400;
+    console.warn('[WARN] request body error:', err.type, '-', req.method, req.originalUrl);
+    if (res.headersSent) return next(err);
+    return res.status(status).json({ error: 'Invalid request body.' });
+  }
   console.error('[ERROR] Unhandled error:', (err && err.stack) || err);
   if (res.headersSent) return next(err);
   res.status(500).json({ error: 'Internal server error. Please try again later.' });
