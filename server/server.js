@@ -25,6 +25,14 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 
+// ===== SEO: crawler prerender + Google Search Console verification =====
+const ssr = require('./ssr');
+const GSC_VERIFICATION = (process.env.GSC_VERIFICATION || '').trim();
+const GSC_HTML = (process.env.GSC_HTML_VERIFICATION || '').trim();
+const GSC_META = GSC_VERIFICATION
+  ? `<meta name="google-site-verification" content="${GSC_VERIFICATION}">`
+  : '';
+
 // ===== Crash resilience: keep the process alive on unexpected errors =====
 // (PM2 will still restart on a real crash; this prevents a single bad request
 //  from taking the whole site down.)
@@ -124,6 +132,25 @@ setInterval(() => {
 
 // Serve static frontend files from parent directory
 const frontendDir = path.join(__dirname, '..');
+
+// ===== SEO: server-side prerender for crawlers =====
+// Mounted BEFORE express.static so bot requests to "/" return a fully-rendered
+// HTML snapshot (with product data + JSON-LD), not the empty SPA shell.
+// Real users (non-bot UA) skip this and get the rich SPA; real static assets
+// (css/js/images) are passed through to express.static via next().
+app.use((req, res, next) => {
+  if (!ssr.isBot(req)) return next();
+  const result = ssr.renderSSR(req, { products: loadProducts(), domain: DOMAIN, gscMeta: GSC_META });
+  if (!result) return next();
+  res.status(result.status).send(result.html);
+});
+
+// Google Search Console HTML-file verification (set GSC_HTML_VERIFICATION env to
+// the full contents of the google<code>.html file provided by GSC).
+if (GSC_HTML) {
+  app.get('/google*.html', (req, res) => res.type('html').send(GSC_HTML));
+}
+
 app.use(express.static(frontendDir, { dotfiles: 'deny' }));
 
 // ===== Product image uploads =====
