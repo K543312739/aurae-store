@@ -510,9 +510,11 @@ function updateProductSEO(product) {
   if (!product) return;
   const base = window.location.origin;
   const url = `${base}/index.html?product=${encodeURIComponent(product.id)}`;
-  const img = product.image && !product.image.startsWith('http') ? base + product.image : (product.image || `${base}/images/p001.png`);
+  const defaultImg = `${base}/images/og-default.png`;
+  const img = product.image && !product.image.startsWith('http') ? base + product.image : (product.image || defaultImg);
   const desc = (product.tagline || product.description || '').slice(0, 160);
   const title = `${product.name} — Aurae`;
+  const imgAlt = `${product.name} — Aurae crystal product image`;
 
   document.title = title;
   setMeta('description', desc);
@@ -520,9 +522,14 @@ function updateProductSEO(product) {
   setMeta('og:description', desc, 'property');
   setMeta('og:url', url, 'property');
   setMeta('og:image', img, 'property');
+  setMeta('og:image:width', '1200', 'property');
+  setMeta('og:image:height', '630', 'property');
+  setMeta('og:image:alt', imgAlt, 'property');
+  setMeta('og:image:type', 'image/png', 'property');
   setMeta('twitter:title', title);
   setMeta('twitter:description', desc);
   setMeta('twitter:image', img);
+  setMeta('twitter:image:alt', imgAlt);
   setCanonical(url);
 
   let ld = document.getElementById('aurae-jsonld');
@@ -596,13 +603,23 @@ function updateViewSEO(view, param) {
   let canonical = meta.canonical;
   if (view === 'shop' && param && param !== 'all') canonical = `/index.html?shop=${encodeURIComponent(param)}`;
   const fullUrl = window.location.origin + canonical;
+  const base = window.location.origin;
+  const defaultImg = `${base}/images/og-default.png`;
+  const imgAlt = 'Aurae — Where Energy Meets Well-Being. Healing crystals and crystal jewelry.';
   document.title = meta.title;
   setMeta('description', meta.desc);
   setMeta('og:title', meta.title, 'property');
   setMeta('og:description', meta.desc, 'property');
   setMeta('og:url', fullUrl, 'property');
+  setMeta('og:image', defaultImg, 'property');
+  setMeta('og:image:width', '1200', 'property');
+  setMeta('og:image:height', '630', 'property');
+  setMeta('og:image:alt', imgAlt, 'property');
+  setMeta('og:image:type', 'image/png', 'property');
   setMeta('twitter:title', meta.title);
   setMeta('twitter:description', meta.desc);
+  setMeta('twitter:image', defaultImg);
+  setMeta('twitter:image:alt', imgAlt);
   setCanonical(fullUrl);
 }
 
