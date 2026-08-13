@@ -65,12 +65,35 @@ app.use(cors({
   },
 }));
 // ===== Security hardening headers (added during security audit 2026-08-10) =====
+// Content-Security-Policy (added 2026-08-13):
+// The storefront is a client-rendered SPA that relies heavily on inline event
+// handlers (onclick) and inline styles, so 'unsafe-inline' is permitted for
+// script/style. The policy still blocks the most dangerous XSS vector — loading
+// scripts/styles/frames from untrusted external origins — and locks down
+// base-uri, form-action and frame-ancestors. PayPal SDK + iframe are the only
+// allowed third parties (payments). Google Fonts is the only allowed font/src.
+const CSP_DIRECTIVES = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://www.paypal.com https://www.sandbox.paypal.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: https:",
+  "connect-src 'self'",
+  "frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com",
+  "frame-ancestors 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests"
+].join('; ');
+
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  res.setHeader('Content-Security-Policy', CSP_DIRECTIVES);
   next();
 });
 app.use(express.json({ limit: '1mb' }));
@@ -2195,6 +2218,13 @@ app.get('/sitemap.xml', (req, res) => {
   const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
   categories.forEach(c => {
     urls.push(url(`${domain}/index.html?shop=category:${encodeURIComponent(c)}`, '0.7', 'weekly'));
+  });
+
+  // Blog posts — keep in sync with the ids in js/data.js (BLOG_POSTS).
+  // They are low-frequency editorial content, so a maintained id list is fine.
+  const BLOG_IDS = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7'];
+  BLOG_IDS.forEach(id => {
+    urls.push(url(`${domain}/index.html?blog=${encodeURIComponent(id)}`, '0.6', 'monthly'));
   });
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`;

@@ -948,6 +948,69 @@ const BLOG_POSTS = [
       <p>Citrine and Carnelian bring warm, energizing vibrations to the kitchen, the room where the body is literally nourished.</p>
       <h3>Bathroom: Cleansing & Release</h3>
       <p>The bathroom is a space of release. Place Clear Quartz or Amethyst here to support energetic cleansing and spiritual renewal during baths.</p>`
+  },
+  {
+    id: "b5",
+    category: "guides",
+    readTime: "12 min read",
+    title: "How to Spot Fake vs. Real Crystals: A Buyer's Guide",
+    excerpt: "The crystal market is beautiful — and crowded with fakes. Learn the simple tests that separate genuine stones from glass, dye, and resin.",
+    image: "/images/p013.png",
+    content: `<p>As crystals have gone mainstream, so have counterfeits. Glass, dyed quartz, and resin imitations now fill many marketplaces. The good news: with a few simple checks, you can protect yourself and buy with confidence.</p>
+      <h3>1. The Temperature Test</h3>
+      <p>Real crystals feel cool to the touch and stay cool longer than glass. Hold the stone in your palm for thirty seconds. Glass warms almost immediately; a genuine quartz or amethyst will still feel slightly cool.</p>
+      <h3>2. Look for Imperfection</h3>
+      <p>Nature is not uniform. Genuine stones show tiny inclusions, uneven color, and natural striations. A stone that is perfectly clear, perfectly uniform, and suspiciously flawless is often glass or synthetic.</p>
+      <h3>3. The Bubble Check</h3>
+      <p>Hold the stone up to bright light. Air bubbles trapped inside are a tell-tale sign of glass. Real crystal may have mineral inclusions that look like wisps or feathers — never round bubbles.</p>
+      <h3>4. Weight & Density</h3>
+      <p>Crystals are denser than they look. A "stone" that feels oddly light for its size may be resin or plastic. Compare two similar-sized pieces; the heavier one is usually real.</p>
+      <h3>5. Watch the Price</h3>
+      <p>If a large, vividly colored "rare" crystal costs next to nothing, be skeptical. Genuine rarity carries a price. Deeply discounted "Citrine" points or neon-bright stones are frequently heat-treated or dyed.</p>
+      <h3>6. Ask for Provenance</h3>
+      <p>Reputable sellers share where a stone was mined and will stand behind authenticity. At Aurae, every piece is sourced from known mines and inspected before it reaches you. When in doubt, buy from sellers who do the same.</p>`
+  },
+  {
+    id: "b6",
+    category: "spirituality",
+    readTime: "10 min read",
+    title: "Crystal Meditation for Beginners: A Step-by-Step Ritual",
+    excerpt: "You don't need to be a mystic to meditate with crystals. Here is a simple, grounding ritual you can do in ten quiet minutes.",
+    image: "/images/p004.png",
+    content: `<p>Meditation can feel intimidating when you are starting out. Crystals give your wandering mind a gentle anchor. This ten-minute ritual is perfect for beginners and requires only one stone and a few minutes of quiet.</p>
+      <h3>Step 1: Choose Your Stone</h3>
+      <p>Start with one crystal. Amethyst is ideal for calm and focus, Rose Quartz for heart-opening, Clear Quartz for clarity. Pick the stone whose energy you are most curious about today.</p>
+      <h3>Step 2: Cleanse</h3>
+      <p>Hold your stone and imagine any stagnant energy rinsing away. A quick pass through incense smoke or a moment under running water is enough. You are resetting the stone to a clean, neutral state.</p>
+      <h3>Step 3: Set an Intention</h3>
+      <p>Before you begin, name what you need. "I welcome calm." "I release what is not mine." Speak it silently or aloud. Your intention is the lens that focuses the stone's energy.</p>
+      <h3>Step 4: Find a Position</h3>
+      <p>Sit comfortably with your spine tall. Rest the crystal in your open palm or place it just below your navel. Let your shoulders soften and your jaw unclench.</p>
+      <h3>Step 5: Breathe & Visualize</h3>
+      <p>Inhale for four counts, exhale for six. With each breath, imagine a soft light moving from the crystal into your body — cool, steady, supportive. When your mind drifts, gently return to the sensation of the stone.</p>
+      <h3>Step 6: Close</h3>
+      <p>After ten minutes, thank the stone and the moment. Keep your intention in mind as you return to your day. With regular practice, even two minutes can reset your entire energy.</p>`
+  },
+  {
+    id: "b7",
+    category: "guides",
+    readTime: "9 min read",
+    title: "The Ultimate Crystal Gift Guide: What to Give & When",
+    excerpt: "A crystal is more than a gift — it is a wish for someone's wellbeing. Here is what to give for every occasion that matters.",
+    image: "/images/p001.png",
+    content: `<p>Few gifts carry as much intention as a crystal. Whether you believe in their energy or simply love their beauty, giving a stone is a quiet way of saying "I wish you well." Here is a quick guide for the moments that matter.</p>
+      <h3>For Love & Anniversaries</h3>
+      <p>Rose Quartz is the unmistakable stone of love. A Rose Quartz bracelet is a daily reminder of affection, while a Moonstone pendant celebrates intuition and devotion. Give it to a partner, a new spouse, or yourself.</p>
+      <h3>For a New Job or Promotion</h3>
+      <p>Citrine and Tiger's Eye project confidence and momentum. A Citrine ring or Tiger's Eye bracelet makes a thoughtful "go get them" gift for anyone stepping into new responsibility.</p>
+      <h3>For Graduation</h3>
+      <p>Clear Quartz amplifies focus and clarity — perfect for a student beginning a new chapter. Pair it with Amethyst to support calm focus through the next big transition.</p>
+      <h3>For Healing & Hard Times</h3>
+      <p>Black Gold Obsidian and Amethyst offer grounding and comfort. A protective bracelet tells someone "I've got you" without saying a word, especially during loss or burnout.</p>
+      <h3>For a New Baby or Home</h3>
+      <p>Soft, gentle stones like Rose Quartz or Moonstone bless a nursery or a new house with warmth. Keep them on a shelf where they can quietly hold good energy for the whole family.</p>
+      <h3>For Self-Love</h3>
+      <p>Sometimes the most important recipient is you. Choose the stone you are drawn to, not the one you think you should want. That pull is often exactly the energy you need.</p>`
   }
 ];
 
