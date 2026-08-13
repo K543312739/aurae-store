@@ -624,6 +624,46 @@ function emailReplyNotification(message) {
   });
 }
 
+// Notify the store owner when a real (paid) order comes in.
+function emailOwnerNewOrder(order) {
+  const ownerEmail = process.env.ADMIN_NOTIFY_EMAIL;
+  if (!ownerEmail) {
+    console.warn('[Email] ADMIN_NOTIFY_EMAIL not set — skipping owner new-order notification.');
+    return;
+  }
+  const t = order.totals || {};
+  const itemsHtml = (order.items || []).map(i =>
+    `<div>${i.qty || 1}&times; ${(i.name || '')}${i.variant ? ' (' + i.variant + ')' : ''} &mdash; $${(i.price * (i.qty || 1)).toFixed(2)}</div>`
+  ).join('');
+  const addr = order.customer?.address || {};
+  const addressLine = [addr.line1, addr.line2, addr.city, addr.state, addr.zip, addr.country]
+    .filter(Boolean).join(', ') || '—';
+  const html = `<div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:auto;color:#2a2a2a;">
+    <h2 style="font-family:'Cormorant Garamond',serif;color:#8a6d4b;">🌟 New order received — #${order.orderId}</h2>
+    <p>A customer just placed a <strong>paid</strong> order on Aurae. Here are the details:</p>
+    <div style="background:#f8f5f0;border-radius:12px;padding:16px;margin:16px 0;">
+      <div style="margin-bottom:10px;"><strong>Customer:</strong> ${order.customer?.name || '—'} ${order.customer?.phone ? '(' + order.customer.phone + ')' : ''}</div>
+      <div style="margin-bottom:10px;"><strong>Email:</strong> ${order.customer?.email || '—'}</div>
+      <div style="margin-bottom:10px;"><strong>Ship to:</strong> ${addressLine}</div>
+      <div style="margin-bottom:10px;"><strong>Payment:</strong> ${order.paymentProvider || '—'}${order.coupon ? ' · coupon ' + order.coupon : ''}</div>
+      <hr style="border:none;border-top:1px solid #e8e0d8;margin:12px 0;">
+      ${itemsHtml}
+      <hr style="border:none;border-top:1px solid #e8e0d8;margin:12px 0;">
+      <div>Subtotal: $${t.subtotal?.toFixed(2)}</div>
+      ${t.discount ? `<div>Discount: -$${t.discount.toFixed(2)}</div>` : ''}
+      <div>Shipping: ${t.shipping ? '$' + t.shipping.toFixed(2) : 'FREE'}</div>
+      <div>Tax: $${t.tax?.toFixed(2)}</div>
+      <div style="font-weight:700;font-size:16px;">Total: $${t.total?.toFixed(2)} ${t.currency || ''}</div>
+    </div>
+    <p style="color:#888;font-size:12px;">View in admin: ${process.env.DOMAIN || ''}/admin.html &middot; Order #${order.orderId}</p>
+  </div>`;
+  return sendEmail({
+    to: ownerEmail,
+    subject: `🌟 New Aurae order #${order.orderId} — $${t.total?.toFixed(2) || '0'}`,
+    html,
+  });
+}
+
 // Finalize a paid order: decrement inventory + send confirmation email + bump coupon usage.
 function finalizePaidOrder(orderId) {
   const orders = loadOrders();
@@ -636,6 +676,7 @@ function finalizePaidOrder(orderId) {
     if (c) { c.usedCount = (c.usedCount || 0) + 1; saveCoupons(coupons); }
   }
   emailOrderConfirmation(order);
+  emailOwnerNewOrder(order); // notify store owner of the new paid order
 }
 
 // ===== Helper: Build a tracking timeline from order status =====
