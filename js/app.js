@@ -189,11 +189,13 @@ function navigate(view, param) {
   if (view === 'home') {
     document.getElementById('homeView').classList.add('active');
     currentView = 'home';
+    updateViewSEO('home');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (view === 'shop') {
     document.getElementById('shopView').classList.add('active');
     currentView = 'shop';
     renderShop(param || 'all');
+    updateViewSEO('shop', param);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (view === 'product') {
     document.getElementById('productView').classList.add('active');
@@ -212,10 +214,12 @@ function navigate(view, param) {
   } else if (view === 'about') {
     document.getElementById('aboutView').classList.add('active');
     currentView = 'about';
+    updateViewSEO('about');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (view === 'contact') {
     document.getElementById('contactView').classList.add('active');
     currentView = 'contact';
+    updateViewSEO('contact');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (view === 'blog') {
     document.getElementById('blogView').classList.add('active');
@@ -519,6 +523,7 @@ function updateProductSEO(product) {
   setMeta('twitter:title', title);
   setMeta('twitter:description', desc);
   setMeta('twitter:image', img);
+  setCanonical(url);
 
   let ld = document.getElementById('aurae-jsonld');
   if (!ld) { ld = document.createElement('script'); ld.id = 'aurae-jsonld'; ld.type = 'application/ld+json'; document.head.appendChild(ld); }
@@ -552,6 +557,53 @@ function setMeta(name, content, attr = 'name') {
   let el = document.querySelector(`meta[${attr}="${name}"]`);
   if (!el) { el = document.createElement('meta'); el.setAttribute(attr, name); document.head.appendChild(el); }
   el.setAttribute('content', content);
+}
+
+function setCanonical(url) {
+  let el = document.querySelector('link[rel="canonical"]');
+  if (!el) { el = document.createElement('link'); el.rel = 'canonical'; document.head.appendChild(el); }
+  el.setAttribute('href', url);
+}
+
+// Per-view SEO metadata so each SPA view has its own title/description/OG/canonical
+// (instead of the whole site inheriting the homepage's meta + canonical).
+const SEO_VIEWS = {
+  home: {
+    title: 'Aurae — Where Energy Meets Well-Being',
+    desc: 'Shop healing crystals, crystal jewelry, and energy tools. Where energy meets well-being.',
+    canonical: '/'
+  },
+  shop: {
+    title: 'Shop Crystals & Healing Jewelry — Aurae',
+    desc: 'Browse authentic healing crystals, crystal jewelry, and energy tools by category. Find the perfect stone for your intention.',
+    canonical: '/index.html?shop=all'
+  },
+  about: {
+    title: 'About Aurae — Our Story & Craft',
+    desc: 'Learn about Aurae: our mission, our ethically-sourced crystals, and the intention behind every piece we craft.',
+    canonical: '/index.html?view=about'
+  },
+  contact: {
+    title: 'Contact Aurae — We’re Here to Help',
+    desc: 'Get in touch with the Aurae team for order questions, custom requests, or crystal guidance.',
+    canonical: '/contact.html'
+  }
+};
+
+function updateViewSEO(view, param) {
+  const meta = SEO_VIEWS[view];
+  if (!meta) return;
+  let canonical = meta.canonical;
+  if (view === 'shop' && param && param !== 'all') canonical = `/index.html?shop=${encodeURIComponent(param)}`;
+  const fullUrl = window.location.origin + canonical;
+  document.title = meta.title;
+  setMeta('description', meta.desc);
+  setMeta('og:title', meta.title, 'property');
+  setMeta('og:description', meta.desc, 'property');
+  setMeta('og:url', fullUrl, 'property');
+  setMeta('twitter:title', meta.title);
+  setMeta('twitter:description', meta.desc);
+  setCanonical(fullUrl);
 }
 
 // Pull the live (server-authoritative) stock for a product detail page.
@@ -2609,8 +2661,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       navigate('product', pid);
       window.history.replaceState({}, '', window.location.pathname);
     }
-  } else if (isStorePage && urlParams.has('shop')) {
-    navigate('shop', urlParams.get('shop'));
+  } else if (isStorePage && (urlParams.has('shop') || urlParams.get('view') === 'shop')) {
+    const shopParam = urlParams.get('shop') || (urlParams.get('category') ? 'category:' + urlParams.get('category') : 'all');
+    navigate('shop', shopParam);
     window.history.replaceState({}, '', window.location.pathname);
   } else if (isStorePage && urlParams.get('view') === 'about') {
     navigate('about');

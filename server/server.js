@@ -2150,7 +2150,7 @@ app.get('/sitemap.xml', (req, res) => {
 
   let urls = [
     url(`${domain}/`, '1.0', 'daily'),
-    url(`${domain}/index.html?view=shop`, '0.9', 'weekly'),
+    url(`${domain}/index.html?shop=all`, '0.9', 'weekly'),
     url(`${domain}/index.html?view=about`, '0.7', 'monthly'),
     url(`${domain}/contact.html`, '0.6', 'monthly'),
     url(`${domain}/faq.html`, '0.6', 'monthly'),
@@ -2167,7 +2167,7 @@ app.get('/sitemap.xml', (req, res) => {
 
   const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
   categories.forEach(c => {
-    urls.push(url(`${domain}/index.html?view=shop&category=${encodeURIComponent(c)}`, '0.7', 'weekly'));
+    urls.push(url(`${domain}/index.html?shop=category:${encodeURIComponent(c)}`, '0.7', 'weekly'));
   });
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`;
