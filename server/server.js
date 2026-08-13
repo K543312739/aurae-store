@@ -2207,6 +2207,15 @@ app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'API endpoint not found' });
   }
+  // Crawlers that reach here hit a URL that is neither a real static file nor a
+  // valid SPA route — return a real 404 so they never index a soft-404 shell.
+  if (ssr.isBot(req)) {
+    return res.status(404).type('html').send(
+      '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Page not found — Aurae</title>' +
+      '<meta name="robots" content="noindex"></head><body><h1>Page not found</h1>' +
+      '<p><a href="/">Return to Aurae home</a></p></body></html>'
+    );
+  }
   res.sendFile(path.join(frontendDir, 'index.html'));
 });
 
