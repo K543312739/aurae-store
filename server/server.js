@@ -440,7 +440,10 @@ function generateSitemapXML(domain, products) {
 
   const categories = [...new Set((products || []).map(p => p.category).filter(Boolean))];
   categories.forEach(c => {
-    urls.push(url(`${domain}/index.html?shop=category:${encodeURIComponent(c)}`, '0.7', 'weekly'));
+    // Encode the entire query value (including the colon) so the URL is fully
+    // percent-encoded. Some sitemap parsers (including GSC) are strict about
+    // unencoded colons in query strings.
+    urls.push(url(`${domain}/index.html?shop=${encodeURIComponent(`category:${c}`)}`, '0.7', 'weekly'));
   });
 
   // Blog posts — keep in sync with the ids in js/data.js (BLOG_POSTS).

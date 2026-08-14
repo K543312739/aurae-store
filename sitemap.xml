@@ -157,31 +157,31 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.aurae.asia/index.html?shop=category:bracelet</loc>
+    <loc>https://www.aurae.asia/index.html?shop=category%3Abracelet</loc>
     <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.aurae.asia/index.html?shop=category:necklace</loc>
+    <loc>https://www.aurae.asia/index.html?shop=category%3Anecklace</loc>
     <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.aurae.asia/index.html?shop=category:pendant</loc>
+    <loc>https://www.aurae.asia/index.html?shop=category%3Apendant</loc>
     <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.aurae.asia/index.html?shop=category:ring</loc>
+    <loc>https://www.aurae.asia/index.html?shop=category%3Aring</loc>
     <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.aurae.asia/index.html?shop=category:earring</loc>
+    <loc>https://www.aurae.asia/index.html?shop=category%3Aearring</loc>
     <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
