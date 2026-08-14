@@ -359,6 +359,20 @@ function renderShop(filter) {
   `;
 
   attachProductCardHandlers();
+
+  if (filter && filter.startsWith('category:')) {
+    const catId = filter.split(':')[1];
+    const cat = CATEGORIES.find(c => c.id === catId);
+    setBreadcrumbSEO(cat
+      ? [{ name: 'Home', url: '/' }, { name: cat.name, url: `/index.html?shop=category:${catId}` }]
+      : [{ name: 'Home', url: '/' }, { name: title }]);
+  } else if (filter && filter.startsWith('intention:')) {
+    const intentId = filter.split(':')[1];
+    const intent = INTENTIONS.find(i => i.id === intentId);
+    setBreadcrumbSEO([{ name: 'Home', url: '/' }, { name: intent ? intent.name : title }]);
+  } else {
+    setBreadcrumbSEO([{ name: 'Home', url: '/' }, { name: title }]);
+  }
 }
 
 // ===== Render Product Detail (Enhanced with crystal story, ritual, supplier) =====
@@ -558,6 +572,13 @@ function updateProductSEO(product) {
   };
   if (!schema.aggregateRating) delete schema.aggregateRating;
   ld.textContent = JSON.stringify(schema);
+
+  const cat = CATEGORIES.find(c => c.id === product.category);
+  setBreadcrumbSEO([
+    { name: 'Home', url: '/' },
+    ...(cat ? [{ name: cat.name, url: `/index.html?shop=category:${product.category}` }] : []),
+    { name: product.name }
+  ]);
 }
 
 function setMeta(name, content, attr = 'name') {
@@ -570,6 +591,40 @@ function setCanonical(url) {
   let el = document.querySelector('link[rel="canonical"]');
   if (!el) { el = document.createElement('link'); el.rel = 'canonical'; document.head.appendChild(el); }
   el.setAttribute('href', url);
+}
+
+// Manage multiple JSON-LD blocks by key (so product + breadcrumb + blog can coexist).
+function setJsonLd(key, data) {
+  const id = 'ld-' + key;
+  if (!data) {
+    const existing = document.getElementById(id);
+    if (existing) existing.remove();
+    return;
+  }
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement('script');
+    el.type = 'application/ld+json';
+    el.id = id;
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(data);
+}
+
+// Emit a BreadcrumbList structured-data block for the current view.
+function setBreadcrumbSEO(items) {
+  if (!items || !items.length) { setJsonLd('breadcrumb', null); return; }
+  const base = window.location.origin;
+  const list = items.map((it, i) => {
+    const li = { '@type': 'ListItem', position: i + 1, name: it.name };
+    if (it.url) li.item = it.url.startsWith('http') ? it.url : base + it.url;
+    return li;
+  });
+  setJsonLd('breadcrumb', {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: list
+  });
 }
 
 // Per-view SEO metadata so each SPA view has its own title/description/OG/canonical
@@ -700,6 +755,54 @@ function renderBlogDetail(blogId) {
   `;
 
   attachProductCardHandlers();
+  updateBlogSEO(blog);
+}
+
+function updateBlogSEO(blog) {
+  if (!blog) return;
+  const base = window.location.origin;
+  const url = `${base}/index.html?blog=${encodeURIComponent(blog.id)}`;
+  const img = (blog.image && blog.image.startsWith('/')) ? base + blog.image : (blog.image || `${base}/images/og-default.png`);
+  const title = `${blog.title} — Aurae`;
+  const desc = (blog.excerpt || blog.title || '').slice(0, 160);
+
+  document.title = title;
+  setMeta('description', desc);
+  setMeta('og:title', title, 'property');
+  setMeta('og:description', desc, 'property');
+  setMeta('og:url', url, 'property');
+  setMeta('og:image', img, 'property');
+  setMeta('og:image:width', '1200', 'property');
+  setMeta('og:image:height', '630', 'property');
+  setMeta('og:image:alt', `${blog.title} — Aurae`, 'property');
+  setMeta('og:image:type', 'image/png', 'property');
+  setMeta('twitter:title', title);
+  setMeta('twitter:description', desc);
+  setMeta('twitter:image', img);
+  setMeta('twitter:image:alt', `${blog.title} — Aurae`);
+  setCanonical(url);
+
+  setJsonLd('blog', {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blog.title,
+    description: desc,
+    image: img,
+    datePublished: '2026-08-08',
+    dateModified: '2026-08-14',
+    author: { '@type': 'Organization', name: 'Aurae' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Aurae',
+      logo: { '@type': 'ImageObject', url: `${base}/images/og-default.png` }
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url }
+  });
+
+  setBreadcrumbSEO([
+    { name: 'Home', url: '/' },
+    { name: blog.title }
+  ]);
 }
 
 function changeMainImage(el, src) {
