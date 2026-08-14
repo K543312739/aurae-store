@@ -180,7 +180,7 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
     const body = `<h1>${esc(title)}</h1><p>${esc(subtitle)}</p>
 <ul class="product-grid">${list.map(p => productCard(p, domain)).join('')}</ul>`;
     const jsonLd = [{ '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: domain + '/index.html?product=' + encodeURIComponent(p.id), name: p.name })) }];
-    const canonical = route.cat ? domain + '/index.html?shop=category:' + encodeURIComponent(route.cat) : domain + '/index.html?shop=all';
+    const canonical = route.cat ? domain + '/index.html?shop=' + encodeURIComponent('category:' + route.cat) : domain + '/index.html?shop=all';
     return { status: 200, html: doc({ title: `${title} — Aurae`, desc: subtitle, canonical, domain, bodyHTML: body, jsonLd, gscMeta }) };
   }
 
