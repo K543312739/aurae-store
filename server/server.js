@@ -179,16 +179,40 @@ if (GSC_HTML) {
   app.get('/google*.html', (req, res) => res.type('html').send(GSC_HTML));
 }
 
+// Serve sitemap/robots with explicitly clean headers. Google Search Console is
+// sensitive to stale cache headers and middleware-added Last-Modified, so we
+// bypass express.static for these files and emit deterministic headers.
+function serveCleanStaticFile(fileName, contentType) {
+  return (req, res) => {
+    const filePath = path.join(frontendDir, fileName);
+    if (!fs.existsSync(filePath)) return res.status(404).end();
+    const content = fs.readFileSync(filePath);
+    res.removeHeader('ETag');
+    res.removeHeader('Last-Modified');
+    res.removeHeader('Accept-Ranges');
+    res.removeHeader('Cache-Control');
+    res.set('Content-Type', contentType);
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    res.send(content);
+  };
+}
+app.get('/sitemap.xml', serveCleanStaticFile('sitemap.xml', 'text/xml; charset=utf-8'));
+app.get('/sitemap-google.xml', serveCleanStaticFile('sitemap-google.xml', 'text/xml; charset=utf-8'));
+app.get('/sitemap-v3.xml', serveCleanStaticFile('sitemap-v3.xml', 'text/xml; charset=utf-8'));
+app.get('/robots.txt', serveCleanStaticFile('robots.txt', 'text/plain; charset=utf-8'));
+
 app.use(express.static(frontendDir, {
   dotfiles: 'deny',
   setHeaders: (res, filePath) => {
     const lowerPath = filePath.toLowerCase();
     if (lowerPath.endsWith('sitemap.xml') || lowerPath.endsWith('sitemap-google.xml') || lowerPath.endsWith('sitemap-v3.xml')) {
       res.set('Content-Type', 'text/xml; charset=utf-8');
-      res.removeHeader('etag');
-      res.removeHeader('cache-control');
-      res.removeHeader('last-modified');
-      res.removeHeader('accept-ranges');
+      res.removeHeader('ETag');
+      res.removeHeader('Cache-Control');
+      res.removeHeader('Last-Modified');
+      res.removeHeader('Accept-Ranges');
     }
   }
 }));
