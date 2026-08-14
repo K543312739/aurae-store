@@ -8,3 +8,4 @@ Disallow: /payment-success.html
 Disallow: /reset-password.html
 
 Sitemap: https://www.aurae.asia/sitemap.xml
+Sitemap: https://www.aurae.asia/sitemap-google.xml

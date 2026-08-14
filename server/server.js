@@ -461,6 +461,10 @@ function writeSitemapFile(domain, products) {
   const xml = generateSitemapXML(domain, products);
   const filePath = path.join(frontendDir, 'sitemap.xml');
   fs.writeFileSync(filePath, xml, 'utf8');
+  // Mirror sitemap under an alternate filename to work around GSC caching a
+  // stuck "Couldn't fetch" state on the default /sitemap.xml path.
+  const altPath = path.join(frontendDir, 'sitemap-google.xml');
+  fs.writeFileSync(altPath, xml, 'utf8');
   console.log('[sitemap] wrote', filePath, `(${(products || []).length} products, ${(generateSitemapXML.BLOG_IDS || []).length} blogs)`);
 }
 
