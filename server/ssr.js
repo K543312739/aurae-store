@@ -79,7 +79,8 @@ function doc({ title, desc, canonical, domain, bodyHTML, jsonLd, gscMeta }) {
 <meta name="description" content="${esc(desc)}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="${esc(canonical)}">
-${gscMeta || ''}${og}${ld}
+${gscMeta || ''}<meta name="p:domain_verify" content="8b5eb8e9d7b52fafb4763d382061e458"/>
+${og}${ld}
 </head>
 <body>
 <header class="site-header"><a href="/" class="logo">Aur<span>ae</span></a>
