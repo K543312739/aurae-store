@@ -1011,6 +1011,54 @@ const BLOG_POSTS = [
       <p>Soft, gentle stones like Rose Quartz or Moonstone bless a nursery or a new house with warmth. Keep them on a shelf where they can quietly hold good energy for the whole family.</p>
       <h3>For Self-Love</h3>
       <p>Sometimes the most important recipient is you. Choose the stone you are drawn to, not the one you think you should want. That pull is often exactly the energy you need.</p>`
+  },
+  {
+    id: "b8",
+    category: "guides",
+    readTime: "11 min read",
+    title: "Crystal Care 101: How to Cleanse, Charge & Store Your Stones",
+    excerpt: "Your crystals work quietly to hold and shift energy — so they deserve care too. Learn the gentle, effective ways to cleanse, charge, and store every stone in your collection.",
+    image: "/images/p013.png",
+    content: `<p>A crystal is not a static decoration. In the traditions that surround it, every stone is a living carrier of energy — absorbing what you release, holding what you ask it to, and slowly taking on the residue of the rooms and moods it passes through. That is exactly why care matters. A well-tended stone stays clear, bright, and ready to support you. A neglected one simply goes dull.</p>
+      <h3>Why Crystals Need Cleansing</h3>
+      <p>Cleansing is the practice of clearing stagnant or absorbed energy so the stone returns to a neutral, receptive state. Think of it like washing your hands: not because the stone is "dirty," but because you want a clean slate before the next intention. A good rule of thumb is to cleanse a stone when it first arrives, after any intense emotional moment, and roughly once a month as routine maintenance.</p>
+      <h3>5 Gentle Ways to Cleanse</h3>
+      <p><strong>1. Smoke.</strong> Pass the stone through the smoke of sage, palo santo, or incense for twenty to thirty seconds while setting the intention to clear it. This works for every stone, including delicate ones.</p>
+      <p><strong>2. Moonlight.</strong> Leave your crystals on a windowsill overnight during the full moon. Moonlight is soft and safe for all stones — and a beautiful monthly ritual.</p>
+      <p><strong>3. Sound.</strong> A singing bowl, tuning fork, or even a gentle bell can reset a stone's frequency. Sound is ideal for jewelry you do not want to get wet.</p>
+      <p><strong>4. Running Water.</strong> Hold hard stones (quartz, amethyst, citrine) under cool running water for a minute. Skip this for soft or porous stones like selenite, calcite, or raw pyrite, which can dissolve or rust.</p>
+      <p><strong>5. Earth & Selenite.</strong> Bury a stone in clean soil for a day, or rest it on a Selenite plate. Selenite is self-cleansing and gently clears whatever sits near it.</p>
+      <h3>How to Charge & Set Intention</h3>
+      <p>Cleansing empties the stone; charging fills it. After cleansing, hold the stone in sunlight for an hour (again, avoid prolonged sun for color-sensitive stones like amethyst and rose quartz), or simply cup it in your hands. Speak or think a clear intention — "I welcome calm," "I protect my peace" — and let the words land. The stone is now yours again, pointed at what you need.</p>
+      <h3>Storing Stones Without Damage</h3>
+      <p>Keep hard stones apart from soft ones so nothing scratches. Small pouches or a divided jewelry box work perfectly. Store color-sensitive stones like amethyst and rose quartz away from direct sunlight to prevent fading, and keep raw or fragile pieces in padded compartments. Jewelry should be removed before swimming, showering, or sleeping.</p>
+      <h3>A Simple Weekly Ritual</h3>
+      <p>You do not need elaborate ceremony. Once a week, wipe your stones with a soft cloth, pass them through a little smoke or moonlight, and reset one intention. Ten quiet minutes is enough to keep your whole collection bright, clear, and working with you.</p>`
+  },
+  {
+    id: "b9",
+    category: "crystals",
+    readTime: "10 min read",
+    title: "Crystal Pairings: The Best Stone Combinations for Love, Protection & Abundance",
+    excerpt: "Some crystals shine on their own — but paired with the right companion, they tell a stronger story. Discover the combinations that amplify love, shield your energy, and draw in abundance.",
+    image: "/images/p001.png",
+    content: `<p>Working with one crystal is a wonderful start. But just as people bring out different sides of each other, stones combine to build a richer, more layered energy. The art of pairing is simply matching intentions so two stones pull in the same direction. Here are the combinations our community reaches for most.</p>
+      <h3>For Love & the Open Heart</h3>
+      <p><strong>Rose Quartz + Rhodonite.</strong> Rose Quartz opens the heart; Rhodonite soothes the old wounds that keep it closed. Together they support both new love and self-forgiveness.</p>
+      <p><strong>Rose Quartz + Green Aventurine.</strong> Add Green Aventurine to invite not just love, but the luck and confidence to meet it. A gentle pairing for dating, healing, and fresh starts.</p>
+      <h3>For Protection & Grounding</h3>
+      <p><strong>Black Obsidian + Hematite.</strong> Obsidian pulls in and absorbs negativity; Hematite roots you firmly to the earth. Wear this duo when you feel scattered or under strain.</p>
+      <p><strong>Black Tourmaline + Smoky Quartz.</strong> Two of the most protective stones in the mineral world. This is the combination to keep by the door or on your desk for a calm, shielded space.</p>
+      <h3>For Abundance & Focus</h3>
+      <p><strong>Citrine + Pyrite.</strong> Citrine is the merchant's stone of wealth; Pyrite turns ideas into disciplined action. Placed together on a workspace, they are a quiet engine for momentum.</p>
+      <p><strong>Citrine + Green Aventurine.</strong> Citrine draws money; Green Aventurine draws opportunity. A classic manifestation pairing for new ventures.</p>
+      <h3>For Calm & Clarity</h3>
+      <p><strong>Amethyst + Clear Quartz.</strong> Amethyst slows a racing mind; Clear Quartz amplifies whatever it touches. One clears, the other focuses — a perfect study or sleep companion.</p>
+      <p><strong>Lepidolite + Amethyst.</strong> Both carry soothing, lithium-rich energy. This is the stack to reach for during anxiety or restless nights.</p>
+      <h3>For Energy & Confidence</h3>
+      <p><strong>Tiger's Eye + Carnelian.</strong> Tiger's Eye brings steady focus; Carnelian brings warm, courageous drive. Wear them when you need to be seen and heard.</p>
+      <h3>How to Combine Without Clashing</h3>
+      <p>Start with one clear intention, then pick stones that serve it. Balance grounding with uplifting, and avoid wearing six competing stones at once — too many frequencies at once can feel noisy rather than supportive. When in doubt, let your intuition choose; the combination you are drawn to is usually the one your energy needs right now.</p>`
   }
 ];
 
