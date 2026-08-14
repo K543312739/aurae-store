@@ -96,7 +96,7 @@ app.use((req, res, next) => {
   // Do not send CSP on plain-text/XML static resources (sitemap, robots) to avoid
   // confusing crawlers / Search Console parsers.
   const p = (req.path || '').toLowerCase();
-  if (!p.endsWith('/sitemap.xml') && !p.endsWith('/sitemap-google.xml') && !p.endsWith('/robots.txt')) {
+  if (!p.endsWith('/sitemap.xml') && !p.endsWith('/sitemap-google.xml') && !p.endsWith('/sitemap-v3.xml') && !p.endsWith('/robots.txt')) {
     res.setHeader('Content-Security-Policy', CSP_DIRECTIVES);
   }
   next();
@@ -183,8 +183,12 @@ app.use(express.static(frontendDir, {
   dotfiles: 'deny',
   setHeaders: (res, filePath) => {
     const lowerPath = filePath.toLowerCase();
-    if (lowerPath.endsWith('sitemap.xml') || lowerPath.endsWith('sitemap-google.xml')) {
-      res.set('Content-Type', 'application/xml; charset=utf-8');
+    if (lowerPath.endsWith('sitemap.xml') || lowerPath.endsWith('sitemap-google.xml') || lowerPath.endsWith('sitemap-v3.xml')) {
+      res.set('Content-Type', 'text/xml; charset=utf-8');
+      res.removeHeader('etag');
+      res.removeHeader('cache-control');
+      res.removeHeader('last-modified');
+      res.removeHeader('accept-ranges');
     }
   }
 }));
@@ -462,10 +466,12 @@ function writeSitemapFile(domain, products) {
   const xml = generateSitemapXML(domain, products);
   const filePath = path.join(frontendDir, 'sitemap.xml');
   fs.writeFileSync(filePath, xml, 'utf8');
-  // Mirror sitemap under an alternate filename to work around GSC caching a
-  // stuck "Couldn't fetch" state on the default /sitemap.xml path.
+  // Mirror sitemap under alternate filenames to work around GSC caching a
+  // stuck "Couldn't fetch" state on previously submitted paths.
   const altPath = path.join(frontendDir, 'sitemap-google.xml');
   fs.writeFileSync(altPath, xml, 'utf8');
+  const v3Path = path.join(frontendDir, 'sitemap-v3.xml');
+  fs.writeFileSync(v3Path, xml, 'utf8');
   console.log('[sitemap] wrote', filePath, `(${(products || []).length} products, ${(generateSitemapXML.BLOG_IDS || []).length} blogs)`);
 }
 
