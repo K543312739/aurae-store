@@ -2781,6 +2781,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       navigate('product', pid);
       window.history.replaceState({}, '', window.location.pathname);
     }
+  } else if (isStorePage && urlParams.has('blog')) {
+    const bid = urlParams.get('blog');
+    if (BLOG_POSTS.find(b => b.id === bid)) {
+      navigate('blog', bid);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
   } else if (isStorePage && (urlParams.has('shop') || urlParams.get('view') === 'shop')) {
     const shopParam = urlParams.get('shop') || (urlParams.get('category') ? 'category:' + urlParams.get('category') : 'all');
     navigate('shop', shopParam);
