@@ -195,7 +195,8 @@ function serveCleanStaticFile(fileName, contentType) {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
-    res.send(content);
+    res.write(content);
+    res.end();
   };
 }
 app.get('/sitemap.xml', serveCleanStaticFile('sitemap.xml', 'text/xml; charset=utf-8'));
