@@ -74,11 +74,11 @@ app.use(cors({
 // allowed third parties (payments). Google Fonts is the only allowed font/src.
 const CSP_DIRECTIVES = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.paypal.com https://www.sandbox.paypal.com",
+  "script-src 'self' 'unsafe-inline' https://www.paypal.com https://www.sandbox.paypal.com https://s.pinimg.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https:",
-  "connect-src 'self'",
+  "connect-src 'self' https://ct.pinterest.com https://s.pinimg.com",
   "frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com",
   "frame-ancestors 'self'",
   "base-uri 'self'",
