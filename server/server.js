@@ -96,7 +96,7 @@ app.use((req, res, next) => {
   // Do not send CSP on plain-text/XML static resources (sitemap, robots) to avoid
   // confusing crawlers / Search Console parsers.
   const p = (req.path || '').toLowerCase();
-  if (!p.endsWith('/sitemap.xml') && !p.endsWith('/robots.txt')) {
+  if (!p.endsWith('/sitemap.xml') && !p.endsWith('/sitemap-google.xml') && !p.endsWith('/robots.txt')) {
     res.setHeader('Content-Security-Policy', CSP_DIRECTIVES);
   }
   next();
@@ -182,7 +182,8 @@ if (GSC_HTML) {
 app.use(express.static(frontendDir, {
   dotfiles: 'deny',
   setHeaders: (res, filePath) => {
-    if (filePath.toLowerCase().endsWith('sitemap.xml')) {
+    const lowerPath = filePath.toLowerCase();
+    if (lowerPath.endsWith('sitemap.xml') || lowerPath.endsWith('sitemap-google.xml')) {
       res.set('Content-Type', 'application/xml; charset=utf-8');
     }
   }
