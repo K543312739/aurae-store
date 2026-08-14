@@ -397,7 +397,61 @@ function loadProducts() {
 
 function saveProducts(products) {
   fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2));
+  // Keep the static sitemap in sync whenever products change via the admin UI.
+  try { writeSitemapFile(DOMAIN || '', products); } catch (e) { console.error('[sitemap] failed to regenerate after saveProducts:', e.message); }
 }
+
+// Generate sitemap XML. Kept as a reusable helper so we can write a real
+// static file (more GSC-friendly than a dynamic route) and regenerate it
+// whenever products change.
+function generateSitemapXML(domain, products) {
+  const today = new Date().toISOString().slice(0, 10);
+  const escapeXML = (str) => String(str || '').replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
+  const url = (loc, priority = '0.6', changefreq = 'weekly') => `  <url>\n    <loc>${escapeXML(loc)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+
+  let urls = [
+    url(`${domain}/`, '1.0', 'daily'),
+    url(`${domain}/index.html?shop=all`, '0.9', 'weekly'),
+    url(`${domain}/index.html?view=about`, '0.7', 'monthly'),
+    url(`${domain}/contact.html`, '0.6', 'monthly'),
+    url(`${domain}/faq.html`, '0.6', 'monthly'),
+    url(`${domain}/privacy-policy.html`, '0.4', 'monthly'),
+    url(`${domain}/shipping-returns.html`, '0.4', 'monthly'),
+    url(`${domain}/refund-policy.html`, '0.4', 'monthly'),
+    url(`${domain}/terms-of-service.html`, '0.4', 'monthly'),
+    url(`${domain}/track.html`, '0.5', 'monthly'),
+  ];
+
+  (products || []).forEach(p => {
+    urls.push(url(`${domain}/index.html?product=${encodeURIComponent(p.id)}`, '0.8', 'weekly'));
+  });
+
+  const categories = [...new Set((products || []).map(p => p.category).filter(Boolean))];
+  categories.forEach(c => {
+    urls.push(url(`${domain}/index.html?shop=category:${encodeURIComponent(c)}`, '0.7', 'weekly'));
+  });
+
+  // Blog posts — keep in sync with the ids in js/data.js (BLOG_POSTS).
+  const BLOG_IDS = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7'];
+  generateSitemapXML.BLOG_IDS = BLOG_IDS;
+  BLOG_IDS.forEach(id => {
+    urls.push(url(`${domain}/index.html?blog=${encodeURIComponent(id)}`, '0.6', 'monthly'));
+  });
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`;
+}
+
+function writeSitemapFile(domain, products) {
+  if (!domain) return;
+  const xml = generateSitemapXML(domain, products);
+  const filePath = path.join(frontendDir, 'sitemap.xml');
+  fs.writeFileSync(filePath, xml, 'utf8');
+  console.log('[sitemap] wrote', filePath, `(${(products || []).length} products, ${(generateSitemapXML.BLOG_IDS || []).length} blogs)`);
+}
+
+// Write a real static sitemap.xml on startup. Google Search Console is more
+// reliable with an actual file on disk than with a dynamic route.
+writeSitemapFile(DOMAIN, loadProducts());
 
 // Build a normalized variant key from the item stored in the cart/order.
 function variantKey(item) {
@@ -2231,47 +2285,10 @@ app.post('/api/admin/refund-requests/:id/status', requireAdmin, (req, res) => {
   res.json({ success: true, refund: r });
 });
 
-// ===== SEO: Dynamic sitemap.xml =====
-app.get('/sitemap.xml', (req, res) => {
-  const domain = DOMAIN || `https://${req.headers.host}`;
-  const products = loadProducts();
-  const today = new Date().toISOString().slice(0, 10);
-  const escapeXML = (str) => String(str || '').replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
-  const url = (loc, priority = '0.6', changefreq = 'weekly') => `  <url>\n    <loc>${escapeXML(loc)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
-
-  let urls = [
-    url(`${domain}/`, '1.0', 'daily'),
-    url(`${domain}/index.html?shop=all`, '0.9', 'weekly'),
-    url(`${domain}/index.html?view=about`, '0.7', 'monthly'),
-    url(`${domain}/contact.html`, '0.6', 'monthly'),
-    url(`${domain}/faq.html`, '0.6', 'monthly'),
-    url(`${domain}/privacy-policy.html`, '0.4', 'monthly'),
-    url(`${domain}/shipping-returns.html`, '0.4', 'monthly'),
-    url(`${domain}/refund-policy.html`, '0.4', 'monthly'),
-    url(`${domain}/terms-of-service.html`, '0.4', 'monthly'),
-    url(`${domain}/track.html`, '0.5', 'monthly'),
-  ];
-
-  products.forEach(p => {
-    urls.push(url(`${domain}/index.html?product=${encodeURIComponent(p.id)}`, '0.8', 'weekly'));
-  });
-
-  const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
-  categories.forEach(c => {
-    urls.push(url(`${domain}/index.html?shop=category:${encodeURIComponent(c)}`, '0.7', 'weekly'));
-  });
-
-  // Blog posts — keep in sync with the ids in js/data.js (BLOG_POSTS).
-  // They are low-frequency editorial content, so a maintained id list is fine.
-  const BLOG_IDS = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7'];
-  BLOG_IDS.forEach(id => {
-    urls.push(url(`${domain}/index.html?blog=${encodeURIComponent(id)}`, '0.6', 'monthly'));
-  });
-
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`;
-  res.set('Content-Type', 'application/xml');
-  res.send(sitemap);
-});
+// ===== SEO: Static sitemap.xml =====
+// sitemap.xml is generated as a real file on disk (see writeSitemapFile above)
+// and served by express.static. This is more reliable for Google Search Console
+// than a dynamic route, and it is regenerated whenever products change.
 
 // ===== Catch-all: SPA fallback (Express 4 safe) =====
 app.get('*', (req, res) => {
