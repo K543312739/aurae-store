@@ -169,6 +169,31 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
+// ===== Pinterest Tag helper =====
+function pintrkTrack(event, data = {}) {
+  if (typeof window.pintrk !== 'function') return;
+  const payload = {
+    event_id: 'aurae_' + event + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+    ...data
+  };
+  try {
+    window.pintrk('track', event, payload);
+  } catch (e) { /* silent */ }
+}
+
+function buildPinterestLineItems(items) {
+  return items.map(item => {
+    const product = PRODUCTS.find(p => p.id === item.id);
+    return {
+      product_name: item.name,
+      product_id: String(item.id),
+      product_category: product?.category || '',
+      product_price: Number(item.price) || 0,
+      product_quantity: Number(item.qty) || 1
+    };
+  }).filter(i => i.product_quantity > 0);
+}
+
 // ===== Navigation =====
 function navigate(view, param) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -196,6 +221,9 @@ function navigate(view, param) {
     currentView = 'shop';
     renderShop(param || 'all');
     updateViewSEO('shop', param);
+    if (param && String(param).startsWith('category:')) {
+      pintrkTrack('viewcategory', { product_category: String(param).replace('category:', '') });
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (view === 'product') {
     document.getElementById('productView').classList.add('active');
@@ -210,6 +238,13 @@ function navigate(view, param) {
     document.getElementById('checkoutView').classList.add('active');
     currentView = 'checkout';
     renderCheckout();
+    const totals = getCartTotals();
+    pintrkTrack('checkout', {
+      value: totals.total,
+      order_quantity: cart.reduce((sum, item) => sum + item.qty, 0),
+      currency: 'USD',
+      line_items: buildPinterestLineItems(cart)
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (view === 'about') {
     document.getElementById('aboutView').classList.add('active');
@@ -233,6 +268,9 @@ function navigate(view, param) {
     const navMap = { home: 'navHome', shop: 'navShop', about: 'navAbout', contact: 'navContact' };
     if (navMap[view]) document.getElementById(navMap[view])?.classList.add('active');
   }
+
+  // Pinterest SPA pageview
+  pintrkTrack('pagevisit', {});
 }
 
 // ===== Render Home Page =====
@@ -966,6 +1004,18 @@ function addToCart(item) {
   }
   saveCart();
   renderCart();
+  pintrkTrack('addtocart', {
+    value: Number(item.price) * Number(item.qty),
+    order_quantity: Number(item.qty),
+    currency: 'USD',
+    line_items: [{
+      product_name: item.name,
+      product_id: String(item.id),
+      product_category: product?.category || '',
+      product_price: Number(item.price) || 0,
+      product_quantity: Number(item.qty) || 1
+    }]
+  });
 }
 
 function removeFromCart(index) {
@@ -2126,6 +2176,7 @@ function renderSearchResults(query) {
     container.innerHTML = '<div class="search-hint">Type to search crystals, jewelry, or intentions...</div>';
     return;
   }
+  pintrkTrack('search', { search_query: q });
   const results = PRODUCTS.filter(p => {
     const text = [
       p.name, p.nameCN, p.tagline, p.crystal, p.crystalCN,
@@ -2557,6 +2608,7 @@ async function handleRegister() {
     await loadServerCart();
     renderAccount();
     showToast('Account created. Welcome to Aurae!');
+    pintrkTrack('signup', {});
   } catch (e) {
     showToast('Network error. Please try again.');
   }
@@ -2598,6 +2650,14 @@ function saveOrder(orderId, items, customer, provider) {
   const orders = JSON.parse(localStorage.getItem('auraeOrders') || '[]');
   orders.push(order);
   localStorage.setItem('auraeOrders', JSON.stringify(orders));
+  // Pinterest purchase event
+  pintrkTrack('purchase', {
+    value: totals.total,
+    order_quantity: items.reduce((sum, item) => sum + (Number(item.qty) || 0), 0),
+    currency: 'USD',
+    order_id: String(orderId),
+    line_items: buildPinterestLineItems(items)
+  });
 }
 
 // ===== Account action handlers =====
@@ -2809,7 +2869,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address'); return; }
     try {
       const resp = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-      if (resp.ok) { showToast('Thank you for subscribing! 🌿'); input.value = ''; }
+      if (resp.ok) {
+        showToast('Thank you for subscribing! 🌿');
+        input.value = '';
+        pintrkTrack('lead', { lead_type: 'Newsletter' });
+      }
       else { showToast('Subscription failed. Please try again.'); }
     } catch (err) { showToast('Network error. Please try again.'); }
   });
