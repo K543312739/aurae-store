@@ -93,7 +93,12 @@ app.use((req, res, next) => {
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
-  res.setHeader('Content-Security-Policy', CSP_DIRECTIVES);
+  // Do not send CSP on plain-text/XML static resources (sitemap, robots) to avoid
+  // confusing crawlers / Search Console parsers.
+  const p = (req.path || '').toLowerCase();
+  if (!p.endsWith('/sitemap.xml') && !p.endsWith('/robots.txt')) {
+    res.setHeader('Content-Security-Policy', CSP_DIRECTIVES);
+  }
   next();
 });
 app.use(express.json({ limit: '1mb' }));
@@ -174,7 +179,14 @@ if (GSC_HTML) {
   app.get('/google*.html', (req, res) => res.type('html').send(GSC_HTML));
 }
 
-app.use(express.static(frontendDir, { dotfiles: 'deny' }));
+app.use(express.static(frontendDir, {
+  dotfiles: 'deny',
+  setHeaders: (res, filePath) => {
+    if (filePath.toLowerCase().endsWith('sitemap.xml')) {
+      res.set('Content-Type', 'application/xml; charset=utf-8');
+    }
+  }
+}));
 
 // ===== Product image uploads =====
 const UPLOADS_DIR = path.join(frontendDir, 'uploads');
