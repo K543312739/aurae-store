@@ -51,7 +51,7 @@ function parseRoute(req) {
     if (v === 'home') return { type: 'home' };
     return { type: 'notfound' }; // unknown view -> crawler gets a real 404
   }
-  if (q.blog) return { type: 'blog' };
+  if (q.blog) return { type: 'blog', id: String(q.blog) };
   return { type: 'home' };
 }
 
