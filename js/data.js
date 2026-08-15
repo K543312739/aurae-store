@@ -1111,7 +1111,6 @@ const BLOG_POSTS = [
       <p>Sit comfortably and close your eyes. Starting at the base of the spine, imagine a soft light at each center, moving upward: red at the root, orange at the sacral, yellow at the solar plexus, green at the heart, blue at the throat, indigo at the third eye, violet-white at the crown. Rest a corresponding crystal in your palm if you like. With each breath, picture that center glowing a little brighter. Five minutes is enough to feel the shift.</p>
       <h3>Start Small</h3>
       <p>Chakra work is not about perfection — it is about attention. Pick one stone, learn its center, and live with it for a week. Notice where you feel more steady, more open, more yourself. The map above is just a starting point; your own body will tell you which center is asking for care.</p>`
-  }
   },
   {
     id: "b12",
