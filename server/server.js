@@ -487,7 +487,7 @@ function generateSitemapXML(domain, products) {
   });
 
   // Blog posts — keep in sync with the ids in js/data.js (BLOG_POSTS).
-  const BLOG_IDS = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7'];
+  const BLOG_IDS = ['b1','b2','b3','b4','b5','b6','b7','b8','b9','b10','b11','b12','b13'];
   generateSitemapXML.BLOG_IDS = BLOG_IDS;
   BLOG_IDS.forEach(id => {
     urls.push(url(`${domain}/index.html?blog=${encodeURIComponent(id)}`, '0.6', 'monthly'));

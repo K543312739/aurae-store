@@ -1112,6 +1112,56 @@ const BLOG_POSTS = [
       <h3>Start Small</h3>
       <p>Chakra work is not about perfection — it is about attention. Pick one stone, learn its center, and live with it for a week. Notice where you feel more steady, more open, more yourself. The map above is just a starting point; your own body will tell you which center is asking for care.</p>`
   }
+  },
+  {
+    id: "b12",
+    category: "guides",
+    readTime: "11 min read",
+    title: "Crystals for Manifestation: A Practical Step-by-Step Guide",
+    excerpt: "Manifestation is not magic \u2014 it is focused intention meeting daily action. These crystals and a simple 7-step ritual help you attract love, money, and peace with clarity.",
+    image: "/images/p007.png",
+    content: `<p>You have probably heard that "thoughts become things." Manifestation is simply the practice of aiming your attention, emotion, and action at one clear outcome until it arrives. Crystals are not a shortcut \u2014 but they are a powerful anchor. They give your intention a physical home, a daily reminder, and a quiet focus your scattered mind can return to. This guide walks you through exactly how to manifest with crystals, step by step.</p>
+      <h3>What Does "Manifestation" Actually Mean?</h3>
+      <p>At its core, manifestation is the alignment of three things: what you <em>think</em>, what you <em>feel</em>, and what you <em>do</em>. A crystal helps hold that alignment when life gets noisy. It is not the source of the outcome \u2014 you are. The stone simply keeps your frequency steady while you do the work.</p>
+      <h3>The 7-Step Crystal Manifestation Ritual</h3>
+      <p><strong>1. Name one clear desire.</strong> Vague wishes produce vague results. "I want more money" is weak. "I welcome a steady $X of new income this quarter" is clear. Write it down.</p>
+      <p><strong>2. Pick a matching stone.</strong> For abundance, reach for <a href="/index.html?product=p007">Citrine</a>, the merchant's stone of wealth, or the <a href="/index.html?product=p012">Green Phantom Wealth Bracelet</a> for business growth. For confidence to act, choose <a href="/index.html?product=p009">Tiger's Eye</a>. To amplify any goal, add <a href="/index.html?product=p013">Clear Quartz</a>.</p>
+      <p><strong>3. Cleanse the stone.</strong> Pass it through sage or moonlight so it starts neutral. (See our full <a href="/index.html?blog=b8">crystal care guide</a> for five gentle methods.)</p>
+      <p><strong>4. Charge it with your words.</strong> Hold the stone, speak your desire aloud once, and imagine the outcome as already real. Feel it for ten seconds.</p>
+      <p><strong>5. Place it where you'll see it.</strong> On your desk, near your wallet, or on a window sill. The point is a daily glance that re-arms your intention.</p>
+      <p><strong>6. Take one small action daily.</strong> The crystal focuses you; action moves you. Send the email, make the call, open the account. Manifestation without motion stays a daydream.</p>
+      <p><strong>7. Release and trust.</strong> Once a day is set, let it go. Obsessing reverses the energy. Re-center with the stone each morning, then live your day.</p>
+      <h3>Manifesting Love vs. Money vs. Peace</h3>
+      <p>For love, pair your ritual with <a href="/index.html?product=p001">Rose Quartz</a>, the stone of the open heart. For money, stack Citrine with Clear Quartz. For peace, Amethyst calms the nervous system so your manifestations come from calm, not desperation. The stone changes; the method stays the same.</p>
+      <h3>Common Mistakes</h3>
+      <p>Collecting twenty stones and using none. Manifesting for others without consent. Re-cleansing every hour from anxiety. Keep it simple: one desire, one stone, one small daily action. That is the whole practice.</p>
+      <p>Manifestation is a muscle. Start with one clear wish this week, give it a crystal, and let the ritual do its quiet work.</p>`
+  },
+  {
+    id: "b13",
+    category: "crystals",
+    readTime: "10 min read",
+    title: "The Best Crystals for Protection & Grounding (and How to Use Them Daily)",
+    excerpt: "If you feel drained after crowds, scrolling, or hard conversations, you may be an energetic sponge. These protective stones and a 5-minute daily shield ritual help you stay rooted and safe.",
+    image: "/images/p005.png",
+    content: `<p>Some people walk into a room and absorb everything \u2014 the tension, the noise, the unspoken moods. If that is you, you are not weak; you are sensitive. And sensitive people need boundaries they can wear. That is where protection and grounding crystals come in. They do not "block" life \u2014 they help you stay centered in your own energy instead of leaking it everywhere.</p>
+      <h3>Protection vs. Grounding: What's the Difference?</h3>
+      <p><strong>Protection</strong> stones absorb or deflect outside energy you do not want \u2014 stress, negativity, the static of a crowded train. <strong>Grounding</strong> stones pull your attention out of your racing head and back into your body and the earth. You usually want both: a shield and an anchor.</p>
+      <h3>The Core Protective Stones</h3>
+      <p><strong>Black Obsidian & Black Gold Obsidian.</strong> The heaviest protectors in the mineral world. The <a href="/index.html?product=p005">Black Gold Obsidian Shield Bracelet</a> is built for exactly this \u2014 wear it on your right wrist (your projecting side) when you head into draining situations. The <a href="/index.html?product=p006">Black Obsidian Mirror of Truth Pendant</a> sits at the heart center and reflects negativity back out.</p>
+      <p><strong>Tiger's Eye.</strong> A grounding-confident stone. The <a href="/index.html?product=p009">Tiger's Eye Warrior Bracelet</a> keeps you steady and clear-headed under pressure \u2014 ideal for meetings, travel, or conflict.</p>
+      <p><strong>Amethyst.</strong> Soft protection for the mind. The <a href="/index.html?product=p004">Amethyst Serenity Bracelet</a> shields against mental overload and is gentle enough to sleep in.</p>
+      <h3>A 5-Minute Daily Shield Ritual</h3>
+      <p><strong>1.</strong> Hold your protective stone in both hands for thirty seconds before leaving the house.</p>
+      <p><strong>2.</strong> Set the intention silently: "I stay rooted in my own energy. What is not mine, I release."</p>
+      <p><strong>3.</strong> Wear it on the right wrist or as a pendant touching the chest.</p>
+      <p><strong>4.</strong> At day's end, take it off and pass it through incense smoke or set it on a <a href="/index.html?blog=b8">Selenite plate</a> to clear what it absorbed.</p>
+      <p><strong>5.</strong> Notice. Within a week you will feel less "pinged" by other people's moods.</p>
+      <h3>Where to Keep Them</h3>
+      <p>One stone by the front door absorbs outside energy before it enters. One on your desk shields your workspace. One in your pocket travels with you. You do not need many \u2014 you need the right few, used consistently.</p>
+      <h3>Who Needs This Most</h3>
+      <p>Empaths, healthcare workers, teachers, anyone in open-plan offices or constant video calls. If you end most days wiped out for no obvious reason, protection crystals are not woo \u2014 they are a wearable boundary. Start with one stone this week and feel the difference.</p>`
+  }
 ];
 
 window.PRODUCTS = PRODUCTS;
