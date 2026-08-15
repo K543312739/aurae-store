@@ -1059,6 +1059,58 @@ const BLOG_POSTS = [
       <p><strong>Tiger's Eye + Carnelian.</strong> Tiger's Eye brings steady focus; Carnelian brings warm, courageous drive. Wear them when you need to be seen and heard.</p>
       <h3>How to Combine Without Clashing</h3>
       <p>Start with one clear intention, then pick stones that serve it. Balance grounding with uplifting, and avoid wearing six competing stones at once — too many frequencies at once can feel noisy rather than supportive. When in doubt, let your intuition choose; the combination you are drawn to is usually the one your energy needs right now.</p>`
+  },
+  {
+    id: "b10",
+    category: "spirituality",
+    readTime: "12 min read",
+    title: "Crystals for Sleep, Anxiety & Calm: A Practical Nighttime Ritual",
+    excerpt: "If your mind races the moment your head hits the pillow, you are not alone. These calming crystals and a simple 10-minute nighttime ritual can help you wind down, release the day, and finally rest.",
+    image: "/images/p007_2.png",
+    content: `<p>There is a particular kind of tired that sleep does not touch. The kind where you climb into bed, the lights go off, and suddenly your brain decides now is the perfect time to replay every awkward moment from 2009 and list everything you forgot to do tomorrow. If that sounds familiar, you are in good company — and crystals can be a surprisingly gentle ally in quieting the noise.</p>
+      <h3>Why Crystals for Sleep & Anxiety?</h3>
+      <p>Nobody is claiming a stone is a substitute for rest, therapy, or a good mattress. But crystals work on the level of ritual and attention. The simple act of choosing a stone, holding it, and setting the intention to slow down signals your nervous system that it is safe to power down. The stone becomes an anchor for the evening — a physical reminder that the day is done.</p>
+      <h3>The Calm Crew: Best Crystals for Rest</h3>
+      <p><strong>Amethyst — the classic sleep stone.</strong> Soft purple Amethyst has long been associated with calm and quiet sleep. Keep a small cluster on the nightstand or tuck a tumbled piece under your pillow. Many people find its gentle energy takes the edge off a racing mind.</p>
+      <p><strong>Lepidolite — the lithium stone.</strong> Lepidolite naturally contains lithium, the same mineral used in many calming supplements. It carries one of the most soothing frequencies in the crystal world and is a favorite for anxiety and restlessness.</p>
+      <p><strong>Howlite — the overthink stone.</strong> White-and-grey Howlite is beloved by people who spiral into endless analysis at bedtime. It is said to slow the chatter and invite patience and stillness.</p>
+      <p><strong>Moonstone — the dream stone.</strong> Moonstone connects to the cycles of the moon and the softer, intuitive side of the mind. It is wonderful for restful, meaningful dreams rather than jittery, half-waking sleep.</p>
+      <p><strong>Rose Quartz — the comfort stone.</strong> If nighttime anxiety comes from loneliness or heart-heaviness, Rose Quartz offers a warm, held feeling. Keep it close when the dark feels too big.</p>
+      <h3>A Simple Nighttime Ritual (10 Minutes)</h3>
+      <p><strong>1. Pick one stone.</strong> Choose the crystal your intuition reaches for. One is enough — you are building a habit, not a collection on the nightstand.</p>
+      <p><strong>2. Cleanse it.</strong> A quick pass through incense smoke or a moment under moonlight resets the stone. No elaborate ceremony required.</p>
+      <p><strong>3. Set an intention.</strong> Hold the stone and quietly name what you need: "I release today." "I let my body rest." The words give the stone a direction.</p>
+      <p><strong>4. Place it.</strong> Tuck it under your pillow, rest it on the nightstand, or hold it in your palm as you lie down. Let its presence be the last thing you notice before sleep.</p>
+      <p><strong>5. Breathe.</strong> Inhale for four, exhale for six. Each slow breath tells your body the day is over. When the mind drifts back to its to-do list, return to the stone and the breath.</p>
+      <h3>What to Avoid at Night</h3>
+      <p>Not every crystal belongs in the bedroom. Bright, activating stones like Citrine and Tiger's Eye are wonderful for mornings and work — but at night they can keep the engine running. Save those for your desk, and let the calm crew take the night shift.</p>
+      <h3>When to Expect Results</h3>
+      <p>Some people feel a difference the first night; for most, the benefit builds with the ritual itself. The stone is a companion, not a switch. Give it two weeks of consistent use, and notice whether your evenings feel a little softer, a little slower, a little more yours.</p>`
+  },
+  {
+    id: "b11",
+    category: "guides",
+    readTime: "13 min read",
+    title: "Chakra Healing with Crystals: A Beginner's Map of the 7 Energy Centers",
+    excerpt: "Chakras are the body's seven energy centers, from root to crown. Learn which crystal pairs with each one — and how to begin balancing them in five quiet minutes a day.",
+    image: "/images/p003.png",
+    content: `<p>You have probably heard the word "chakra" dropped in a yoga class or a wellness post, but the idea is simpler and older than the trend. In many traditions, the body is threaded with energy, and that energy moves through seven main centers. When a center is sluggish or overloaded, something feels off. Crystals are one of the gentlest ways to bring these centers back into balance — and you do not need to be a mystic to start.</p>
+      <h3>What Are Chakras?</h3>
+      <p>Think of chakras as spinning wheels of energy along the spine, each one linked to a different part of your physical, emotional, and spiritual life. They run from the base of the spine to the top of the head. When energy flows freely through all seven, you tend to feel grounded, open, and alive. When one is blocked, you might feel stuck, anxious, or disconnected in that area of life.</p>
+      <h3>The 7 Chakras & Their Crystals</h3>
+      <p><strong>1. Root (Muladhara) — safety & grounding.</strong> Located at the base of the spine. When it is balanced you feel safe and steady. Pair it with <em>Red Jasper</em> or <em>Black Obsidian</em> to feel rooted to the earth.</p>
+      <p><strong>2. Sacral (Svadhisthana) — creativity & pleasure.</strong> Just below the navel. This is your center of passion and flow. <em>Carnelian</em> warms and opens it, inviting creativity and healthy desire.</p>
+      <p><strong>3. Solar Plexus (Manipura) — confidence & will.</strong> At the stomach. It governs self-esteem and personal power. <em>Citrine</em> and <em>Tiger's Eye</em> are its natural allies for courage and motivation.</p>
+      <p><strong>4. Heart (Anahata) — love & connection.</strong> At the center of the chest. The bridge between lower and upper chakras. <em>Rose Quartz</em> and <em>Green Aventurine</em> soften and open it to love — of others and of yourself.</p>
+      <p><strong>5. Throat (Vishuddha) — truth & expression.</strong> At the throat. It rules how honestly you speak and listen. <em>Blue Lace Agate</em> and <em>Sodalite</em> support clear, kind communication.</p>
+      <p><strong>6. Third Eye (Ajna) — intuition & insight.</strong> Between the brows. This is your inner knowing. <em>Amethyst</em> and <em>Lapis Lazuli</em> deepen intuition and quiet mental noise.</p>
+      <p><strong>7. Crown (Sahasrara) — spirit & unity.</strong> At the top of the head. It connects you to something larger than yourself. <em>Clear Quartz</em> and <em>Selenite</em> lift and clarify this highest center.</p>
+      <h3>How to Work With Chakra Crystals</h3>
+      <p>You do not need all seven at once. Three easy approaches: <strong>Wear them</strong> as bracelets or pendants so the stone stays in your field through the day. <strong>Lay them on the body</strong> during a quiet moment — a stone on the chest for the heart, one at the brow for the third eye. Or <strong>arrange them in a row</strong> on a shelf as a visual reminder of balance. Start with the one center you feel most drawn to; the rest tend to follow.</p>
+      <h3>A 5-Minute Chakra Scan</h3>
+      <p>Sit comfortably and close your eyes. Starting at the base of the spine, imagine a soft light at each center, moving upward: red at the root, orange at the sacral, yellow at the solar plexus, green at the heart, blue at the throat, indigo at the third eye, violet-white at the crown. Rest a corresponding crystal in your palm if you like. With each breath, picture that center glowing a little brighter. Five minutes is enough to feel the shift.</p>
+      <h3>Start Small</h3>
+      <p>Chakra work is not about perfection — it is about attention. Pick one stone, learn its center, and live with it for a week. Notice where you feel more steady, more open, more yourself. The map above is just a starting point; your own body will tell you which center is asking for care.</p>`
   }
 ];
 
