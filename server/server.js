@@ -1598,12 +1598,42 @@ app.post('/api/capture-paypal-order', async (req, res) => {
 app.get('/api/order/:orderId', (req, res) => {
   const orders = loadOrders();
   const order = orders.find(o => o.orderId === req.params.orderId);
-  
+
   if (!order) {
     return res.status(404).json({ error: 'Order not found' });
   }
-  
-  res.json(order);
+
+  // Public success-page view: expose only the fields the receipt/tracking page
+  // needs. Full order details (address, phone, capture ids) are available via
+  // /api/me/orders for authenticated buyers or /api/admin/orders for staff.
+  res.json({
+    orderId: order.orderId,
+    status: order.status,
+    createdAt: order.createdAt,
+    paidAt: order.paidAt || null,
+    customer: {
+      name: order.customer?.name || '',
+      email: order.customer?.email || '',
+    },
+    customerName: order.customer?.name || '',
+    customerEmail: order.customer?.email || '',
+    items: (order.items || []).map(item => ({
+      name: item.name,
+      qty: item.qty ?? item.quantity ?? 1,
+      quantity: item.quantity ?? item.qty ?? 1,
+      price: item.price,
+      image: item.image || '',
+    })),
+    totals: order.totals || {
+      subtotal: order.subtotal || 0,
+      shipping: order.shipping || 0,
+      tax: order.tax || 0,
+      discount: order.discount || 0,
+      total: order.total || order.paymentAmount || 0,
+    },
+    amount: order.paymentAmount || order.total || 0,
+    paymentMethod: order.paymentMethod || '',
+  });
 });
 
 // ===== API: Get Stripe Session Details (for success page) =====

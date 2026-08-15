@@ -299,11 +299,11 @@ function renderHome() {
 
   // Blog
   document.getElementById('blogGrid').innerHTML = BLOG_POSTS.map(b => `
-    <div class="blog-card" onclick="navigate('blog', '${b.id}')">
-      <img src="${b.image}" alt="${b.title}">
-      <div class="blog-meta">${b.category} • ${b.readTime}</div>
-      <h4>${b.title}</h4>
-      <p>${b.excerpt}</p>
+    <div class="blog-card" onclick="navigate('blog', '${escapeHtml(b.id)}')">
+      <img src="${escapeHtml(b.image)}" alt="${escapeHtml(b.title)}">
+      <div class="blog-meta">${escapeHtml(b.category)} • ${escapeHtml(b.readTime)}</div>
+      <h4>${escapeHtml(b.title)}</h4>
+      <p>${escapeHtml(b.excerpt)}</p>
     </div>
   `).join('');
 
@@ -313,33 +313,33 @@ function renderHome() {
 }
 
 function productCardHTML(p, opts = {}) {
-  const badge = p.badge ? `<div class="product-badge">${p.badge}</div>` : '';
+  const badge = p.badge ? `<div class="product-badge">${escapeHtml(p.badge)}</div>` : '';
   const saleBadge = p.compareAt ? `<div class="product-badge sale">Sale</div>` : '';
   const stock = getStockStatus(p.stock);
   const stockBadge = stock.cls !== 'in'
-    ? `<div class="product-stock-badge ${stock.cls}">${stock.label}</div>`
+    ? `<div class="product-stock-badge ${escapeHtml(stock.cls)}">${escapeHtml(stock.label)}</div>`
     : '';
   const fromPrefix = (p.variantPrices && p.variants) ? 'From ' : '';
   const priceHTML = p.compareAt
     ? `<span class="product-price">${formatPrice(p.price)}<span class="compare-at">${formatPrice(p.compareAt)}</span></span>`
     : `<span class="product-price">${fromPrefix}${formatPrice(p.price)}</span>`;
-  const heart = opts.showHeart ? `<button class="wishlist-btn" data-wishlist-id="${p.id}" onclick="event.stopPropagation(); toggleWishlist('${p.id}')">${isWishlisted(p.id) ? '♥' : '♡'}</button>` : '';
+  const heart = opts.showHeart ? `<button class="wishlist-btn" data-wishlist-id="${escapeHtml(p.id)}" onclick="event.stopPropagation(); toggleWishlist('${escapeHtml(p.id)}')">${isWishlisted(p.id) ? '♥' : '♡'}</button>` : '';
 
   return `
-    <div class="product-card" data-product-id="${p.id}">
+    <div class="product-card" data-product-id="${escapeHtml(p.id)}">
       ${heart}${badge}${saleBadge}${stockBadge}
       <div class="product-image">
-        <img src="${p.image}" alt="${p.name}" loading="lazy">
+        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" loading="lazy">
       </div>
       <div class="product-info">
-        <div class="product-name">${p.name}</div>
-        <div class="product-tagline">${p.tagline}</div>
+        <div class="product-name">${escapeHtml(p.name)}</div>
+        <div class="product-tagline">${escapeHtml(p.tagline)}</div>
         <div class="product-rating">
           <span class="stars">${getStars(p.rating)}</span>
-          <span>(${p.reviews})</span>
+          <span>(${escapeHtml(p.reviews)})</span>
         </div>
         ${priceHTML}
-        <button class="product-quick-add" onclick="event.stopPropagation(); quickAddToCart('${p.id}')">Quick Add</button>
+        <button class="product-quick-add" onclick="event.stopPropagation(); quickAddToCart('${escapeHtml(p.id)}')">Quick Add</button>
       </div>
     </div>
   `;
@@ -426,17 +426,17 @@ function renderProductDetail(productId) {
   const breadcrumb = `
     <div class="breadcrumb">
       <a onclick="navigate('home')">Home</a> / 
-      <a onclick="navigate('shop','category:${product.category}')">${CATEGORIES.find(c => c.id === product.category)?.name || 'Shop'}</a> / 
-      <span>${product.name}</span>
+      <a onclick="navigate('shop','category:${escapeHtml(product.category)}')">${escapeHtml(CATEGORIES.find(c => c.id === product.category)?.name || 'Shop')}</a> / 
+      <span>${escapeHtml(product.name)}</span>
     </div>
   `;
 
   const gallery = `
     <div class="product-gallery">
-      <img src="${product.image}" alt="${product.name}" id="mainProductImage">
+      <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" id="mainProductImage">
       ${product.images && product.images.length > 1 ? `
         <div class="product-gallery-thumbs">
-          ${product.images.map((img, i) => `<img src="${img}" alt="${product.name} ${i+1}" class="${i === 0 ? 'active' : ''}" onclick="changeMainImage(this, '${img}')">`).join('')}
+          ${product.images.map((img, i) => `<img src="${escapeHtml(img)}" alt="${escapeHtml(product.name)} ${i+1}" class="${i === 0 ? 'active' : ''}" onclick="changeMainImage(this, '${escapeHtml(img)}')">`).join('')}
         </div>
       ` : ''}
     </div>
@@ -444,9 +444,9 @@ function renderProductDetail(productId) {
 
   const variants = product.variants ? product.variants.map(v => `
     <div class="variant-selector">
-      <label>${v.name}</label>
+      <label>${escapeHtml(v.name)}</label>
       <div class="variant-options">
-        ${v.options.map((opt, i) => `<div class="variant-option ${i === 0 ? 'selected' : ''}" onclick="selectVariant(this, '${v.name}', ${i}, '${opt}')">${opt}</div>`).join('')}
+        ${v.options.map((opt, i) => `<div class="variant-option ${i === 0 ? 'selected' : ''}" onclick="selectVariant(this, '${escapeHtml(v.name)}', ${i}, '${escapeHtml(opt)}')">${escapeHtml(opt)}</div>`).join('')}
       </div>
     </div>
   `).join('') : '';
@@ -466,19 +466,19 @@ function renderProductDetail(productId) {
     <div class="crystal-meta-grid">
       <div class="crystal-meta-item">
         <span class="crystal-meta-label">Crystal</span>
-        <span class="crystal-meta-value">${product.crystal || '—'}</span>
+        <span class="crystal-meta-value">${escapeHtml(product.crystal) || '—'}</span>
       </div>
       <div class="crystal-meta-item">
         <span class="crystal-meta-label">Chakra</span>
-        <span class="crystal-meta-value">${product.chakra || '—'}</span>
+        <span class="crystal-meta-value">${escapeHtml(product.chakra) || '—'}</span>
       </div>
       <div class="crystal-meta-item">
         <span class="crystal-meta-label">Element</span>
-        <span class="crystal-meta-value">${product.element || '—'}</span>
+        <span class="crystal-meta-value">${escapeHtml(product.element) || '—'}</span>
       </div>
       <div class="crystal-meta-item">
         <span class="crystal-meta-label">Ruling Planet</span>
-        <span class="crystal-meta-value">${product.planet || '—'}</span>
+        <span class="crystal-meta-value">${escapeHtml(product.planet) || '—'}</span>
       </div>
     </div>
   `;
@@ -487,46 +487,46 @@ function renderProductDetail(productId) {
   const ritualBox = product.ritual ? `
     <div class="crystal-ritual-box">
       <h4>🔮 Ritual & Activation</h4>
-      <p>${product.ritual}</p>
+      <p>${escapeHtml(product.ritual)}</p>
     </div>
   ` : '';
 
   document.getElementById('productDetailContent').innerHTML = `
     ${breadcrumb}
-    <div class="product-detail-grid" data-product-id="${product.id}">
+    <div class="product-detail-grid" data-product-id="${escapeHtml(product.id)}">
       ${gallery}
       <div class="product-detail-info">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
-          <h1 style="margin:0;">${product.name}</h1>
-          <button class="wishlist-btn wishlist-large" data-wishlist-id="${product.id}" onclick="event.stopPropagation(); toggleWishlist('${product.id}')">${isWishlisted(product.id) ? '♥' : '♡'}</button>
+          <h1 style="margin:0;">${escapeHtml(product.name)}</h1>
+          <button class="wishlist-btn wishlist-large" data-wishlist-id="${escapeHtml(product.id)}" onclick="event.stopPropagation(); toggleWishlist('${escapeHtml(product.id)}')">${isWishlisted(product.id) ? '♥' : '♡'}</button>
         </div>
-        <p class="product-detail-tagline">${product.tagline}</p>
+        <p class="product-detail-tagline">${escapeHtml(product.tagline)}</p>
         <div class="product-detail-rating">
           <span class="stars" style="font-size:18px;">${getStars(product.rating)}</span>
-          <span style="font-size:13px;color:var(--color-text-muted);">${product.rating} • ${product.reviews} reviews</span>
+          <span style="font-size:13px;color:var(--color-text-muted);">${escapeHtml(product.rating)} • ${escapeHtml(product.reviews)} reviews</span>
         </div>
         ${priceHTML}
         ${crystalMeta}
-        <p class="product-detail-desc">${product.description}</p>
+        <p class="product-detail-desc">${escapeHtml(product.description)}</p>
         ${ritualBox}
         <div class="product-properties">
           <h4>✦ Energy Properties</h4>
           <ul>
-            ${product.properties.map(prop => `<li>${prop}</li>`).join('')}
+            ${product.properties.map(prop => `<li>${escapeHtml(prop)}</li>`).join('')}
           </ul>
         </div>
         ${variants}
-        <div class="stock-status stock-${stockInfo.cls}" id="stockStatus">
-          <span class="stock-dot"></span>${stockInfo.label}
+        <div class="stock-status stock-${escapeHtml(stockInfo.cls)}" id="stockStatus">
+          <span class="stock-dot"></span>${escapeHtml(stockInfo.label)}
         </div>
-        ${variants ? `<div class="size-guide-row"><button type="button" class="size-guide-btn" onclick="openSizeGuide('${product.category}')">📏 Size Guide</button></div>` : ''}
+        ${variants ? `<div class="size-guide-row"><button type="button" class="size-guide-btn" onclick="openSizeGuide('${escapeHtml(product.category)}')">📏 Size Guide</button></div>` : ''}
         <div style="display:flex;gap:16px;align-items:center;margin:18px 0 8px;">
           <div class="qty-selector">
             <button onclick="changeQty(-1)">−</button>
             <input type="number" id="qtyInput" value="1" min="1" onchange="syncQty(this.value)">
             <button onclick="changeQty(1)">+</button>
           </div>
-          <span id="stockCount" style="font-size:13px;color:var(--color-text-muted);">${product.stock} in stock</span>
+          <span id="stockCount" style="font-size:13px;color:var(--color-text-muted);">${escapeHtml(product.stock)} in stock</span>
         </div>
         <div id="productQtyTotal" class="product-qty-total" style="margin-bottom:12px;font-size:14px;color:var(--color-text-muted);">1 × ${formatPrice(initialPrice)} = ${formatPrice(initialPrice)}</div>
         <button id="addToCartBtn" class="btn btn-dark btn-lg btn-full" onclick="addToCartDetail()" style="margin-bottom:16px;${stockInfo.cls === 'out' ? 'opacity:.5;cursor:not-allowed;' : ''}" ${stockInfo.cls === 'out' ? 'disabled' : ''}>${stockInfo.cls === 'out' ? 'Sold Out' : 'Add to Cart • ' + formatPrice(initialPrice)}</button>
@@ -763,15 +763,15 @@ function renderBlogDetail(blogId) {
 
   document.getElementById('blogDetailContent').innerHTML = `
     <section class="hero" style="height:400px;">
-      <div class="hero-bg" style="background: linear-gradient(135deg, rgba(74,93,62,0.78) 0%, rgba(201,169,110,0.35) 100%), url('${blog.image}') center/cover;"></div>
+      <div class="hero-bg" style="background: linear-gradient(135deg, rgba(74,93,62,0.78) 0%, rgba(201,169,110,0.35) 100%), url('${escapeHtml(blog.image)}') center/cover;"></div>
       <div class="hero-content">
-        <div class="blog-meta" style="text-transform:uppercase;letter-spacing:2px;font-size:13px;margin-bottom:16px;color:#fff;opacity:0.95;">${blog.category} • ${blog.readTime}</div>
-        <h1 style="max-width:860px;font-size:42px;">${blog.title}</h1>
+        <div class="blog-meta" style="text-transform:uppercase;letter-spacing:2px;font-size:13px;margin-bottom:16px;color:#fff;opacity:0.95;">${escapeHtml(blog.category)} • ${escapeHtml(blog.readTime)}</div>
+        <h1 style="max-width:860px;font-size:42px;">${escapeHtml(blog.title)}</h1>
       </div>
     </section>
     <div class="container blog-detail-container">
       <div class="breadcrumb" style="margin-bottom:28px;">
-        <a onclick="navigate('home')">Home</a> / <a onclick="navigate('home'); setTimeout(() => { const el = document.getElementById('blogGrid'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);">Journal</a> / <span>${blog.title}</span>
+        <a onclick="navigate('home')">Home</a> / <a onclick="navigate('home'); setTimeout(() => { const el = document.getElementById('blogGrid'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);">Journal</a> / <span>${escapeHtml(blog.title)}</span>
       </div>
       <article class="blog-detail-body">
         ${blog.content}
@@ -1058,15 +1058,15 @@ function renderCart() {
 
   cartItems.innerHTML = cart.map((item, i) => `
     <div class="cart-item">
-      <img src="${item.image}" alt="${item.name}">
+      <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
       <div class="cart-item-info">
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-tagline">${item.tagline}</div>
+        <div class="cart-item-name">${escapeHtml(item.name)}</div>
+        <div class="cart-item-tagline">${escapeHtml(item.tagline)}</div>
         ${item.variant ? `<div class="cart-item-variant">${escapeHtml(item.variant)}</div>` : ''}
         <div class="cart-item-bottom">
           <div class="cart-qty">
             <button onclick="changeCartQty(${i}, -1)">−</button>
-            <span>${item.qty}</span>
+            <span>${escapeHtml(item.qty)}</span>
             <button onclick="changeCartQty(${i}, 1)">+</button>
           </div>
           <div class="cart-item-price">${formatPrice(item.price * item.qty)}</div>
@@ -1412,7 +1412,7 @@ function renderCheckout() {
           <h3>Contact Information</h3>
           <div class="form-group">
             <label>Email Address</label>
-            <input type="email" id="checkoutEmail" placeholder="your@email.com" value="${user ? user.email : ''}" required>
+            <input type="email" id="checkoutEmail" placeholder="your@email.com" value="${user ? escapeHtml(user.email) : ''}" required>
           </div>
           <div class="form-group">
             <label>Phone Number</label>
@@ -1424,7 +1424,7 @@ function renderCheckout() {
           <div id="savedAddressSelector"></div>
           <div class="form-group">
             <label>Full Name</label>
-            <input type="text" id="checkoutName" placeholder="Jane Doe" value="${user ? user.name : ''}" required>
+            <input type="text" id="checkoutName" placeholder="Jane Doe" value="${user ? escapeHtml(user.name) : ''}" required>
           </div>
           <div class="form-group">
             <label>Address</label>
@@ -1485,10 +1485,10 @@ function renderCheckout() {
         <div class="summary-items">
           ${cart.map(item => `
             <div class="summary-item">
-              <img src="${item.image}" alt="${item.name}">
+              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
               <div class="summary-item-info">
-                <div class="summary-item-name">${item.name}</div>
-                <div class="summary-item-qty">Qty: ${item.qty}</div>
+                <div class="summary-item-name">${escapeHtml(item.name)}</div>
+                <div class="summary-item-qty">Qty: ${escapeHtml(item.qty)}</div>
               </div>
               <div class="summary-item-price">${formatPrice(item.price * item.qty)}</div>
             </div>
@@ -1496,7 +1496,7 @@ function renderCheckout() {
         </div>
         <div class="summary-totals">
           <div class="summary-row"><span>Subtotal</span><span>${formatPrice(subtotal)}</span></div>
-          ${discount > 0 ? `<div class="summary-row discount"><span>Discount (${cartCoupon.code})</span><span>-${formatPrice(discount)}</span></div>` : ''}
+          ${discount > 0 ? `<div class="summary-row discount"><span>Discount (${escapeHtml(cartCoupon.code)})</span><span>-${formatPrice(discount)}</span></div>` : ''}
           <div class="summary-row"><span>Shipping</span><span>${shipping === 0 ? 'FREE' : formatPrice(shipping)}</span></div>
           <div class="summary-row"><span>Tax (8%)</span><span>${formatPrice(tax)}</span></div>
           <div class="summary-row total"><span>Total</span><span>${formatPrice(total)}</span></div>
@@ -1513,7 +1513,7 @@ function renderCheckout() {
         </div>
         ` : `
         <div class="checkout-coupon">
-          <div class="coupon-applied">✓ <strong>${cartCoupon.code}</strong> applied — 10% off first order <a onclick="removeCoupon(); renderCheckout();">Remove</a></div>
+          <div class="coupon-applied">✓ <strong>${escapeHtml(cartCoupon.code)}</strong> applied — 10% off first order <a onclick="removeCoupon(); renderCheckout();">Remove</a></div>
         </div>
         `}
       </div>
