@@ -29,6 +29,27 @@ function absUrl(domain, p) {
   return domain + (p.startsWith('/') ? '' : '/') + p;
 }
 
+function stripTags(html) {
+  return String(html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+let cachedBlogPosts = null;
+function loadBlogPosts() {
+  if (cachedBlogPosts) return cachedBlogPosts;
+  try {
+    const dataJs = fs.readFileSync(path.join(__dirname, '..', 'js', 'data.js'), 'utf8');
+    const match = dataJs.match(/const BLOG_POSTS\s*=\s*(\[[\s\S]*?\]);?\s*\nwindow\.PRODUCTS\s*=\s*PRODUCTS;/);
+    if (match) {
+      cachedBlogPosts = Function('"use strict"; return ' + match[1])();
+      return cachedBlogPosts;
+    }
+  } catch (e) {
+    console.error('[SSR] Failed to load BLOG_POSTS:', e.message);
+  }
+  cachedBlogPosts = [];
+  return cachedBlogPosts;
+}
+
 function parseRoute(req) {
   const q = req.query || {};
   const pathname = (req.path || '/').split('?')[0];
@@ -199,8 +220,32 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
   }
 
   if (route.type === 'blog') {
-    const body = `<h1>Aurae Journal</h1><p>Stories, rituals, and crystal wisdom from the Aurae team.</p>`;
-    return { status: 200, html: doc({ title: 'Aurae Journal — Crystal Wisdom', desc: 'Stories, rituals, and crystal wisdom from the Aurae team.', canonical: domain + '/index.html?blog=' + esc(route.id || ''), domain, bodyHTML: body, jsonLd: [], gscMeta }) };
+    const blogs = loadBlogPosts();
+    const blog = blogs.find(b => b.id === route.id);
+    if (!blog) {
+      return { status: 404, html: doc({ title: 'Article not found — Aurae', desc: 'The requested article could not be found.', canonical: domain + '/', domain, bodyHTML: '<h1>Article not found</h1><p><a href="/">Return home</a></p>', jsonLd: [], gscMeta }) };
+    }
+    const url = domain + '/index.html?blog=' + encodeURIComponent(blog.id);
+    const img = absUrl(domain, blog.image);
+    const desc = stripTags(blog.excerpt || blog.content).slice(0, 160);
+    const body = `<article class="blog-post">
+<h1>${esc(blog.title)}</h1>
+<p class="blog-meta">${esc(blog.readTime || '')} · ${esc(blog.category ? blog.category.charAt(0).toUpperCase() + blog.category.slice(1) : '')}</p>
+<img class="hero" src="${esc(img)}" alt="${esc(blog.title)}" width="800" height="600">
+<div class="blog-content">${blog.content}</div>
+</article>`;
+    const jsonLd = [{
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: blog.title,
+      description: desc,
+      image: img,
+      url: url,
+      datePublished: new Date().toISOString(),
+      author: { '@type': 'Organization', name: 'Aurae' },
+      publisher: { '@type': 'Organization', name: 'Aurae', logo: { '@type': 'ImageObject', url: domain + '/images/p001.png' } }
+    }];
+    return { status: 200, html: doc({ title: `${blog.title} — Aurae Journal`, desc, canonical: url, domain, bodyHTML: body, jsonLd, gscMeta }) };
   }
 
   // Unknown SPA route -> soft-404 eliminated: return 404 to crawler
