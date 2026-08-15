@@ -38,7 +38,8 @@ function loadBlogPosts() {
   if (cachedBlogPosts) return cachedBlogPosts;
   try {
     const dataJs = fs.readFileSync(path.join(__dirname, '..', 'js', 'data.js'), 'utf8');
-    const match = dataJs.match(/const BLOG_POSTS\s*=\s*(\[[\s\S]*?\]);?\s*\nwindow\.PRODUCTS\s*=\s*PRODUCTS;/);
+    // Match the BLOG_POSTS array literal up to its closing ]; (followed by optional semicolon + blank line + window.PRODUCTS)
+    const match = dataJs.match(/const BLOG_POSTS\s*=\s*(\[[\s\S]*?\n\]\s*);?\s*\nwindow\.PRODUCTS\s*=\s*PRODUCTS;/);
     if (match) {
       cachedBlogPosts = Function('"use strict"; return ' + match[1])();
       return cachedBlogPosts;
