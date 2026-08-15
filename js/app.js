@@ -533,7 +533,7 @@ function renderProductDetail(productId) {
         <button class="btn btn-outline btn-full" onclick="buyNowDetail()">Buy It Now</button>
         <div style="margin-top:24px;padding:16px;background:var(--color-bg-alt);border-radius:var(--radius-md);font-size:13px;color:var(--color-text-muted);">
           <div style="margin-bottom:6px;">🚚 <strong>Free shipping</strong> on orders over $50</div>
-          <div style="margin-bottom:6px;">↩️ <strong>30-day returns</strong> — no questions asked</div>
+          <div style="margin-bottom:6px;">↩️ <strong>14-day returns</strong> — easy &amp; hassle-free</div>
           <div>💎 <strong>100% genuine crystals</strong> — ethically sourced from 1688 verified suppliers</div>
         </div>
       </div>
