@@ -101,7 +101,11 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(express.json({ limit: '1mb' }));
+// Capture the raw body buffer (req.rawBody) so webhook routes can verify
+// signatures against the exact bytes PayPal/Stripe sent. Without this, the
+// JSON body parser already consumes the stream and webhook signature
+// verification would run against a re-serialized (and therefore mismatched) body.
+app.use(express.json({ limit: '1mb', verify: (req, res, buf) => { req.rawBody = buf; } }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
 // ===== Security: block access to server/runtime/sensitive files =====
@@ -263,6 +267,12 @@ const reviewUpload = multer({
 // Stripe needs raw body for webhook verification
 app.post('/api/stripe-webhook', express.raw({ type: 'application/json', limit: '5mb' }), (req, res) => {
   handleStripeWebhook(req, res);
+});
+
+// PayPal webhook: uses req.rawBody (captured by the global JSON parser) for
+// PayPal signature verification against its verify-webhook-signature endpoint.
+app.post('/api/paypal-webhook', express.raw({ type: 'application/json', limit: '5mb' }), (req, res) => {
+  handlePayPalWebhook(req, res);
 });
 
 // ===== Config =====
@@ -916,6 +926,7 @@ app.get('/api/health', (req, res) => {
     stripe: stripe ? 'configured' : 'not configured',
     paypal: process.env.PAYPAL_CLIENT_ID ? 'configured' : 'not configured',
     paypalMode: process.env.PAYPAL_MODE || 'sandbox',
+    paypalWebhook: process.env.PAYPAL_WEBHOOK_ID ? 'configured' : 'not configured',
   });
 });
 
@@ -1243,7 +1254,7 @@ async function handleStripeWebhook(req, res) {
   }
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(req.rawBody || req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error('[Stripe Webhook] Signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -1289,6 +1300,104 @@ async function handleStripeWebhook(req, res) {
 
     default:
       // Unhandled event type
+  }
+
+  res.json({ received: true });
+}
+
+// ===== API: PayPal Webhook =====
+// PayPal sends async events (payment captured, refunded, etc.). We verify the
+// signature with PayPal's verify-webhook-signature endpoint before trusting it.
+// Fail closed: an unverified event must never mark an order as paid.
+async function handlePayPalWebhook(req, res) {
+  if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+    return res.status(503).send('PayPal not configured');
+  }
+  if (!process.env.PAYPAL_WEBHOOK_ID) {
+    console.error('[PayPal Webhook] PAYPAL_WEBHOOK_ID not set - refusing event.');
+    return res.status(400).send('Webhook ID not configured.');
+  }
+
+  const transmissionId = req.headers['paypal-transmission-id'];
+  const transmissionTime = req.headers['paypal-transmission-time'];
+  const transmissionSig = req.headers['paypal-transmission-sig'];
+  const certUrl = req.headers['paypal-cert-url'];
+  const authAlgo = req.headers['paypal-auth-algo'];
+
+  if (!transmissionId || !transmissionTime || !transmissionSig || !certUrl || !authAlgo) {
+    console.error('[PayPal Webhook] Missing verification headers.');
+    return res.status(400).send('Missing PayPal verification headers.');
+  }
+
+  let event;
+  try {
+    event = JSON.parse((req.rawBody || req.body || '').toString('utf8'));
+  } catch (e) {
+    console.error('[PayPal Webhook] Invalid JSON body.');
+    return res.status(400).send('Invalid JSON.');
+  }
+
+  // Verify the event signature with PayPal
+  try {
+    const accessToken = await getPayPalAccessToken();
+    const verifyRes = await fetch(`${PAYPAL_API_BASE}/v1/notifications/verify-webhook-signature`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        transmission_id: transmissionId,
+        transmission_time: transmissionTime,
+        cert_url: certUrl,
+        auth_algo: authAlgo,
+        transmission_sig: transmissionSig,
+        webhook_id: process.env.PAYPAL_WEBHOOK_ID,
+        webhook_event: event,
+      }),
+    });
+    const verifyData = await verifyRes.json();
+    if (verifyData.verification_status !== 'SUCCESS') {
+      console.error('[PayPal Webhook] Signature verification failed:', JSON.stringify(verifyData));
+      return res.status(400).send('Webhook signature verification failed.');
+    }
+  } catch (err) {
+    console.error('[PayPal Webhook] Verification request error:', err.message);
+    return res.status(500).send('Verification error.');
+  }
+
+  console.log(`[PayPal Webhook] Event: ${event.event_type}`);
+
+  if (event.event_type === 'PAYMENT.CAPTURE.COMPLETED') {
+    const ppOrderId = event.resource?.supplementary_data?.related_ids?.order_id || null;
+    const captureId = event.resource?.id;
+    const amount = event.resource?.amount?.value;
+    const orders = loadOrders();
+    const order = orders.find(o => o.paypalOrderId === ppOrderId);
+    if (order) {
+      if (order.status !== 'paid') {
+        updateOrder(order.orderId, {
+          status: 'paid',
+          paypalCaptureId: captureId,
+          paidAt: new Date().toISOString(),
+          paymentAmount: parseFloat(amount || order.totals?.total || 0),
+        });
+        finalizePaidOrder(order.orderId); // decrement stock + send confirmation email + bump coupon
+        console.log(`[PayPal Webhook] Payment confirmed for order ${order.orderId}`);
+      } else {
+        console.log(`[PayPal Webhook] Order ${order.orderId} already paid - skipping.`);
+      }
+    } else {
+      console.error(`[PayPal Webhook] No matching order for PayPal order ${ppOrderId}`);
+    }
+  } else if (event.event_type === 'PAYMENT.CAPTURE.REFUNDED' || event.event_type === 'PAYMENT.CAPTURE.REVERSED') {
+    const ppOrderId = event.resource?.supplementary_data?.related_ids?.order_id;
+    const orders = loadOrders();
+    const order = orders.find(o => o.paypalOrderId === ppOrderId);
+    if (order) {
+      updateOrder(order.orderId, { status: 'refunded' });
+      console.log(`[PayPal Webhook] Order ${order.orderId} marked refunded.`);
+    }
   }
 
   res.json({ received: true });
