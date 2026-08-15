@@ -1118,7 +1118,7 @@ const BLOG_POSTS = [
     readTime: "11 min read",
     title: "Crystals for Manifestation: A Practical Step-by-Step Guide",
     excerpt: "Manifestation is not magic \u2014 it is focused intention meeting daily action. These crystals and a simple 7-step ritual help you attract love, money, and peace with clarity.",
-    image: "/images/p007.png",
+    image: "/images/p007_2.png",
     content: `<p>You have probably heard that "thoughts become things." Manifestation is simply the practice of aiming your attention, emotion, and action at one clear outcome until it arrives. Crystals are not a shortcut \u2014 but they are a powerful anchor. They give your intention a physical home, a daily reminder, and a quiet focus your scattered mind can return to. This guide walks you through exactly how to manifest with crystals, step by step.</p>
       <h3>What Does "Manifestation" Actually Mean?</h3>
       <p>At its core, manifestation is the alignment of three things: what you <em>think</em>, what you <em>feel</em>, and what you <em>do</em>. A crystal helps hold that alignment when life gets noisy. It is not the source of the outcome \u2014 you are. The stone simply keeps your frequency steady while you do the work.</p>
@@ -1142,7 +1142,7 @@ const BLOG_POSTS = [
     readTime: "10 min read",
     title: "The Best Crystals for Protection & Grounding (and How to Use Them Daily)",
     excerpt: "If you feel drained after crowds, scrolling, or hard conversations, you may be an energetic sponge. These protective stones and a 5-minute daily shield ritual help you stay rooted and safe.",
-    image: "/images/p005.png",
+    image: "/images/p005_2.png",
     content: `<p>Some people walk into a room and absorb everything \u2014 the tension, the noise, the unspoken moods. If that is you, you are not weak; you are sensitive. And sensitive people need boundaries they can wear. That is where protection and grounding crystals come in. They do not "block" life \u2014 they help you stay centered in your own energy instead of leaking it everywhere.</p>
       <h3>Protection vs. Grounding: What's the Difference?</h3>
       <p><strong>Protection</strong> stones absorb or deflect outside energy you do not want \u2014 stress, negativity, the static of a crowded train. <strong>Grounding</strong> stones pull your attention out of your racing head and back into your body and the earth. You usually want both: a shield and an anchor.</p>
