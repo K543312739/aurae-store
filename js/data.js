@@ -1240,6 +1240,67 @@ const BLOG_POSTS = [
       <p>One stone by the front door absorbs outside energy before it enters. One on your desk shields your workspace. One in your pocket travels with you. You do not need many \u2014 you need the right few, used consistently.</p>
       <h3>Who Needs This Most</h3>
       <p>Empaths, healthcare workers, teachers, anyone in open-plan offices or constant video calls. If you end most days wiped out for no obvious reason, protection crystals are not woo \u2014 they are a wearable boundary. Start with one stone this week and feel the difference.</p>`
+  },
+  {
+    id: "b14",
+    category: "crystals",
+    readTime: "12 min read",
+    title: "Crystals for Love, Relationships & Self-Love: A Gentle Guide",
+    excerpt: "Whether you are calling in new love, deepening a partnership, or healing a broken heart, these stones meet you where you are. A practical, judgment-free guide to the crystals of the heart.",
+    image: "/images/p001.png",
+    content: `<p>Love is the most-asked-about reason people pick up a crystal — and the most misunderstood. There is no magic stone that makes someone fall for you. What crystals can do is quieter and more useful: they help you soften, get honest with yourself, and become the kind of person who recognizes love when it arrives. This guide covers the stones for every version of love you might be working with right now.</p>
+      <h3>Why Crystals for Love?</h3>
+      <p>Most love work happens at the heart chakra — the energy center at the center of the chest that governs how openly you give and receive. When that center is guarded, love feels risky. When it is open, connection flows. The stones below are chosen because, in tradition and practice, they gently coax the heart open without forcing it. You are not trying to "manifest a specific person" — you are building the capacity to love and be loved.</p>
+      <h3>The Core Love Stones</h3>
+      <p><strong>Rose Quartz — the stone of unconditional love.</strong> This is the entry point for almost everyone. Soft pink <a href="/index.html?product=p001">Rose Quartz</a> lowers the walls around the heart and reminds you that you are worthy of tenderness — from others and from yourself. Wear it on the left wrist (your receiving side) or keep a tumbled piece by your bed.</p>
+      <p><strong>Green Aventurine — the stone of opportunity.</strong> Often called the luck stone, it adds confidence and openness to Rose Quartz's softness. It is the crystal to reach for when you are dating again after a long time or stepping back into the world.</p>
+      <p><strong>Rhodonite — the heart-healer.</strong> Where Rose Quartz opens, Rhodonite soothes the old wounds that keep the door closed. It is the stone for forgiveness — of others, and of yourself.</p>
+      <p><strong>Moonstone — the stone of gentle cycles.</strong> Linked to the moon and intuition, Moonstone supports the ebb and flow of a long relationship and the tender kind of dreams that come with feeling safe.</p>
+      <p><strong>Pink Tourmaline — the high-vibe self-love stone.</strong> A brighter, more energized cousin of Rose Quartz, it is wonderful when you need to actively rebuild self-worth rather than simply soothe it.</p>
+      <h3>For Attracting New Love</h3>
+      <p>Pair <a href="/index.html?product=p001">Rose Quartz</a> with Green Aventurine and wear them as you go about your life — not to summon a specific person, but to keep your own energy open and warm. Once a week, hold the stones and set a simple intention: "I am ready to meet love with an open heart." Then live your life. The stone is a reminder, not a spell.</p>
+      <h3>For Deepening a Relationship</h3>
+      <p>Stones work beautifully as a shared ritual. Place a Rose Quartz and a Rhodonite on your shared nightstand, or gift your partner a matching piece. The point is not the mineral — it is the daily, visible signal that the relationship is tended. Couples who "set intentions" together over a stone often report it sparks the exact conversations they had been avoiding.</p>
+      <h3>For Healing a Broken Heart</h3>
+      <p>This is where crystals earn their keep. After loss, the heart clenches. Rhodonite and Rose Quartz, used together, give grief a gentle container. Hold them when the wave hits. Speak what you lost. Let the stone hold the weight for a few minutes so you do not have to carry it alone. There is no timeline — only the next small breath.</p>
+      <h3>For Self-Love (the Most Important One)</h3>
+      <p>Before any of the above, there is you. Self-love is not bubble baths and affirmations you do not believe — it is the quiet decision to stop abandoning yourself. Rose Quartz against the chest each morning, a hand on the heart, and one sentence: "I am enough as I am." Do it on the days you mean it and the days you do not. Especially the days you do not.</p>
+      <h3>A Simple Love Ritual (7 Minutes)</h3>
+      <p><strong>1.</strong> Choose one heart stone — Rose Quartz is perfect to start. <strong>2.</strong> Cleanse it (smoke or moonlight; see our <a href="/index.html?blog=b8">care guide</a>). <strong>3.</strong> Hold it at your chest and name the love you are ready to give or receive. <strong>4.</strong> Wear or place it where you will see it daily. <strong>5.</strong> Once a day, return to the feeling for ten seconds. That is the whole practice.</p>
+      <h3>Start Where You Are</h3>
+      <p>You do not need a collection. You need one stone and a little honesty. Whether you are calling in love, protecting it, or learning it starts with you, the crystal is simply a calm, physical anchor for the work you are already doing. Pick the one your hand reaches for — that pull is usually exactly the energy you need.</p>`
+  },
+  {
+    id: "b15",
+    category: "guides",
+    readTime: "11 min read",
+    title: "Crystals for Focus, Productivity & Study: Build a Clear-Mind Workspace",
+    excerpt: "Struggling to concentrate in a noisy world? These clarity-boosting crystals and a simple desk ritual help students, remote workers, and busy minds find calm, steady focus.",
+    image: "/images/p004.png",
+    content: `<p>Focus is a muscle, and the modern world is doing its best to exhaust it. Notifications, open tabs, and a brain that treats rest as a productivity problem — sound familiar? Crystals will not replace deep work or a good night's sleep, but they are a surprisingly effective tool for one thing: giving your scattered attention a single, calm anchor to return to. Here is how to build a focus-friendly crystal routine.</p>
+      <h3>Why Crystals for Focus?</h3>
+      <p>The benefit is mostly ritual and environment. When you set a stone on your desk with the intention "this is where I do my best thinking," you are training your brain to associate that spot and that object with concentration. The stone becomes a visual off-switch for distraction. Combined with the right mineral energies, it is a low-effort way to signal "work mode" to your nervous system.</p>
+      <h3>The Best Crystals for a Clear Mind</h3>
+      <p><strong>Amethyst — the calm-focus stone.</strong> Soft purple <a href="/index.html?product=p004">Amethyst</a> quiets mental noise without sedating you. It is the default choice for study desks and anyone whose mind races while they try to think. Keep a small cluster near your laptop.</p>
+      <p><strong>Clear Quartz — the amplifier.</strong> <a href="/index.html?product=p013">Clear Quartz</a> is the blank canvas of the mineral world: it magnifies whatever intention you pair it with. Put it next to your primary focus stone to sharpen the effect, or hold it while planning your top three tasks for the day.</p>
+      <p><strong>Tiger's Eye — the steady-confidence stone.</strong> <a href="/index.html?product=p009">Tiger's Eye</a> blends grounding earth energy with sharp mental clarity. It is ideal for the kind of focus that requires courage — hard conversations, exams, deadlines you have been avoiding.</p>
+      <p><strong>Fluorite — the organization stone.</strong> Beloved by students, Fluorite is associated with sorting mental clutter and improving memory retention. A rainbow Fluorite point on the desk is a classic study companion.</p>
+      <p><strong>Citrine — the momentum stone.</strong> <a href="/index.html?product=p007">Citrine</a> lifts sluggish energy and fights the mid-afternoon slump. Use it when you need to start, not just concentrate.</p>
+      <p><strong>Sodalite — the logic stone.</strong> Linked to clear, rational thinking and honest communication, Sodalite supports writing, analysis, and any work that depends on getting your thoughts in order.</p>
+      <h3>Build a Focus Desk Altar</h3>
+      <p>You do not need all six. Pick two: Amethyst for calm and Clear Quartz to amplify it is a perfect minimal setup. Place them at the corner of your desk where you can see them but they will not get in the way. Add one Tiger's Eye for the days you need grit. That is your "focus zone" — and your brain will learn the cue fast.</p>
+      <h3>A 5-Minute Study / Work Ritual</h3>
+      <p><strong>1.</strong> Before you start, cleanse your stones with a quick pass of incense smoke or set them on a <a href="/index.html?blog=b8">Selenite plate</a> overnight. <strong>2.</strong> Write down your single most important task. <strong>3.</strong> Hold Clear Quartz and state that task aloud once. <strong>4.</strong> Place the stones by your workspace and begin — phone in another room. <strong>5.</strong> When you drift, glance at the stone, take one slow breath, and return. The stone is your reset button.</p>
+      <h3>For Students & Exams</h3>
+      <p>Fluorite and Amethyst are the study duo. Keep them on your desk while revising and, if it helps, hold a small piece during the exam (check your school's rules first). The ritual of "stone = study" builds a calmer, more confident recall state over time.</p>
+      <h3>For Remote Workers & Open Offices</h3>
+      <p>The enemy is fragmentation. Tiger's Eye keeps you rooted through constant pings; Amethyst keeps the mental static down. A small cluster on your monitor is enough. Pair the stones with one real boundary — closed laptop lid during breaks — and the effect compounds.</p>
+      <h3>For Busy or Racing Minds (incl. ADHD)</h3>
+      <p>Crystals are not a substitute for medical care, but many people with busy minds find a physical anchor genuinely grounding. Amethyst for the noise, Tiger's Eye for the follow-through, Clear Quartz to cut through fog. Use them as part of a larger toolkit: timers, movement, sleep, and support from a professional when needed.</p>
+      <h3>What to Avoid at the Desk</h3>
+      <p>Not every stone belongs in your focus space. Heavily activating or dreamy stones (like Moonstone or Lepidolite) are better for rest and sleep, not concentration. Keep the desk clear, grounded, and bright — save the soft stones for the night shift.</p>
+      <h3>Start This Week</h3>
+      <p>Choose one focus stone, give it a job, and let it become the cue your brain learns to trust. Ten minutes of ritual beats a drawer full of unused crystals. Pick the stone your hand wants, set one clear intention, and watch how much easier it is to begin.</p>`
   }
 ];
 
