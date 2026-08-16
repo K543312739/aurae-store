@@ -194,22 +194,10 @@ function buildPinterestLineItems(items) {
   }).filter(i => i.product_quantity > 0);
 }
 
-// ===== Navigation =====
-function navigate(view, param) {
+// ===== Navigation (History API SPA routing) =====
+// renderView: pure client-side view switch (no URL change).
+function renderView(view, param) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-
-  // If this page doesn't have the SPA views (e.g. standalone legal pages),
-  // redirect to index.html with the right query parameters.
-  const hasViews = !!document.getElementById('homeView');
-  if (!hasViews) {
-    if (view === 'home') window.location.href = 'index.html';
-    else if (view === 'shop') window.location.href = 'index.html?shop=' + encodeURIComponent(param || 'all');
-    else if (view === 'product') window.location.href = 'index.html?product=' + encodeURIComponent(param || '');
-    else if (view === 'about') window.location.href = 'index.html?view=about';
-    else if (view === 'contact') window.location.href = 'index.html?view=contact';
-    else if (view === 'blog') window.location.href = 'index.html?blog=' + encodeURIComponent(param || '');
-    return;
-  }
 
   if (view === 'home') {
     document.getElementById('homeView').classList.add('active');
@@ -233,6 +221,7 @@ function navigate(view, param) {
   } else if (view === 'checkout') {
     if (cart.length === 0) {
       showToast('Your cart is empty');
+      renderView('home');
       return;
     }
     document.getElementById('checkoutView').classList.add('active');
@@ -271,6 +260,66 @@ function navigate(view, param) {
 
   // Pinterest SPA pageview
   pintrkTrack('pagevisit', {});
+}
+
+// Build the canonical URL for a given view (used for History API state).
+function viewToUrl(view, param) {
+  const base = window.location.pathname;
+  if (view === 'home') return base;
+  if (view === 'shop') return base + '?shop=' + encodeURIComponent(param || 'all');
+  if (view === 'product') return base + '?product=' + encodeURIComponent(param || '');
+  if (view === 'blog' && param) return base + '?blog=' + encodeURIComponent(param);
+  if (view === 'about') return base + '?view=about';
+  if (view === 'contact') return base + '?view=contact';
+  if (view === 'checkout') return base + '?view=checkout';
+  return base;
+}
+
+// navigate: in-app navigation that pushes a real history entry so the
+// browser Back/Forward buttons traverse the SPA instead of leaving the site.
+function navigate(view, param, opts) {
+  opts = opts || {};
+  const hasViews = !!document.getElementById('homeView');
+
+  // Standalone pages (no SPA shell, e.g. legal pages) → full reload.
+  if (!hasViews) {
+    if (view === 'home') window.location.href = 'index.html';
+    else if (view === 'shop') window.location.href = 'index.html?shop=' + encodeURIComponent(param || 'all');
+    else if (view === 'product') window.location.href = 'index.html?product=' + encodeURIComponent(param || '');
+    else if (view === 'about') window.location.href = 'index.html?view=about';
+    else if (view === 'contact') window.location.href = 'index.html?view=contact';
+    else if (view === 'blog') window.location.href = 'index.html?blog=' + encodeURIComponent(param || '');
+    return;
+  }
+
+  const url = viewToUrl(view, param);
+  if (opts.replace) {
+    window.history.replaceState({ view, param }, '', url);
+  } else {
+    window.history.pushState({ view, param }, '', url);
+  }
+  renderView(view, param);
+}
+
+// Handle browser Back/Forward: re-render the view that the URL describes.
+function handlePopState() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('product')) {
+    const pid = params.get('product');
+    if (PRODUCTS.find(p => p.id === pid)) { renderView('product', pid); return; }
+  }
+  if (params.has('blog')) {
+    const bid = params.get('blog');
+    if (BLOG_POSTS.find(b => b.id === bid)) { renderView('blog', bid); return; }
+  }
+  if (params.has('shop') || params.get('view') === 'shop') {
+    const shopParam = params.get('shop') || (params.get('category') ? 'category:' + params.get('category') : 'all');
+    renderView('shop', shopParam); return;
+  }
+  if (params.get('view') === 'about') { renderView('about'); return; }
+  if (params.get('view') === 'contact') { renderView('contact'); return; }
+  if (params.get('view') === 'checkout') { renderView('checkout'); return; }
+  renderView('home');
 }
 
 // ===== Render Home Page =====
@@ -2838,26 +2887,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else if (isStorePage && urlParams.has('product')) {
     const pid = urlParams.get('product');
     if (PRODUCTS.find(p => p.id === pid)) {
-      navigate('product', pid);
+      renderView('product', pid);
       window.history.replaceState({}, '', window.location.pathname);
     }
   } else if (isStorePage && urlParams.has('blog')) {
     const bid = urlParams.get('blog');
     if (BLOG_POSTS.find(b => b.id === bid)) {
-      navigate('blog', bid);
+      renderView('blog', bid);
       window.history.replaceState({}, '', window.location.pathname);
     }
   } else if (isStorePage && (urlParams.has('shop') || urlParams.get('view') === 'shop')) {
     const shopParam = urlParams.get('shop') || (urlParams.get('category') ? 'category:' + urlParams.get('category') : 'all');
-    navigate('shop', shopParam);
+    renderView('shop', shopParam);
     window.history.replaceState({}, '', window.location.pathname);
   } else if (isStorePage && urlParams.get('view') === 'about') {
-    navigate('about');
+    renderView('about');
     window.history.replaceState({}, '', window.location.pathname);
   } else if (isStorePage && urlParams.get('view') === 'contact') {
-    navigate('contact');
+    renderView('contact');
     window.history.replaceState({}, '', window.location.pathname);
   }
+
+  // SPA Back/Forward support: re-render the view described by the URL.
+  window.addEventListener('popstate', handlePopState);
   document.getElementById('cartBtn').addEventListener('click', openCart);
   document.getElementById('cartClose').addEventListener('click', closeCart);
   document.getElementById('cartOverlay').addEventListener('click', closeCart);
