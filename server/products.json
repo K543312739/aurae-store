@@ -991,5 +991,123 @@
       "years": "12年老店",
       "rating": "好评率99%+"
     }
+  },
+  {
+    "id": "p017",
+    "name": "Rose & Strawberry Quartz Harmony Bracelet",
+    "nameCN": "粉晶草莓晶和谐手链",
+    "tagline": "Sweet Love • Self-Worth • Gentle Magnetism",
+    "price": 45.99,
+    "compareAt": null,
+    "category": "bracelet",
+    "intention": "love",
+    "crystal": "Rose Quartz · Strawberry Quartz · Clear Quartz",
+    "crystalCN": "粉晶 / 草莓晶 / 白水晶",
+    "chakra": "Heart Chakra (心轮)",
+    "element": "Water",
+    "planet": "Venus",
+    "image": "/images/p017_1.jpg",
+    "images": [
+      "/images/p017_1.jpg",
+      "/images/p017_2.jpg",
+      "/images/p017_3.jpg",
+      "/images/p017_4.jpg",
+      "/images/p017_5.jpg"
+    ],
+    "description": "In the soft blush of dawn, three kindred stones unite to weave a bracelet of pure tenderness. Rose Quartz - the stone of unconditional love - forms the gentle heart of this piece, its milky-pink glow a quiet reminder that you are worthy of love exactly as you are. Strawberry Quartz dances alongside it, carrying the sweet, magnetic energy of new connections and the warmth of a smile exchanged across a crowded room. Clear Quartz, the master healer, threads through them both as a luminous amplifier, magnifying intention and clarity. Hand-strung on durable elastic, this 10mm bracelet wraps your wrist in a frequency of softness, self-worth, and gentle, irresistible magnetism - a daily talisman for the heart that already knows how to love.",
+    "ritual": "Slip it onto your left wrist to receive love, or your right to radiate it outward. On a Friday - Venus's day - hold the bracelet to your heart and whisper: 'I am worthy of love, and love flows to me with ease.' Let the full moon charge it each month.",
+    "properties": [
+      "Opens the Heart Chakra and deepens self-love",
+      "Strawberry Quartz attracts sweet, joyful connections",
+      "Clear Quartz amplifies your intentions and clarity",
+      "Soothes anxiety and invites emotional softness",
+      "A gentle daily reminder of your own worth"
+    ],
+    "rating": 4.8,
+    "reviews": 5,
+    "stock": 999,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Bead Size",
+        "options": [
+          "10mm (~19 beads)"
+        ]
+      }
+    ],
+    "variantPrices": [
+      45.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "东海县晶缘水晶商行",
+      "shopUrl": "https://detail.1688.com/offer/aurae-p017.html",
+      "location": "江苏·东海县",
+      "wholesalePrice": "¥22-32/条",
+      "moq": "1条起",
+      "leadTime": "24小时发货",
+      "years": "6年老店",
+      "rating": "好评率98%+"
+    }
+  },
+  {
+    "id": "p018",
+    "name": "Amethyst, Citrine & Clear Quartz Trinity Bracelet",
+    "nameCN": "紫晶黄晶白晶三色手链",
+    "tagline": "Calm Clarity • Joyful Abundance • Clear Spirit",
+    "price": 35.99,
+    "compareAt": null,
+    "category": "bracelet",
+    "intention": "wellness",
+    "crystal": "Amethyst · Citrine · Clear Quartz",
+    "crystalCN": "紫水晶 / 黄水晶 / 白水晶",
+    "chakra": "Crown & Third Eye (顶轮与眉心轮)",
+    "element": "Air",
+    "planet": "Jupiter",
+    "image": "/images/p018_1.png",
+    "images": [
+      "/images/p018_1.png",
+      "/images/p018_2.png",
+      "/images/p018_3.png",
+      "/images/p018_4.png",
+      "/images/p018_5.jpg"
+    ],
+    "description": "Where the violet hush of Amethyst meets the sunny fire of Citrine, a quiet alchemy begins. Amethyst, the stone of the sober mind and open crown, calms the noise of overthinking and wraps your spirit in protective, peaceful clarity. Citrine - the merchant's stone - glows with the warm frequency of abundance and childlike joy, dissolving scarcity thoughts and lighting the path to what you deserve. Clear Quartz weaves through both as the great amplifier, tuning the bracelet to your highest intention. Available in 8mm and 10mm and hand-strung on resilient elastic, this trinity bracelet is a wearable meditation: calm focus by day, abundant ease by night.",
+    "ritual": "Wear it on your left wrist to receive, your right to project. Each morning, cup the beads in your palm, take three slow breaths, and set one intention - clarity, joy, or abundance. Let the sun charge its Citrine and the moon cleanse its Amethyst.",
+    "properties": [
+      "Amethyst calms the mind and protects your energy",
+      "Citrine invites abundance, joy, and creative confidence",
+      "Clear Quartz amplifies focus and personal intention",
+      "Supports restful sleep and relieves overthinking",
+      "Balances crown, third-eye, and solar-plexus energy"
+    ],
+    "rating": 4.7,
+    "reviews": 10,
+    "stock": 999,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Bead Size",
+        "options": [
+          "8mm (~23 beads)",
+          "10mm (~19 beads)"
+        ]
+      }
+    ],
+    "variantPrices": [
+      35.99,
+      39.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "东海县紫晶阁水晶饰品厂",
+      "shopUrl": "https://detail.1688.com/offer/aurae-p018.html",
+      "location": "江苏·东海县",
+      "wholesalePrice": "¥18-28/条",
+      "moq": "1条起",
+      "leadTime": "24小时发货",
+      "years": "5年老店",
+      "rating": "好评率99%+"
+    }
   }
 ]
