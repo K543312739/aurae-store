@@ -1109,5 +1109,503 @@
       "years": "5年老店",
       "rating": "好评率99%+"
     }
+  },
+  {
+    "id": "p019",
+    "name": "Clear Quartz Purity Bracelet",
+    "nameCN": "白水晶纯净手链",
+    "tagline": "Master Healer • Clarity • Energy Amplification",
+    "price": 49.99,
+    "compareAt": null,
+    "category": "bracelet",
+    "intention": "wellness",
+    "crystal": "Clear Quartz",
+    "crystalCN": "白水晶 / 无色水晶",
+    "chakra": "Crown Chakra (顶轮)",
+    "element": "All Elements",
+    "planet": "Sun",
+    "image": "/images/p019_1.jpg",
+    "images": [
+      "/images/p019_1.jpg",
+      "/images/p019_2.jpg",
+      "/images/p019_3.jpg",
+      "/images/p019_4.jpg",
+      "/images/p019_5.jpg"
+    ],
+    "description": "Born from the purest silica the Earth can crystallize, Clear Quartz is the master healer — a blank canvas of light that amplifies whatever intention you place within it. Ancient priests and shamans carried it as a conduit for clarity, and modern energy workers call it the battery of the crystal world. This bracelet acts as a lens for your focus: it clears mental fog, harmonizes scattered energy, and magnifies the frequency of every other stone it touches. Each bead is hand-strung on durable elastic, a quiet amplifier for the life you are consciously creating.",
+    "ritual": "Hold the bracelet to your forehead for a moment, then state one clear intention aloud three times. Wear it on your left wrist to receive clarity, or keep it near other crystals to amplify their energy.",
+    "properties": [
+      "Amplifies intentions and the energy of other crystals",
+      "Clears mental fog and sharpens focus",
+      "Balances and harmonizes the entire energy field",
+      "Supports healing on physical, emotional and spiritual levels",
+      "Cleanses and charges other stones"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "stock": 50,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Bead Size",
+        "options": [
+          "6mm",
+          "8mm",
+          "10mm"
+        ]
+      }
+    ],
+    "variantPrices": [
+      49.99,
+      65.99,
+      89.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "待补充（Aurae 1688 供应商）",
+      "shopUrl": "https://www.1688.com",
+      "location": "江苏·东海县",
+      "wholesalePrice": "待补充",
+      "moq": "1件起",
+      "leadTime": "待补充",
+      "years": "待补充",
+      "rating": "待补充"
+    }
+  },
+  {
+    "id": "p020",
+    "name": "Liangshan Nanhong Agate Bracelet",
+    "nameCN": "凉山南红玛瑙手链",
+    "tagline": "Vitality • Courage • Earth's Warmth",
+    "price": 35.99,
+    "compareAt": null,
+    "category": "bracelet",
+    "intention": "power",
+    "crystal": "Liangshan Nanhong Agate",
+    "crystalCN": "凉山南红玛瑙",
+    "chakra": "Root Chakra (海底轮)",
+    "element": "Fire",
+    "planet": "Mars",
+    "image": "/images/p020_1.jpg",
+    "images": [
+      "/images/p020_1.jpg",
+      "/images/p020_2.jpg",
+      "/images/p020_3.jpg",
+      "/images/p020_4.jpg",
+      "/images/p020_5.jpg"
+    ],
+    "description": "Mined from the sacred Liangshan mountains of Sichuan, Nanhong — southern red — is among the most revered agates in Chinese culture, treasured since the Han dynasty for its warm, flesh-like red glow. Unlike dyed imitations, true Liangshan Nanhong carries a depth of color that seems lit from within, a stone of vitality and quiet courage. This bracelet grounds your life force into the Earth, stokes your inner fire, and wraps the wrist in a texture of warmth that has comforted emperors and seekers alike for two thousand years.",
+    "ritual": "Wear on your left wrist to draw in vitality. Before an important meeting or challenge, hold a bead and breathe slowly five times, visualizing a steady red light filling your core with grounded confidence.",
+    "properties": [
+      "Grounds and stabilizes the life force",
+      "Ignites vitality, courage and inner strength",
+      "Connects you to Earth's warm, supportive energy",
+      "Supports circulation and physical warmth",
+      "A traditional stone of protection and status"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "stock": 50,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Bead Size",
+        "options": [
+          "8mm",
+          "10mm",
+          "12mm",
+          "14mm"
+        ]
+      }
+    ],
+    "variantPrices": [
+      35.99,
+      43.99,
+      49.99,
+      61.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "待补充（Aurae 1688 供应商）",
+      "shopUrl": "https://www.1688.com",
+      "location": "江苏·东海县",
+      "wholesalePrice": "待补充",
+      "moq": "1件起",
+      "leadTime": "待补充",
+      "years": "待补充",
+      "rating": "待补充"
+    }
+  },
+  {
+    "id": "p021",
+    "name": "Zijin Cinnabar Calm Bracelet",
+    "nameCN": "紫金朱砂安神手链",
+    "tagline": "Tranquility • Protection • Spiritual Grounding",
+    "price": 35.99,
+    "compareAt": null,
+    "category": "bracelet",
+    "intention": "protection",
+    "crystal": "Zijin Cinnabar",
+    "crystalCN": "紫金朱砂",
+    "chakra": "Root Chakra & Third Eye (海底轮·眉心轮)",
+    "element": "Fire & Earth",
+    "planet": "Pluto",
+    "image": "/images/p021_1.jpg",
+    "images": [
+      "/images/p021_1.jpg",
+      "/images/p021_2.jpg",
+      "/images/p021_3.jpg",
+      "/images/p021_4.jpg",
+      "/images/p021_5.jpg"
+    ],
+    "description": "Zijin Cinnabar — purple-gold cinnabar — is a rare, dense form of natural cinnabar prized in Chinese metaphysics for its deep, grounding calm. Long used by Taoist practitioners to still the mind and ward off negative energy, its weighty, wine-dark presence carries an ancient protective stillness. This bracelet is a talisman for the overstimulated modern spirit: it settles anxious thoughts, shields your field, and returns you to a centered, watchful calm — the kind that lets intuition speak.",
+    "ritual": "Hold the bracelet in both hands before sleep and exhale slowly, imagining static and worry draining into the stone. Wear on your left wrist to receive its protective, calming field through the day.",
+    "properties": [
+      "Settles anxiety and quiets a racing mind",
+      "Provides a strong protective energetic boundary",
+      "Grounds scattered energy into the body",
+      "Supports deeper, more restful sleep",
+      "A traditional aid for spiritual focus and meditation"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "stock": 50,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Size",
+        "options": [
+          "S",
+          "M",
+          "L"
+        ]
+      }
+    ],
+    "variantPrices": [
+      35.99,
+      43.99,
+      59.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "待补充（Aurae 1688 供应商）",
+      "shopUrl": "https://www.1688.com",
+      "location": "江苏·东海县",
+      "wholesalePrice": "待补充",
+      "moq": "1件起",
+      "leadTime": "待补充",
+      "years": "待补充",
+      "rating": "待补充"
+    }
+  },
+  {
+    "id": "p022",
+    "name": "Silver Sheen Obsidian Bracelet",
+    "nameCN": "银曜石守护手链",
+    "tagline": "Truth • Protection • Mirror of the Soul",
+    "price": 45.99,
+    "compareAt": null,
+    "category": "bracelet",
+    "intention": "protection",
+    "crystal": "Silver Obsidian",
+    "crystalCN": "银曜石 / 银辉黑曜石",
+    "chakra": "Root Chakra & Third Eye (海底轮·眉心轮)",
+    "element": "Earth & Fire",
+    "planet": "Saturn",
+    "image": "/images/p022_1.jpg",
+    "images": [
+      "/images/p022_1.jpg",
+      "/images/p022_2.jpg",
+      "/images/p022_3.jpg",
+      "/images/p022_4.jpg",
+      "/images/p022_5.jpg"
+    ],
+    "description": "Forged in the instant cooling of volcanic lava, obsidian is glass born of fire and earth — and Silver Sheen Obsidian holds a secret: turn it to the light and a soft, metallic silver shimmer floods the black, like moonlight on deep water. This is the stone of the mirror: it reflects your truth, cuts through illusion, and protects the sensitive spirit without closing the heart. This bracelet is armor for empaths — a calm, watchful guardian that lets you see clearly and stay rooted.",
+    "ritual": "Wear on your left wrist as a daily shield. When you need clarity about a situation, hold a bead to your Third Eye and ask one honest question, then listen.",
+    "properties": [
+      "Shields the aura from negativity and drains",
+      "Reflects truth and dissolves self-deception",
+      "Grounds heightened sensitivity and emotion",
+      "Supports psychic protection for empaths",
+      "Connects root stability with inner vision"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "stock": 50,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Size",
+        "options": [
+          "S",
+          "L"
+        ]
+      }
+    ],
+    "variantPrices": [
+      45.99,
+      49.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "待补充（Aurae 1688 供应商）",
+      "shopUrl": "https://www.1688.com",
+      "location": "江苏·东海县",
+      "wholesalePrice": "待补充",
+      "moq": "1件起",
+      "leadTime": "待补充",
+      "years": "待补充",
+      "rating": "待补充"
+    }
+  },
+  {
+    "id": "p023",
+    "name": "Blue Quartz Serenity Bracelet",
+    "nameCN": "蓝水晶宁静手链",
+    "tagline": "Calm Communication • Throat Chakra • Mental Clarity",
+    "price": 35.99,
+    "compareAt": null,
+    "category": "bracelet",
+    "intention": "calm",
+    "crystal": "Blue Quartz",
+    "crystalCN": "蓝水晶 / 蓝石英",
+    "chakra": "Throat Chakra (喉轮)",
+    "element": "Water & Air",
+    "planet": "Mercury",
+    "image": "/images/p023_1.jpg",
+    "images": [
+      "/images/p023_1.jpg",
+      "/images/p023_2.jpg",
+      "/images/p023_3.jpg",
+      "/images/p023_4.jpg",
+      "/images/p023_5.jpg"
+    ],
+    "description": "Blue Quartz carries the stillness of a mountain lake at dawn — a gentle, sky-tinted quartz that cools the noise of an overbusy mind. Aligned with the Throat Chakra, it is the stone of calm, honest expression: it helps you speak your truth without agitation and listen without defense. This bracelet is for the communicator, the caretaker, the overthinking mind — a soft blue exhale for the nervous system, inviting clarity, patience, and the quiet confidence to be heard.",
+    "ritual": "Before a conversation that matters, touch the bracelet at your throat and take three slow breaths, setting the intention to speak with calm clarity and an open heart.",
+    "properties": [
+      "Soothes an overactive, anxious mind",
+      "Supports clear, calm and honest communication",
+      "Activates and balances the Throat Chakra",
+      "Encourages patience, tolerance and understanding",
+      "Brings mental clarity and peaceful focus"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "stock": 50,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Bead Size",
+        "options": [
+          "8mm",
+          "10mm",
+          "12mm",
+          "14mm"
+        ]
+      }
+    ],
+    "variantPrices": [
+      35.99,
+      41.99,
+      45.99,
+      54.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "待补充（Aurae 1688 供应商）",
+      "shopUrl": "https://www.1688.com",
+      "location": "江苏·东海县",
+      "wholesalePrice": "待补充",
+      "moq": "1件起",
+      "leadTime": "待补充",
+      "years": "待补充",
+      "rating": "待补充"
+    }
+  },
+  {
+    "id": "p024",
+    "name": "Realgar Cinnabar Blue Quartz Bracelet",
+    "nameCN": "雄黄朱砂蓝水晶手链",
+    "tagline": "Calm Strength • Protection • Clarity of Mind",
+    "price": 39.99,
+    "compareAt": null,
+    "category": "bracelet",
+    "intention": "protection",
+    "crystal": "Realgar Cinnabar Blue Quartz",
+    "crystalCN": "雄黄朱砂蓝水晶",
+    "chakra": "Throat Chakra & Root Chakra (喉轮·海底轮)",
+    "element": "Water & Fire",
+    "planet": "Mercury & Pluto",
+    "image": "/images/p024_1.jpg",
+    "images": [
+      "/images/p024_1.jpg",
+      "/images/p024_2.jpg",
+      "/images/p024_3.jpg",
+      "/images/p024_4.jpg",
+      "/images/p024_5.jpg"
+    ],
+    "description": "A rare fusion of cinnabar's grounded protection and blue quartz's serene clarity, this stone marries fire and water into one steady frequency. The cinnabar lineage anchors and shields; the blue quartz cools and clarifies. Together they form a bracelet for the person who must stay both calm and strong — protected at the roots, clear at the throat, unshaken in the middle of noise. It is quiet strength you can wear.",
+    "ritual": "Wear on your left wrist to receive steady calm. When pressure rises, trace the beads slowly and breathe, letting the stone remind you: rooted, clear, unshaken.",
+    "properties": [
+      "Blends protective grounding with mental clarity",
+      "Calms the nervous system under pressure",
+      "Shields the aura while keeping you clear",
+      "Supports honest, fearless expression",
+      "Balances fiery drive with watery peace"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "stock": 50,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Bead Size",
+        "options": [
+          "8mm",
+          "10mm",
+          "12mm",
+          "14mm"
+        ]
+      }
+    ],
+    "variantPrices": [
+      39.99,
+      45.99,
+      49.99,
+      64.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "待补充（Aurae 1688 供应商）",
+      "shopUrl": "https://www.1688.com",
+      "location": "江苏·东海县",
+      "wholesalePrice": "待补充",
+      "moq": "1件起",
+      "leadTime": "待补充",
+      "years": "待补充",
+      "rating": "待补充"
+    }
+  },
+  {
+    "id": "p025",
+    "name": "Tea Quartz Grounding Bracelet",
+    "nameCN": "纯色茶水晶沉稳手链",
+    "tagline": "Grounding • Detox • Quiet Strength",
+    "price": 45.99,
+    "compareAt": null,
+    "category": "bracelet",
+    "intention": "protection",
+    "crystal": "Smoky Quartz (Tea Quartz)",
+    "crystalCN": "纯色茶水晶 / 烟晶",
+    "chakra": "Root Chakra (海底轮)",
+    "element": "Earth",
+    "planet": "Saturn",
+    "image": "/images/p025_1.jpg",
+    "images": [
+      "/images/p025_1.jpg",
+      "/images/p025_2.jpg",
+      "/images/p025_3.jpg",
+      "/images/p025_4.jpg",
+      "/images/p025_5.jpg"
+    ],
+    "description": "Tea Quartz — the warm, smoky-brown sibling of clear quartz — is the great neutralizer of the crystal world. Formed when quartz absorbs natural radiation from surrounding rock, it carries an earthy, grounding calm that pulls scattered energy down into the body and out through the feet. This is the stone for overwhelm, for electromagnetic fatigue, for the days when everything feels too much. It detoxifies the field, protects your base, and leaves behind a steady, quiet strength.",
+    "ritual": "Wear on your left wrist to draw excess energy down and out. After a draining day with screens and crowds, hold the bracelet and visualize tension flowing out through your feet into the Earth.",
+    "properties": [
+      "Powerfully grounds and centers scattered energy",
+      "Absorbs and transmutes environmental stress",
+      "Protects the Root Chakra and personal space",
+      "Eases overwhelm, fatigue and electromagnetic sensitivity",
+      "Supports gentle physical and emotional detox"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "stock": 50,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Bead Size",
+        "options": [
+          "8mm",
+          "10mm",
+          "12mm"
+        ]
+      }
+    ],
+    "variantPrices": [
+      45.99,
+      67.99,
+      79.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "待补充（Aurae 1688 供应商）",
+      "shopUrl": "https://www.1688.com",
+      "location": "江苏·东海县",
+      "wholesalePrice": "待补充",
+      "moq": "1件起",
+      "leadTime": "待补充",
+      "years": "待补充",
+      "rating": "待补充"
+    }
+  },
+  {
+    "id": "p026",
+    "name": "Zijinsha Cinnabar Pendant",
+    "nameCN": "紫金砂朱砂吊坠",
+    "tagline": "Spiritual Shield • Calm • Sacred Energy",
+    "price": 59.9,
+    "compareAt": null,
+    "category": "pendant",
+    "intention": "spirituality",
+    "crystal": "Zijinsha Cinnabar",
+    "crystalCN": "紫金砂朱砂",
+    "chakra": "Third Eye & Crown (眉心轮·顶轮)",
+    "element": "Fire & Earth",
+    "planet": "Pluto",
+    "image": "/images/p026_1.jpg",
+    "images": [
+      "/images/p026_1.jpg",
+      "/images/p026_2.jpg",
+      "/images/p026_3.jpg",
+      "/images/p026_4.jpg",
+      "/images/p026_5.jpg"
+    ],
+    "description": "Zijinsha Cinnabar — golden-sand cinnabar — is a luminous, densely packed form of natural cinnabar, its surface scattered with fine metallic flecks like stardust caught in deep wine-red stone. Revered in Taoist tradition as a sacred, high-vibration material, it is carried as a spiritual shield: calming the spirit, deepening meditation, and sealing the aura against intrusion. Worn at the heart or throat, this pendant is a quiet sacrament — protection you can feel, serenity you can see.",
+    "ritual": "Before meditation, hold the pendant in both hands, close your eyes, and set a single sacred intention. Wear it against the skin to keep its calming, protective field close through the day.",
+    "properties": [
+      "Creates a calming, protective spiritual shield",
+      "Deepens meditation and inner stillness",
+      "Supports the Third Eye and Crown connection",
+      "Seals and stabilizes the auric field",
+      "A traditional sacred stone for peace and focus"
+    ],
+    "rating": 0,
+    "reviews": 0,
+    "stock": 50,
+    "badge": "New Arrival",
+    "variants": [
+      {
+        "name": "Size",
+        "options": [
+          "S (36×24.5mm)",
+          "L (48×30mm)"
+        ]
+      }
+    ],
+    "variantPrices": [
+      59.9,
+      79.99
+    ],
+    "supplier": {
+      "platform": "1688",
+      "shop": "待补充（Aurae 1688 供应商）",
+      "shopUrl": "https://www.1688.com",
+      "location": "江苏·东海县",
+      "wholesalePrice": "待补充",
+      "moq": "1件起",
+      "leadTime": "待补充",
+      "years": "待补充",
+      "rating": "待补充"
+    }
   }
 ]
