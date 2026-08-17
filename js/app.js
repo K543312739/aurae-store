@@ -2908,38 +2908,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.history.replaceState({}, '', window.location.pathname);
   }
 
-  // SPA Back/Forward support: re-render the view described by the URL.
-  window.addEventListener('popstate', handlePopState);
-  document.getElementById('cartBtn').addEventListener('click', openCart);
-  document.getElementById('cartClose').addEventListener('click', closeCart);
-  document.getElementById('cartOverlay').addEventListener('click', closeCart);
-  const newsletterForm = document.getElementById('newsletterForm');
-  if (newsletterForm) newsletterForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const input = newsletterForm.querySelector('input[type="email"]');
-    const email = input?.value?.trim();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address'); return; }
-    try {
-      const resp = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-      if (resp.ok) {
-        showToast('Thank you for subscribing! 🌿');
-        input.value = '';
-        pintrkTrack('lead', { lead_type: 'Newsletter' });
-      }
-      else { showToast('Subscription failed. Please try again.'); }
-    } catch (err) { showToast('Network error. Please try again.'); }
-  });
-  document.getElementById('searchBtn').addEventListener('click', openSearch);
-  document.getElementById('searchClose').addEventListener('click', closeSearch);
-  document.getElementById('searchOverlay').addEventListener('click', closeSearch);
-  document.getElementById('searchInput').addEventListener('input', (e) => renderSearchResults(e.target.value));
-  document.getElementById('searchInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeSearch();
-  });
+  // SPA nav + search + account wiring (store shell only).
+  if (isStorePage) {
+    // SPA Back/Forward support: re-render the view described by the URL.
+    window.addEventListener('popstate', handlePopState);
+    document.getElementById('cartBtn').addEventListener('click', openCart);
+    document.getElementById('cartClose').addEventListener('click', closeCart);
+    document.getElementById('cartOverlay').addEventListener('click', closeCart);
+    const newsletterForm = document.getElementById('newsletterForm');
+    if (newsletterForm) newsletterForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = newsletterForm.querySelector('input[type="email"]');
+      const email = input?.value?.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address'); return; }
+      try {
+        const resp = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        if (resp.ok) {
+          showToast('Thank you for subscribing! 🌿');
+          input.value = '';
+          pintrkTrack('lead', { lead_type: 'Newsletter' });
+        }
+        else { showToast('Subscription failed. Please try again.'); }
+      } catch (err) { showToast('Network error. Please try again.'); }
+    });
+    document.getElementById('searchBtn').addEventListener('click', openSearch);
+    document.getElementById('searchClose').addEventListener('click', closeSearch);
+    document.getElementById('searchOverlay').addEventListener('click', closeSearch);
+    document.getElementById('searchInput').addEventListener('input', (e) => renderSearchResults(e.target.value));
+    document.getElementById('searchInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSearch();
+    });
 
-  document.getElementById('accountBtn').addEventListener('click', openAccount);
-  document.getElementById('accountClose').addEventListener('click', closeAccount);
-  document.getElementById('accountOverlay').addEventListener('click', closeAccount);
+    document.getElementById('accountBtn').addEventListener('click', openAccount);
+    document.getElementById('accountClose').addEventListener('click', closeAccount);
+    document.getElementById('accountOverlay').addEventListener('click', closeAccount);
 
-  renderSearchResults('');
+    renderSearchResults('');
+  }
 });
