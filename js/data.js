@@ -1694,6 +1694,52 @@ const BLOG_POSTS = [
       <p>You do not need all six. A minimal, high-impact setup is <a href="/index.html?product=p006">Tiger's Eye</a> for nerve + <a href="/index.html?product=p008">Citrine</a> for warmth, or Garnet for raw drive if you are in launch mode. Stack them with intention (see our <a href="/index.html?blog=b3">bracelet guide</a>) and let the stack tell a story: "I am capable, and I know it."</p>
       <h3>Start This Week</h3>
       <p>Pick one power stone, give it one clear job, and wear it through one brave moment. Confidence compounds — every time you act while afraid, the muscle grows, and the stone just helps you remember it was there. Choose the one your hand reaches for first; that pull is usually exactly the energy you need.</p>`
+  },
+  {
+    id: "b18",
+    category: "guides",
+    readTime: "13 min read",
+    title: "How to Choose Your First Crystal: A Beginner's Buying Guide",
+    excerpt: "Buying your first crystal shouldn't feel like a test. Here's a calm, practical framework for picking a stone you'll actually wear, love, and feel — without overthinking it.",
+    image: "/images/p001.png",
+    content: `<p>Buying your first crystal should feel like the beginning of a relationship, not a pop quiz. There is no wrong answer, and you do not need to memorize a chart of meanings before you are allowed to buy one. The goal is simple: pick a stone you will actually wear, keep, and feel — then let the rest unfold. Here is the framework we wish every first-time buyer had.</p>
+      <h3>Start With How You Want to Feel</h3>
+      <p>Before you read a single meaning, ask one question: what do I want more of in my life right now? Calm? Warmth? Focus? Protection? Crystals work best as gentle reminders of an intention you already hold, so lead with the feeling, not the stone name. A clear goal makes the rest of the choice easy.</p>
+      <h3>Two Ways to Choose: Intuition vs. Intention</h3>
+      <p>There are two valid paths. The intention path picks by need — Amethyst for calm, Citrine for confidence, Obsidian for grounding. The intuition path lets a stone call to you; often the one your eye keeps returning to is exactly the energy you need. You can use both: start with a need, then let your gut narrow it down.</p>
+      <h3>Match the Stone to the Format</h3>
+      <p>How you will actually use it matters more than the variety. A <a href="/index.html?shop=category%3Abracelet">bracelet</a> keeps the stone against your pulse all day. A <a href="/index.html?shop=category%3Anecklace">necklace</a> rests near the heart. A <a href="/index.html?shop=category%3Aring">ring</a> is a small, constant cue on your hand. Pick the format you will forget you are wearing — that is the one you will benefit from most.</p>
+      <h3>Beginner-Friendly Stones to Start With</h3>
+      <p>If you want a safe, versatile first piece, these four are hard to go wrong with: <a href="/index.html?product=p013">Clear Quartz</a> (the amplifier, pairs with anything), <a href="/index.html?product=p001">Rose Quartz</a> (gentle, heart-opening), Amethyst (calm and clarity), and Black Gold Obsidian (grounding protection). Each is easy to wear and easy to love.</p>
+      <h3>How to Spot a Quality Piece</h3>
+      <p>You do not need to be an expert to avoid junk. Real stones show natural variation, feel cool to the touch, and come from sellers who share where they are sourced. Our full <a href="/index.html?blog=b5">fake-vs-real guide</a> walks through the simple tests. When in doubt, buy from someone who stands behind authenticity — every Aurae piece is mined from known sources and inspected before it ships.</p>
+      <h3>Make It a Ritual, Not Just a Purchase</h3>
+      <p>The stone is only half of it. When it arrives, hold it, set one intention out loud, and decide where it will live on your body or in your space. That small act is what turns an object into a practice. Start with one — you can always let the collection grow later.</p>`
+  },
+  {
+    id: "b19",
+    category: "guides",
+    readTime: "11 min read",
+    title: "Crystal Care Mistakes: 7 Things That Quietly Damage Your Stones (and How to Fix Them)",
+    excerpt: "Most crystal damage isn't dramatic — it's slow, silent, and totally avoidable. Here are the seven care mistakes we see most often, and exactly what to do instead.",
+    image: "/images/p004.png",
+    content: `<p>Most crystal damage is not dramatic. It is not a stone shattering on the floor — it is slow, silent, and totally avoidable: a faded Amethyst, a frayed cord, a scratched surface you did not notice until months later. After helping thousands of first-time owners, we have seen the same seven mistakes again and again. Here is what they are, and exactly what to do instead.</p>
+      <h3>1. Leaving Them in Direct Sunlight Too Long</h3>
+      <p>Sunlight is a popular charging method — but it is also the fastest way to fade color. Amethyst, Citrine, and Rose Quartz can all lose their vibrancy after prolonged baking. Use indirect light or moonlight instead, and reserve full sun for sturdy, color-stable stones only.</p>
+      <h3>2. Cleansing With Salt Water on Soft Stones</h3>
+      <p>Salt water is great for hard quartz — and disastrous for Selenite, Malachite, Calcite, and other soft or water-soluble stones, which can literally dissolve or crack. For these, use smoke, sound, or a soft dry cloth. When in doubt, keep water away.</p>
+      <h3>3. Forgetting to Cleanse After a Heavy Day</h3>
+      <p>Stones absorb the energy of everything around them. If you wore yours through a stressful meeting or a hard conversation, give it a quick reset that night — a pass through incense smoke or a minute on a <a href="/index.html?product=p013">Clear Quartz</a> cluster. Skipping this is how a piece starts to feel off.</p>
+      <h3>4. Storing Everything Together Unprotected</h3>
+      <p>Tossed loose in a pouch, harder stones scratch softer ones and delicate points chip. Store each piece in its own soft compartment, and keep rings and bracelets from knocking against each other. Five minutes of storage setup saves a lifetime of scratches.</p>
+      <h3>5. Wearing Them in the Shower or Pool</h3>
+      <p>Soap, shampoo, chlorine, and salt water all degrade both the stone's surface and the cord that holds it. Take your jewelry off before bathing, swimming, or working out. Your pieces will look new far longer.</p>
+      <h3>6. Assuming All Crystals Charge the Same Way</h3>
+      <p>Moonlight, sound, smoke, earth, and intention all work — but not equally for every stone. Our <a href="/index.html?blog=b8">Crystal Care 101</a> breaks down which method suits which type. Matching the method to the stone is the difference between care and neglect.</p>
+      <h3>7. Ignoring the Intention</h3>
+      <p>A crystal with no intention is just a pretty rock. The single most common mistake is forgetting to recommit: hold it, restate why it is yours, and let that be the moment it works for you again. Care is physical and energetic.</p>
+      <h3>A Simple Weekly Care Routine</h3>
+      <p>Pick one day a week — Sunday evening works well. Wipe each piece with a soft cloth, give it a quick smoke or sound cleanse, and restate its intention. Ten minutes, once a week, and your collection stays clear, bright, and genuinely yours. Browse <a href="/index.html?shop=all">our full collection</a> to start or expand yours.</p>`
   }
 ];
 
