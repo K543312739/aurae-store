@@ -13,6 +13,9 @@ let quizStep = 0;
 let quizAnswers = [];
 let quizScores = {};
 
+// Shop browser state (sort / filter / search)
+let shopState = { filter: 'all', sort: 'featured', priceRange: 'all', search: '' };
+
 // ===== Helpers =====
 function formatPrice(price) {
   return '$' + price.toFixed(2);
@@ -250,6 +253,12 @@ function renderView(view, param) {
     currentView = 'blog';
     renderBlogDetail(param);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else if (view === 'track') {
+    document.getElementById('trackView').classList.add('active');
+    currentView = 'track';
+    renderTrack(param);
+    updateViewSEO('track');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
@@ -272,6 +281,7 @@ function viewToUrl(view, param) {
   if (view === 'about') return base + '?view=about';
   if (view === 'contact') return base + '?view=contact';
   if (view === 'checkout') return base + '?view=checkout';
+  if (view === 'track') return base + '?view=track';
   return base;
 }
 
@@ -289,6 +299,7 @@ function navigate(view, param, opts) {
     else if (view === 'about') window.location.href = 'index.html?view=about';
     else if (view === 'contact') window.location.href = 'index.html?view=contact';
     else if (view === 'blog') window.location.href = 'index.html?blog=' + encodeURIComponent(param || '');
+    else if (view === 'track') window.location.href = 'index.html?view=track';
     return;
   }
 
@@ -319,6 +330,7 @@ function handlePopState() {
   if (params.get('view') === 'about') { renderView('about'); return; }
   if (params.get('view') === 'contact') { renderView('contact'); return; }
   if (params.get('view') === 'checkout') { renderView('checkout'); return; }
+  if (params.get('view') === 'track') { renderView('track'); return; }
   renderView('home');
 }
 
@@ -404,29 +416,103 @@ function attachProductCardHandlers() {
 }
 
 // ===== Render Shop Page =====
-function renderShop(filter) {
+function setShopSort(sort) { shopState.sort = sort; renderShop(null, true); }
+function setShopPrice(range) { shopState.priceRange = range; renderShop(null, true); }
+function setShopSearch(q) { shopState.search = (q || '').trim().toLowerCase(); renderShop(null, true); }
+
+function renderShop(filter, keepState) {
   let products = [...PRODUCTS];
   let title = 'All Crystal Jewelry';
   let subtitle = 'Discover authentic crystal jewelry crafted with intention for every energy need';
 
-  if (filter && filter.startsWith('category:')) {
-    const catId = filter.split(':')[1];
+  if (!keepState && filter) shopState.filter = filter || 'all';
+  const state = shopState;
+
+  if (state.filter && state.filter.startsWith('category:')) {
+    const catId = state.filter.split(':')[1];
     const cat = CATEGORIES.find(c => c.id === catId);
     products = products.filter(p => p.category === catId);
-    title = cat.name;
-    subtitle = cat.desc;
-  } else if (filter && filter.startsWith('intention:')) {
-    const intentId = filter.split(':')[1];
+    title = cat ? cat.name : title;
+    subtitle = cat ? cat.desc : subtitle;
+  } else if (state.filter && state.filter.startsWith('intention:')) {
+    const intentId = state.filter.split(':')[1];
     const intent = INTENTIONS.find(i => i.id === intentId);
     products = products.filter(p => p.intention === intentId);
-    title = `${intent.icon} ${intent.name}`;
-    subtitle = intent.desc;
+    title = `${intent ? intent.icon : ''} ${intent ? intent.name : ''}`;
+    subtitle = intent ? intent.desc : subtitle;
   }
 
+  if (state.search) {
+    products = products.filter(p =>
+      (p.name && p.name.toLowerCase().includes(state.search)) ||
+      (p.crystal && p.crystal.toLowerCase().includes(state.search)) ||
+      (p.tagline && p.tagline.toLowerCase().includes(state.search)) ||
+      (p.description && p.description.toLowerCase().includes(state.search))
+    );
+    title = 'Search Results';
+    subtitle = `Showing ${products.length} result${products.length !== 1 ? 's' : ''} for "${escapeHtml(state.search)}"`;
+  }
+
+  if (state.priceRange && state.priceRange !== 'all') {
+    const [min, max] = state.priceRange.split('-').map(Number);
+    products = products.filter(p => {
+      const price = p.variantPrices ? Math.min(...p.variantPrices) : p.price;
+      if (max) return price >= min && price <= max;
+      return price >= min;
+    });
+  }
+
+  switch (state.sort) {
+    case 'price-asc':
+      products.sort((a, b) => {
+        const pa = a.variantPrices ? Math.min(...a.variantPrices) : a.price;
+        const pb = b.variantPrices ? Math.min(...b.variantPrices) : b.price;
+        return pa - pb;
+      }); break;
+    case 'price-desc':
+      products.sort((a, b) => {
+        const pa = a.variantPrices ? Math.max(...a.variantPrices) : a.price;
+        const pb = b.variantPrices ? Math.max(...b.variantPrices) : b.price;
+        return pb - pa;
+      }); break;
+    case 'newest':
+      products.sort((a, b) => b.id.localeCompare(a.id)); break;
+    case 'rating':
+      products.sort((a, b) => b.rating - a.rating); break;
+    default:
+      products.sort((a, b) => (b.badge ? 1 : 0) - (a.badge ? 1 : 0));
+  }
+
+  const activeBtn = (key, val) => key === val ? 'border-color:var(--color-primary);color:var(--color-primary);' : '';
+
   const filterBar = `
-    <div class="shop-filters" style="display:flex;gap:12px;margin-bottom:32px;flex-wrap:wrap;justify-content:center;">
-      <button class="btn btn-outline" style="padding:8px 20px;font-size:13px;" onclick="navigate('shop','all')">All</button>
-      ${CATEGORIES.map(c => `<button class="btn btn-outline" style="padding:8px 20px;font-size:13px;" onclick="navigate('shop','category:${c.id}')">${c.name}</button>`).join('')}
+    <div class="shop-filters" style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;justify-content:center;">
+      <button class="btn btn-outline" style="padding:8px 20px;font-size:13px;${activeBtn(state.filter, 'all')}" onclick="navigate('shop','all')">All</button>
+      ${CATEGORIES.map(c => `<button class="btn btn-outline" style="padding:8px 20px;font-size:13px;${activeBtn(state.filter, 'category:' + c.id)}" onclick="navigate('shop','category:${c.id}')">${c.name}</button>`).join('')}
+    </div>
+  `;
+
+  const toolbar = `
+    <div class="shop-toolbar" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:1;min-width:220px;">
+        <input type="text" id="shopSearch" placeholder="Search crystals..." value="${escapeHtml(state.search)}"
+          oninput="setShopSearch(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();setShopSearch(this.value);}"
+          style="padding:9px 14px;border:1px solid var(--color-border);border-radius:var(--radius-md);font-family:inherit;font-size:14px;background:var(--color-bg);color:var(--color-text);min-width:180px;width:100%;max-width:320px;">
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+        <select id="shopSort" onchange="setShopSort(this.value)" aria-label="Sort products"
+          style="padding:9px 14px;border:1px solid var(--color-border);border-radius:var(--radius-md);font-family:inherit;font-size:14px;background:var(--color-bg);color:var(--color-text);cursor:pointer;">
+          <option value="featured" ${state.sort === 'featured' ? 'selected' : ''}>Sort: Featured</option>
+          <option value="price-asc" ${state.sort === 'price-asc' ? 'selected' : ''}>Price: Low to High</option>
+          <option value="price-desc" ${state.sort === 'price-desc' ? 'selected' : ''}>Price: High to Low</option>
+          <option value="newest" ${state.sort === 'newest' ? 'selected' : ''}>Newest</option>
+          <option value="rating" ${state.sort === 'rating' ? 'selected' : ''}>Best Rated</option>
+        </select>
+        <button class="btn btn-outline" style="padding:7px 14px;font-size:13px;${activeBtn(state.priceRange, 'all')}" onclick="setShopPrice('all')">All</button>
+        <button class="btn btn-outline" style="padding:7px 14px;font-size:13px;${activeBtn(state.priceRange, '0-50')}" onclick="setShopPrice('0-50')">Under $50</button>
+        <button class="btn btn-outline" style="padding:7px 14px;font-size:13px;${activeBtn(state.priceRange, '50-80')}" onclick="setShopPrice('50-80')">$50–$80</button>
+        <button class="btn btn-outline" style="padding:7px 14px;font-size:13px;${activeBtn(state.priceRange, '80-9999')}" onclick="setShopPrice('80-9999')">Over $80</button>
+      </div>
     </div>
   `;
 
@@ -438,23 +524,25 @@ function renderShop(filter) {
         <p class="section-subtitle" style="margin-bottom:0;">${subtitle}</p>
       </div>
       ${filterBar}
+      ${toolbar}
+      <div style="font-size:13px;color:var(--color-text-muted);margin-bottom:12px;">${products.length} product${products.length !== 1 ? 's' : ''}</div>
       <div class="product-grid" id="shopProductGrid">
         ${products.map(p => productCardHTML(p, { showHeart: true })).join('')}
       </div>
-      ${products.length === 0 ? '<p style="text-align:center;padding:60px;color:var(--color-text-muted);">No products found in this category.</p>' : ''}
+      ${products.length === 0 ? '<p style="text-align:center;padding:60px;color:var(--color-text-muted);">No products match your filters.</p>' : ''}
     </div>
   `;
 
   attachProductCardHandlers();
 
-  if (filter && filter.startsWith('category:')) {
-    const catId = filter.split(':')[1];
+  if (state.filter && state.filter.startsWith('category:')) {
+    const catId = state.filter.split(':')[1];
     const cat = CATEGORIES.find(c => c.id === catId);
     setBreadcrumbSEO(cat
       ? [{ name: 'Home', url: '/' }, { name: cat.name, url: `/index.html?shop=category:${catId}` }]
       : [{ name: 'Home', url: '/' }, { name: title }]);
-  } else if (filter && filter.startsWith('intention:')) {
-    const intentId = filter.split(':')[1];
+  } else if (state.filter && state.filter.startsWith('intention:')) {
+    const intentId = state.filter.split(':')[1];
     const intent = INTENTIONS.find(i => i.id === intentId);
     setBreadcrumbSEO([{ name: 'Home', url: '/' }, { name: intent ? intent.name : title }]);
   } else {
@@ -736,6 +824,11 @@ const SEO_VIEWS = {
     title: 'Contact Aurae — We’re Here to Help',
     desc: 'Get in touch with the Aurae team for order questions, custom requests, or crystal guidance.',
     canonical: '/contact.html'
+  },
+  track: {
+    title: 'Track Your Order — Aurae',
+    desc: 'Track your Aurae crystal order status, shipping updates, and delivery information.',
+    canonical: '/index.html?view=track'
   }
 };
 
@@ -843,6 +936,112 @@ function renderBlogDetail(blogId) {
 
   attachProductCardHandlers();
   updateBlogSEO(blog);
+}
+
+// ===== Order Tracking Page =====
+function renderTrack(param) {
+  const container = document.getElementById('trackContent');
+  if (!container) return;
+
+  let initialOrderId = '';
+  let initialEmail = '';
+  if (param && param.includes('|')) {
+    const [oid, em] = param.split('|');
+    initialOrderId = oid || '';
+    initialEmail = em || '';
+  }
+
+  container.innerHTML = `
+    <section class="hero" style="height:320px;">
+      <div class="hero-bg" style="background: linear-gradient(135deg, rgba(74,93,62,0.8) 0%, rgba(201,169,110,0.5) 100%), url('/images/p001.png') center/cover;"></div>
+      <div class="hero-content">
+        <h1 style="font-size:40px;">Track Your Order</h1>
+        <p>Enter your order ID and email to see the latest status.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container" style="max-width:720px;">
+        <div class="breadcrumb" style="margin-bottom:28px;">
+          <a onclick="navigate('home')">Home</a> / <span>Track Order</span>
+        </div>
+        <form id="trackForm" onsubmit="submitTrack(event)" style="background:var(--color-bg-alt);padding:32px;border-radius:var(--radius-md);margin-bottom:32px;">
+          <div class="form-row">
+            <div class="form-group" style="flex:1;">
+              <label for="trackOrderId">Order ID</label>
+              <input type="text" id="trackOrderId" required placeholder="e.g. ORD-20260818-ABCD" value="${escapeHtml(initialOrderId)}">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label for="trackEmail">Email</label>
+              <input type="email" id="trackEmail" required placeholder="your@email.com" value="${escapeHtml(initialEmail)}">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-dark btn-full btn-lg" id="trackSubmitBtn">Track Order</button>
+        </form>
+        <div id="trackResult" style="display:none;"></div>
+      </div>
+    </section>
+  `;
+
+  if (initialOrderId && initialEmail) submitTrack({ preventDefault: () => {} });
+}
+
+async function submitTrack(e) {
+  e.preventDefault();
+  const btn = document.getElementById('trackSubmitBtn');
+  const result = document.getElementById('trackResult');
+  const orderId = document.getElementById('trackOrderId').value.trim();
+  const email = document.getElementById('trackEmail').value.trim();
+  if (!orderId || !email) return;
+  if (btn) { btn.disabled = true; btn.textContent = 'Tracking...'; }
+  try {
+    const res = await fetch(`/api/track?orderId=${encodeURIComponent(orderId)}&email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.error || 'Tracking failed');
+    const o = data.order;
+    const statusLabel = { paid: 'Payment Confirmed', shipped: 'Shipped', delivered: 'Delivered', cancelled: 'Cancelled', refunded: 'Refunded', pending: 'Pending Payment', unpaid: 'Awaiting Payment' }[o.status] || o.status;
+    const statusStep = ['unpaid', 'pending'].includes(o.status) ? 1 : o.status === 'paid' ? 2 : o.status === 'shipped' ? 3 : o.status === 'delivered' ? 4 : 0;
+    const stepDot = (n, label) => `<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;opacity:${statusStep >= n ? 1 : 0.35};"><div style="width:28px;height:28px;border-radius:50%;background:${statusStep >= n ? 'var(--color-primary)' : 'var(--color-border)'};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;">${n}</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">${label}</div></div>`;
+    result.style.display = 'block';
+    result.innerHTML = `
+      <div style="background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:28px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+          <div>
+            <div style="font-size:13px;color:var(--color-text-muted);margin-bottom:4px;">Order ${escapeHtml(o.orderId)}</div>
+            <div style="font-size:24px;font-weight:600;">${statusLabel}</div>
+            <div style="font-size:13px;color:var(--color-text-muted);margin-top:4px;">Placed on ${formatDate(o.createdAt)}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:22px;font-weight:600;">${formatPrice(o.total)}</div>
+            <div style="font-size:13px;color:var(--color-text-muted);">${o.items ? o.items.length : 0} item(s)</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin:28px 0;">
+          ${stepDot(1, 'Ordered')}${stepDot(2, 'Confirmed')}${stepDot(3, 'Shipped')}${stepDot(4, 'Delivered')}
+        </div>
+        ${o.trackingNumber ? `<div style="background:var(--color-bg-alt);padding:16px;border-radius:var(--radius-md);margin-bottom:16px;"><strong>Tracking:</strong> ${escapeHtml(o.carrier || 'Standard Shipping')} — <code style="font-family:inherit;background:#fff;padding:2px 6px;border-radius:4px;">${escapeHtml(o.trackingNumber)}</code></div>` : ''}
+        <div style="font-size:14px;color:var(--color-text-muted);margin-bottom:16px;">Estimated delivery: <strong>${formatDate(o.estimatedDelivery)}</strong></div>
+        <h4 style="margin:24px 0 12px;">Items</h4>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          ${(o.items || []).map(item => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--color-bg-alt);border-radius:var(--radius-md);">
+              <div>
+                <div style="font-weight:500;">${escapeHtml(item.name)}</div>
+                ${item.variant ? `<div style="font-size:13px;color:var(--color-text-muted);">${escapeHtml(item.variant)} × ${item.qty}</div>` : `<div style="font-size:13px;color:var(--color-text-muted);">Qty: ${item.qty}</div>`}
+              </div>
+              <div style="font-weight:600;">${formatPrice(item.price * item.qty)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    if (btn) btn.textContent = 'Track Order';
+  } catch (err) {
+    result.style.display = 'block';
+    result.innerHTML = `<div style="color:var(--color-danger);padding:16px;background:#fff0f0;border-radius:var(--radius-md);border:1px solid var(--color-danger);">${escapeHtml(err.message)}</div>`;
+    if (btn) btn.textContent = 'Track Order';
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 function updateBlogSEO(blog) {
