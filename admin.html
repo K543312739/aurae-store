@@ -330,8 +330,11 @@
 
       <!-- Products / Inventory panel -->
       <div class="admin-panel" id="panel-products">
-        <div class="admin-toolbar" style="margin-bottom:16px;">
-          <div><input type="text" id="productSearch" class="list-search" placeholder="🔍 Search id, name, category…" oninput="onProductSearch()"></div>
+        <div class="admin-toolbar" style="margin-bottom:16px;align-items:center;">
+          <div style="display:flex;gap:12px;align-items:center;flex:1;">
+            <input type="text" id="productSearch" class="list-search" placeholder="🔍 Search id, name, category…" oninput="onProductSearch()">
+            <span class="admin-count" id="productCountNote" style="margin:0;white-space:nowrap;"></span>
+          </div>
           <div>
             <button class="btn btn-dark btn-sm" onclick="openProductEditor()">+ Add Product</button>
           </div>
@@ -1539,7 +1542,8 @@
       const start = (productPage - 1) * PAGE_SIZE;
       const slice = list.slice(start, start + PAGE_SIZE);
       document.getElementById('adminCount').textContent = `${total} product(s)`;
-      document.getElementById('productCountNote').textContent = `${total} product(s) total`;
+      const pcn = document.getElementById('productCountNote');
+      if (pcn) pcn.textContent = `${total} product(s) total`;
       if (total === 0) { container.innerHTML = '<div class="empty-box">No products' + (q ? ' match your search.' : ' yet. Click "+ Add Product" to create your first one.') + '</div>'; pager.innerHTML = ''; return; }
       container.innerHTML = slice.map(renderProductCard).join('');
       pager.innerHTML = pagerHtml(total, productPage, 'gotoProductPage');
