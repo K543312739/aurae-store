@@ -3013,6 +3013,18 @@ h1, h2, h3, h4 {
   color: var(--color-text-muted, #777);
   padding: 20px 0;
 }
+.reviews-empty-cta {
+  text-align: center;
+  padding: 28px 16px;
+  background: var(--color-bg-alt, #f8f6f3);
+  border-radius: var(--radius-md, 12px);
+  margin-bottom: 24px;
+}
+.reviews-empty-cta p {
+  font-size: 15px;
+  color: var(--color-text-muted, #777);
+  margin: 0 0 14px;
+}
 .reviews-summary {
   display: flex;
   align-items: center;

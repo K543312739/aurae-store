@@ -71,6 +71,10 @@
     .btn-outline { background: transparent; border: 1.5px solid var(--admin-border); color: var(--admin-text); }
     .btn-outline:hover { border-color: var(--admin-primary); color: var(--admin-primary-dark); }
     .btn-danger { background: #c0392b; color: #fff; }
+    .btn-success { background: #2f7d4f; color: #fff; }
+    .btn-success:hover { background: #256040; }
+    .list-search { padding: 9px 12px; border: 1.5px solid var(--admin-border); border-radius: 8px; font-size: 13px; min-width: 260px; font-family: inherit; }
+    .list-search:focus { outline: none; border-color: var(--admin-primary); }
 
     .admin-toolbar {
       display: flex; align-items: center; justify-content: space-between;
@@ -289,6 +293,7 @@
           <span class="admin-count" id="adminCount"></span>
         </div>
         <div>
+          <button class="btn btn-outline" onclick="openChangePassword()">🔑 Change Password</button>
           <button class="btn btn-outline" onclick="refreshCurrentTab()">↻ Refresh</button>
           <button class="btn btn-dark" onclick="adminLogout()">Log Out</button>
         </div>
@@ -314,23 +319,25 @@
       <!-- Orders panel -->
       <div class="admin-panel" id="panel-orders">
         <div class="admin-toolbar" style="margin-bottom:14px;">
-          <div></div>
+          <div><input type="text" id="orderSearch" class="list-search" placeholder="🔍 Search #, name, email, status…" oninput="onOrderSearch()"></div>
           <div>
             <button class="btn btn-outline btn-sm" onclick="exportOrdersCSV()">⬇ Export CSV</button>
           </div>
         </div>
         <div id="adminOrders"></div>
+        <div id="adminOrdersPager" style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;"></div>
       </div>
 
       <!-- Products / Inventory panel -->
       <div class="admin-panel" id="panel-products">
         <div class="admin-toolbar" style="margin-bottom:16px;">
-          <div id="productCountNote" class="admin-count" style="margin:0;"></div>
+          <div><input type="text" id="productSearch" class="list-search" placeholder="🔍 Search id, name, category…" oninput="onProductSearch()"></div>
           <div>
             <button class="btn btn-dark btn-sm" onclick="openProductEditor()">+ Add Product</button>
           </div>
         </div>
         <div id="adminProducts"></div>
+        <div id="adminProductsPager" style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;"></div>
       </div>
 
       <!-- Coupons panel -->
@@ -371,12 +378,16 @@
 
       <!-- Users panel -->
       <div class="admin-panel" id="panel-users">
+        <div style="margin-bottom:14px;"><input type="text" id="userSearch" class="list-search" placeholder="🔍 Search name, email…" oninput="onUserSearch()"></div>
         <div id="adminUsers"></div>
+        <div id="adminUsersPager" style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;"></div>
       </div>
 
       <!-- Subscribers panel -->
       <div class="admin-panel" id="panel-subscribers">
+        <div style="margin-bottom:14px;"><input type="text" id="subscriberSearch" class="list-search" placeholder="🔍 Search email…" oninput="onSubscriberSearch()"></div>
         <div id="adminSubscribers"></div>
+        <div id="adminSubscribersPager" style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;"></div>
       </div>
 
       <!-- Refund requests panel -->
@@ -425,12 +436,34 @@
               <label>Variant Stock (per option — leave blank to fall back to Base Stock)</label>
               <div id="variantStockInputs" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;"></div>
             </div>
+
+            <div class="form-field full">
+              <label>Product Variants (optional) — define one variant dimension with per-option prices</label>
+              <div id="variantEditor" style="background:#faf8f5;border:1px solid var(--admin-border);border-radius:10px;padding:14px;"></div>
+              <button type="button" class="btn btn-outline btn-sm" style="margin-top:10px;" onclick="addVariantOption()">+ Add Option</button>
+            </div>
+
             <div class="form-field"><label>Rating (1-5)</label><input type="number" step="0.1" min="0" max="5" id="pf_rating"></div>
             <div class="form-field"><label>Reviews count</label><input type="number" min="0" id="pf_reviews"></div>
             <div class="form-field"><label>Badge</label><input type="text" id="pf_badge" placeholder="e.g. Bestseller"></div>
             <div class="form-field full"><label>Description</label><textarea id="pf_description"></textarea></div>
             <div class="form-field full"><label>Ritual / Usage</label><textarea id="pf_ritual"></textarea></div>
             <div class="form-field full"><label>Properties (one per line)</label><textarea id="pf_properties" placeholder="Calming&#10;Clarity&#10;Protection"></textarea></div>
+
+            <div class="form-field full">
+              <label>Supplier / Wholesale reference (optional — displayed on the product page)</label>
+              <div class="form-grid">
+                <div class="form-field"><label>Platform</label><input type="text" id="pf_sup_platform" placeholder="1688"></div>
+                <div class="form-field"><label>Shop name</label><input type="text" id="pf_sup_shop"></div>
+                <div class="form-field"><label>Shop URL</label><input type="text" id="pf_sup_url"></div>
+                <div class="form-field"><label>Location</label><input type="text" id="pf_sup_location"></div>
+                <div class="form-field"><label>Wholesale price</label><input type="text" id="pf_sup_price" placeholder="¥18-25/条"></div>
+                <div class="form-field"><label>MOQ</label><input type="text" id="pf_sup_moq" placeholder="1条起"></div>
+                <div class="form-field"><label>Lead time</label><input type="text" id="pf_sup_lead" placeholder="24小时发货"></div>
+                <div class="form-field"><label>Years</label><input type="text" id="pf_sup_years" placeholder="8年老店"></div>
+                <div class="form-field"><label>Rating</label><input type="text" id="pf_sup_rating" placeholder="好评率99%+"></div>
+              </div>
+            </div>
 
             <div class="form-field full">
               <label>Images — upload to server, click × to delete, click SET COVER to change main image</label>
@@ -446,6 +479,31 @@
             <button type="submit" class="btn btn-dark">💾 Save Product</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div id="passwordModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box" style="max-width:440px;">
+      <div class="modal-head">
+        <h3>Change Admin Password</h3>
+        <button class="modal-close" onclick="closeChangePassword()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-field full">
+          <label>New Password (min 6 characters)</label>
+          <input type="password" id="pwNew" placeholder="New password">
+        </div>
+        <div class="form-field full">
+          <label>Confirm New Password</label>
+          <input type="password" id="pwConfirm" placeholder="Confirm new password">
+        </div>
+        <p class="admin-error" id="pwError" style="min-height:16px;margin:6px 0 0;"></p>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px;">
+          <button type="button" class="btn btn-outline" onclick="closeChangePassword()">Cancel</button>
+          <button type="button" class="btn btn-dark" onclick="changePassword()">Update Password</button>
+        </div>
       </div>
     </div>
   </div>
@@ -631,10 +689,8 @@
         if (resp.status === 401) { adminLogout(); return; }
         if (!resp.ok) throw new Error('Failed');
         const data = await resp.json();
-        const orders = data.orders || [];
-        document.getElementById('adminCount').textContent = `${orders.length} order(s)`;
-        if (orders.length === 0) { container.innerHTML = '<div class="empty-box">No orders yet.</div>'; return; }
-        container.innerHTML = orders.map(renderOrder).join('');
+        allOrders = data.orders || [];
+        renderOrdersList();
       } catch (e) { container.innerHTML = '<div class="empty-box">Could not load orders.</div>'; }
     }
 
@@ -664,6 +720,7 @@
           <div class="order-actions">
             <div><label>Tracking #</label><input type="text" id="track-${id}" value="${escapeHtml(o.trackingNumber || '')}" placeholder="1Z999AA..."></div>
             <div><label>Carrier</label><input type="text" id="carrier-${id}" value="${escapeHtml(o.carrier || 'Standard Shipping')}"></div>
+            ${['pending_payment', 'expired'].includes(o.status) ? `<button class="btn btn-success btn-sm" onclick="markPaid('${id}')">💰 Mark Paid</button>` : ''}
             <button class="btn btn-dark btn-sm" onclick="markShipped('${id}')">📦 Mark Shipped</button>
             <button class="btn btn-outline btn-sm" onclick="markDelivered('${id}')">✅ Mark Delivered</button>
             <button class="btn btn-danger btn-sm" onclick="deleteOrder('${id}')">🗑️ Delete</button>
@@ -875,24 +932,8 @@
         if (resp.status === 401) { adminLogout(); return; }
         if (!resp.ok) throw new Error('Failed');
         const data = await resp.json();
-        const users = data.users || [];
-        document.getElementById('adminCount').textContent = `${users.length} user(s)`;
-        if (users.length === 0) { container.innerHTML = '<div class="empty-box">No registered users yet.</div>'; return; }
-        container.innerHTML = `
-          <div class="user-table">
-            <div class="user-row user-head">
-              <div>Name</div><div>Email</div><div>Joined</div><div>Orders</div><div></div>
-            </div>
-            ${users.map(u => `
-              <div class="user-row" id="user-${escapeHtml(u.id)}">
-                <div class="user-name">${escapeHtml(u.name || '—')}</div>
-                <div class="user-email">${escapeHtml(u.email)}</div>
-                <div class="user-date">${escapeHtml(formatDate(u.createdAt))}</div>
-                <div class="user-orders">${u.orderCount || 0}</div>
-                <div class="user-actions"><button class="btn btn-danger btn-sm" onclick="deleteUser('${escapeHtml(u.id)}')">🗑 Delete</button></div>
-              </div>
-            `).join('')}
-          </div>`;
+        allUsers = data.users || [];
+        renderUsersList();
       } catch (e) { container.innerHTML = '<div class="empty-box">Could not load users.</div>'; }
     }
 
@@ -917,21 +958,8 @@
         if (resp.status === 401) { adminLogout(); return; }
         if (!resp.ok) throw new Error('Failed');
         const data = await resp.json();
-        const list = data.subscribers || [];
-        document.getElementById('adminCount').textContent = `${list.length} subscriber(s)`;
-        if (!list.length) { container.innerHTML = '<div class="empty-box">No newsletter subscribers yet.</div>'; return; }
-        container.innerHTML = `
-          <div class="user-table">
-            <div class="user-row user-head"><div>Email</div><div>Subscribed At</div></div>
-            ${list.map(s => `
-              <div class="user-row">
-                <div class="user-email">${escapeHtml(s.email)}</div>
-                <div class="user-date">${escapeHtml(formatDate(s.createdAt))}</div>
-              </div>
-            `).join('')}
-          </div>
-          <button class="btn btn-outline btn-sm" style="margin-top:16px;" onclick="copySubscribers()">📋 Copy email list</button>
-        `;
+        allSubscribers = data.subscribers || [];
+        renderSubscribersList();
       } catch (e) { container.innerHTML = '<div class="empty-box">Could not load subscribers.</div>'; }
     }
 
@@ -998,14 +1026,8 @@
         if (resp.status === 401) { adminLogout(); return; }
         if (!resp.ok) throw new Error('Failed');
         const data = await resp.json();
-        const products = data.products || [];
-        document.getElementById('adminCount').textContent = `${products.length} product(s)`;
-        document.getElementById('productCountNote').textContent = `${products.length} product(s) total`;
-        if (products.length === 0) {
-          container.innerHTML = '<div class="empty-box">No products yet. Click "+ Add Product" to create your first one.</div>';
-          return;
-        }
-        container.innerHTML = products.map(renderProductCard).join('');
+        allProducts = data.products || [];
+        renderProductsList();
       } catch (e) { container.innerHTML = '<div class="empty-box">Could not load inventory.</div>'; }
     }
 
@@ -1048,6 +1070,7 @@
         } catch (e) {}
       } else {
         document.getElementById('productModalTitle').textContent = 'Add Product';
+        renderVariantEditor(null);
       }
       document.getElementById('productModal').style.display = 'flex';
     }
@@ -1075,6 +1098,17 @@
       set('pf_badge', p.badge);
       set('pf_properties', Array.isArray(p.properties) ? p.properties.join('\n') : (p.properties || ''));
       renderVariantStockInputs(p);
+      renderVariantEditor(p);
+      const sup = p.supplier || {};
+      set('pf_sup_platform', sup.platform);
+      set('pf_sup_shop', sup.shop);
+      set('pf_sup_url', sup.shopUrl);
+      set('pf_sup_location', sup.location);
+      set('pf_sup_price', sup.wholesalePrice);
+      set('pf_sup_moq', sup.moq);
+      set('pf_sup_lead', sup.leadTime);
+      set('pf_sup_years', sup.years);
+      set('pf_sup_rating', sup.rating);
       renderImageManager(p.images || (p.image ? [p.image] : []));
       document.getElementById('pf_id').readOnly = true;
     }
@@ -1109,6 +1143,88 @@
         if (key) out[key] = v === '' ? null : Number(v);
       });
       return out;
+    }
+
+    // ===== Variant editor (single dimension: name + options with per-option price) =====
+    let variantEditorState = { name: '', options: [] };
+
+    function renderVariantEditor(p) {
+      const editor = document.getElementById('variantEditor');
+      if (!editor) return;
+      if (p && Array.isArray(p.variants) && p.variants.length && Array.isArray(p.variants[0].options) && p.variants[0].options.length) {
+        const v0 = p.variants[0];
+        variantEditorState.name = v0.name || '';
+        variantEditorState.options = v0.options.map((opt, i) => ({
+          text: opt,
+          price: (p.variantPrices && p.variantPrices[i] != null && p.variantPrices[i] !== '') ? p.variantPrices[i] : '',
+        }));
+      } else {
+        variantEditorState = { name: '', options: [{ text: '', price: '' }] };
+      }
+      paintVariantEditor();
+    }
+
+    function paintVariantEditor() {
+      const editor = document.getElementById('variantEditor');
+      if (!editor) return;
+      const opts = variantEditorState.options.map((o, i) => `
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+          <input type="text" class="vopt-text" data-i="${i}" value="${escapeHtml(o.text)}" placeholder="Option label (e.g. 8mm)" style="flex:1;">
+          <div style="display:flex;align-items:center;white-space:nowrap;">$&nbsp;<input type="number" step="0.01" min="0" class="vopt-price" data-i="${i}" value="${o.price === '' ? '' : Number(o.price)}" placeholder="price" style="width:120px;"></div>
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeVariantOption(${i})">×</button>
+        </div>`).join('');
+      editor.innerHTML = `
+        <div style="margin-bottom:10px;">
+          <label style="font-size:12px;color:var(--admin-muted);display:block;margin-bottom:4px;">Variant name</label>
+          <input type="text" id="variantName" value="${escapeHtml(variantEditorState.name)}" placeholder="Bead Size" style="max-width:300px;">
+        </div>
+        <div id="variantOptions">${opts}</div>`;
+      repaintStockForVariantEditor();
+    }
+
+    // Keep option text/price state in sync with what the user types.
+    document.addEventListener('input', (e) => {
+      if (e.target && e.target.classList && e.target.classList.contains('vopt-text')) {
+        const i = Number(e.target.getAttribute('data-i'));
+        if (variantEditorState.options[i]) variantEditorState.options[i].text = e.target.value;
+      } else if (e.target && e.target.classList && e.target.classList.contains('vopt-price')) {
+        const i = Number(e.target.getAttribute('data-i'));
+        if (variantEditorState.options[i]) variantEditorState.options[i].price = e.target.value;
+      } else if (e.target && e.target.id === 'variantName') {
+        variantEditorState.name = e.target.value;
+      }
+    });
+
+    function addVariantOption() {
+      variantEditorState.options.push({ text: '', price: '' });
+      paintVariantEditor();
+    }
+    function removeVariantOption(i) {
+      variantEditorState.options.splice(i, 1);
+      paintVariantEditor();
+    }
+
+    function collectVariants() {
+      const basePrice = parseFloat(document.getElementById('pf_price').value) || 0;
+      const name = (variantEditorState.name || '').trim();
+      const options = variantEditorState.options
+        .map(o => ({ text: (o.text || '').trim(), price: (o.price === '' || o.price == null) ? null : Number(o.price) }))
+        .filter(o => o.text);
+      if (!name || options.length === 0) return { variants: [], variantPrices: [] };
+      return {
+        variants: [{ name, options: options.map(o => o.text) }],
+        variantPrices: options.map(o => o.price == null ? basePrice : o.price),
+      };
+    }
+
+    function repaintStockForVariantEditor() {
+      const collected = collectVariants();
+      const wrap = document.getElementById('variantStockWrap');
+      const c = document.getElementById('variantStockInputs');
+      if (!wrap || !c) return;
+      if (!collected.variants.length) { wrap.style.display = 'none'; c.innerHTML = ''; return; }
+      const existing = collectVariantStock();
+      renderVariantStockInputs({ variants: collected.variants, variantStock: existing });
     }
 
     function renderImageManager(images) {
@@ -1175,6 +1291,23 @@
       } catch (e) { alert('Connection error'); }
     }
 
+    function collectSupplier() {
+      const g = (id) => { const el = document.getElementById(id); return el ? (el.value || '').trim() : ''; };
+      const sup = {
+        platform: g('pf_sup_platform'),
+        shop: g('pf_sup_shop'),
+        shopUrl: g('pf_sup_url'),
+        location: g('pf_sup_location'),
+        wholesalePrice: g('pf_sup_price'),
+        moq: g('pf_sup_moq'),
+        leadTime: g('pf_sup_lead'),
+        years: g('pf_sup_years'),
+        rating: g('pf_sup_rating'),
+      };
+      if (Object.values(sup).every(v => !v)) return {};
+      return sup;
+    }
+
     async function saveProduct(e) {
       e.preventDefault();
       const fields = ['id','name','nameCN','tagline','price','compareAt','category','intention','crystal','crystalCN','chakra','element','planet','description','ritual','rating','reviews','stock','badge','properties'];
@@ -1184,12 +1317,17 @@
         if (!el) continue;
         let v = el.value;
         if (['price','compareAt','rating','reviews','stock'].includes(f)) {
-          if (v === '') v = (f === 'compareAt' ? null : (f === 'rating' ? 5 : 0));
+          // New products default rating to 0 (no fake 5-star). compareAt stays null when empty.
+          if (v === '') v = (f === 'compareAt' ? null : 0);
           else v = Number(v);
         }
         payload[f] = v;
       }
       payload.variantStock = collectVariantStock();
+      const variantsObj = collectVariants();
+      payload.variants = variantsObj.variants;
+      payload.variantPrices = variantsObj.variantPrices;
+      payload.supplier = collectSupplier();
       const isEdit = !!editingProductId;
       const url = isEdit ? '/api/admin/products/' + encodeURIComponent(editingProductId) : '/api/admin/products';
       const method = isEdit ? 'PUT' : 'POST';
@@ -1305,6 +1443,167 @@
         else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed'); }
       } catch (e) { alert('Connection error'); }
     }
+
+    // ===== Mark Paid (manual payment recording) =====
+    async function markPaid(id) {
+      if (!confirm('Mark order #' + id + ' as paid? This deducts stock and triggers the confirmation email.')) return;
+      try {
+        const resp = await fetch('/api/admin/orders/' + id + '/finalize', {
+          method: 'POST', headers: { 'x-admin-token': token },
+        });
+        if (resp.ok) { loadOrders(); }
+        else { const d = await resp.json().catch(()=>({})); alert(d.error || 'Failed to mark paid'); }
+      } catch (e) { alert('Connection error'); }
+    }
+
+    // ===== Change Password =====
+    function openChangePassword() {
+      document.getElementById('pwNew').value = '';
+      document.getElementById('pwConfirm').value = '';
+      document.getElementById('pwError').textContent = '';
+      document.getElementById('passwordModal').style.display = 'flex';
+    }
+    function closeChangePassword() {
+      document.getElementById('passwordModal').style.display = 'none';
+    }
+    async function changePassword() {
+      const nw = document.getElementById('pwNew').value;
+      const cf = document.getElementById('pwConfirm').value;
+      const err = document.getElementById('pwError');
+      err.textContent = '';
+      if (!nw || nw.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
+      if (nw !== cf) { err.textContent = 'Passwords do not match.'; return; }
+      try {
+        const resp = await fetch('/api/admin/change-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify({ newPassword: nw }),
+        });
+        if (resp.ok) {
+          const d = await resp.json();
+          token = d.token;
+          localStorage.setItem(ADMIN_TOKEN_KEY, token);
+          closeChangePassword();
+          alert('Password updated successfully. You remain logged in.');
+        } else { const d = await resp.json().catch(()=>({})); err.textContent = d.error || 'Failed to change password.'; }
+      } catch (e) { err.textContent = 'Connection error.'; }
+    }
+
+    // ===== Search + Pagination for list panels =====
+    const PAGE_SIZE = 10;
+    let allOrders = [], orderPage = 1;
+    let allProducts = [], productPage = 1;
+    let allUsers = [], userPage = 1;
+    let allSubscribers = [], subscriberPage = 1;
+
+    function pagerHtml(total, page, gotoFn) {
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      const start = (page - 1) * PAGE_SIZE;
+      const end = Math.min(start + PAGE_SIZE, total);
+      const prev = `<button class="btn btn-outline btn-sm" ${page <= 1 ? 'disabled' : ''} onclick="${gotoFn}(${page - 1})">← Prev</button>`;
+      const next = `<button class="btn btn-outline btn-sm" ${page >= pages ? 'disabled' : ''} onclick="${gotoFn}(${page + 1})">Next →</button>`;
+      return `<span style="font-size:13px;color:var(--admin-muted);">Showing ${total ? start + 1 : 0}-${end} of ${total}</span><div style="display:flex;gap:8px;">${prev}${next}</div>`;
+    }
+
+    function renderOrdersList() {
+      const container = document.getElementById('adminOrders');
+      const pager = document.getElementById('adminOrdersPager');
+      const q = (document.getElementById('orderSearch').value || '').trim().toLowerCase();
+      let list = allOrders;
+      if (q) list = allOrders.filter(o => {
+        const c = o.customer || {};
+        return [o.orderId, c.name, c.email, o.status, o.coupon].filter(Boolean).join(' ').toLowerCase().includes(q);
+      });
+      const total = list.length;
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if (orderPage > pages) orderPage = pages;
+      const start = (orderPage - 1) * PAGE_SIZE;
+      const slice = list.slice(start, start + PAGE_SIZE);
+      document.getElementById('adminCount').textContent = `${total} order(s)`;
+      if (total === 0) { container.innerHTML = '<div class="empty-box">No orders' + (q ? ' match your search.' : ' yet.') + '</div>'; pager.innerHTML = ''; return; }
+      container.innerHTML = slice.map(renderOrder).join('');
+      pager.innerHTML = pagerHtml(total, orderPage, 'gotoOrderPage');
+    }
+    function onOrderSearch() { orderPage = 1; renderOrdersList(); }
+    function gotoOrderPage(p) { orderPage = p; renderOrdersList(); }
+
+    function renderProductsList() {
+      const container = document.getElementById('adminProducts');
+      const pager = document.getElementById('adminProductsPager');
+      const q = (document.getElementById('productSearch').value || '').trim().toLowerCase();
+      let list = allProducts;
+      if (q) list = allProducts.filter(p => [p.id, p.name, p.category].filter(Boolean).join(' ').toLowerCase().includes(q));
+      const total = list.length;
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if (productPage > pages) productPage = pages;
+      const start = (productPage - 1) * PAGE_SIZE;
+      const slice = list.slice(start, start + PAGE_SIZE);
+      document.getElementById('adminCount').textContent = `${total} product(s)`;
+      document.getElementById('productCountNote').textContent = `${total} product(s) total`;
+      if (total === 0) { container.innerHTML = '<div class="empty-box">No products' + (q ? ' match your search.' : ' yet. Click "+ Add Product" to create your first one.') + '</div>'; pager.innerHTML = ''; return; }
+      container.innerHTML = slice.map(renderProductCard).join('');
+      pager.innerHTML = pagerHtml(total, productPage, 'gotoProductPage');
+    }
+    function onProductSearch() { productPage = 1; renderProductsList(); }
+    function gotoProductPage(p) { productPage = p; renderProductsList(); }
+
+    function renderUsersList() {
+      const container = document.getElementById('adminUsers');
+      const pager = document.getElementById('adminUsersPager');
+      const q = (document.getElementById('userSearch').value || '').trim().toLowerCase();
+      let list = allUsers;
+      if (q) list = allUsers.filter(u => [u.name, u.email].filter(Boolean).join(' ').toLowerCase().includes(q));
+      const total = list.length;
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if (userPage > pages) userPage = pages;
+      const start = (userPage - 1) * PAGE_SIZE;
+      const slice = list.slice(start, start + PAGE_SIZE);
+      document.getElementById('adminCount').textContent = `${total} user(s)`;
+      if (total === 0) { container.innerHTML = '<div class="empty-box">No registered users' + (q ? ' match your search.' : ' yet.') + '</div>'; pager.innerHTML = ''; return; }
+      container.innerHTML = `
+        <div class="user-table">
+          <div class="user-row user-head"><div>Name</div><div>Email</div><div>Joined</div><div>Orders</div><div></div></div>
+          ${slice.map(u => `
+            <div class="user-row" id="user-${escapeHtml(u.id)}">
+              <div class="user-name">${escapeHtml(u.name || '—')}</div>
+              <div class="user-email">${escapeHtml(u.email)}</div>
+              <div class="user-date">${escapeHtml(formatDate(u.createdAt))}</div>
+              <div class="user-orders">${u.orderCount || 0}</div>
+              <div class="user-actions"><button class="btn btn-danger btn-sm" onclick="deleteUser('${escapeHtml(u.id)}')">🗑 Delete</button></div>
+            </div>`).join('')}
+        </div>`;
+      pager.innerHTML = pagerHtml(total, userPage, 'gotoUserPage');
+    }
+    function onUserSearch() { userPage = 1; renderUsersList(); }
+    function gotoUserPage(p) { userPage = p; renderUsersList(); }
+
+    function renderSubscribersList() {
+      const container = document.getElementById('adminSubscribers');
+      const pager = document.getElementById('adminSubscribersPager');
+      const q = (document.getElementById('subscriberSearch').value || '').trim().toLowerCase();
+      let list = allSubscribers;
+      if (q) list = allSubscribers.filter(s => (s.email || '').toLowerCase().includes(q));
+      const total = list.length;
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if (subscriberPage > pages) subscriberPage = pages;
+      const start = (subscriberPage - 1) * PAGE_SIZE;
+      const slice = list.slice(start, start + PAGE_SIZE);
+      document.getElementById('adminCount').textContent = `${total} subscriber(s)`;
+      if (total === 0) { container.innerHTML = '<div class="empty-box">No newsletter subscribers' + (q ? ' match your search.' : ' yet.') + '</div>'; pager.innerHTML = ''; return; }
+      container.innerHTML = `
+        <div class="user-table">
+          <div class="user-row user-head"><div>Email</div><div>Subscribed At</div></div>
+          ${slice.map(s => `
+            <div class="user-row">
+              <div class="user-email">${escapeHtml(s.email)}</div>
+              <div class="user-date">${escapeHtml(formatDate(s.createdAt))}</div>
+            </div>`).join('')}
+        </div>
+        <button class="btn btn-outline btn-sm" style="margin-top:16px;" onclick="copySubscribers()">📋 Copy email list</button>`;
+      pager.innerHTML = pagerHtml(total, subscriberPage, 'gotoSubscriberPage');
+    }
+    function onSubscriberSearch() { subscriberPage = 1; renderSubscribersList(); }
+    function gotoSubscriberPage(p) { subscriberPage = p; renderSubscribersList(); }
 
     // On page load, auto-login if token exists
     if (token) { showDashboard(); loadMessages(); }

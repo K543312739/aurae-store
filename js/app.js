@@ -638,10 +638,16 @@ function renderProductDetail(productId) {
           <button class="wishlist-btn wishlist-large" data-wishlist-id="${escapeHtml(product.id)}" onclick="event.stopPropagation(); toggleWishlist('${escapeHtml(product.id)}')">${isWishlisted(product.id) ? '♥' : '♡'}</button>
         </div>
         <p class="product-detail-tagline">${escapeHtml(product.tagline)}</p>
+        ${Number(product.reviews) > 0 ? `
         <div class="product-detail-rating">
           <span class="stars" style="font-size:18px;">${getStars(product.rating)}</span>
           <span style="font-size:13px;color:var(--color-text-muted);">${escapeHtml(product.rating)} • ${escapeHtml(product.reviews)} reviews</span>
         </div>
+        ` : `
+        <div class="product-detail-rating">
+          <a href="#productReviews" onclick="event.preventDefault(); scrollToReviewForm();" style="font-size:13px;color:var(--admin-primary-dark);font-weight:600;text-decoration:none;cursor:pointer;">⭐ Be the first to review this product</a>
+        </div>
+        `}
         ${priceHTML}
         ${crystalMeta}
         <p class="product-detail-desc">${escapeHtml(product.description)}</p>
@@ -2234,6 +2240,17 @@ async function loadProductReviews(productId) {
   }
 }
 
+function scrollToReviewForm() {
+  const formWrap = document.getElementById('reviewForm') || document.getElementById('productReviews');
+  if (formWrap) {
+    formWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      const firstInput = formWrap.querySelector('input, textarea, select');
+      if (firstInput) firstInput.focus();
+    }, 400);
+  }
+}
+
 function renderProductReviews(reviews, average, count) {
   const container = document.getElementById('reviewsContent');
   if (!container) return;
@@ -2248,7 +2265,7 @@ function renderProductReviews(reviews, average, count) {
         </div>
       </div>
     `
-    : '<p class="reviews-empty">No reviews yet. Be the first to share your experience!</p>';
+    : `<div class="reviews-empty-cta"><p>No reviews yet — be the first to share your experience!</p><button class="btn btn-dark btn-sm" onclick="scrollToReviewForm()">⭐ Write the First Review</button></div>`;
 
   const list = reviews.length
     ? `

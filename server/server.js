@@ -849,8 +849,13 @@ function buildTracking(order) {
 }
 
 // ===== Admin Config =====
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'aurae2026';
-const ADMIN_TOKEN = crypto.createHash('sha256').update('aurae-admin-salt:' + ADMIN_PASSWORD).digest('hex');
+// `let` (not const) so /api/admin/change-password can rotate the password + token at runtime.
+let ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'aurae2026';
+let ADMIN_TOKEN = crypto.createHash('sha256').update('aurae-admin-salt:' + ADMIN_PASSWORD).digest('hex');
+
+function recomputeAdminToken() {
+  ADMIN_TOKEN = crypto.createHash('sha256').update('aurae-admin-salt:' + ADMIN_PASSWORD).digest('hex');
+}
 
 function requireAdmin(req, res, next) {
   const token = req.headers['x-admin-token'] || req.body?.token || req.query.token;
@@ -1055,6 +1060,36 @@ app.post('/api/admin/login', (req, res) => {
     return res.json({ success: true, token: ADMIN_TOKEN });
   }
   return res.status(401).json({ error: 'Invalid admin password.' });
+});
+
+// ===== API: Admin — Change admin password =====
+// Rotates the password both in-memory (so the running process picks it up immediately)
+// and persisted into the .env file (so it survives a restart). Returns a fresh token.
+app.post('/api/admin/change-password', requireAdmin, (req, res) => {
+  const { newPassword } = req.body || {};
+  if (!newPassword || typeof newPassword !== 'string' || newPassword.length < 6) {
+    return res.status(400).json({ error: 'New password must be at least 6 characters.' });
+  }
+  try {
+    ADMIN_PASSWORD = newPassword;
+    recomputeAdminToken();
+    // Persist to .env so a restart keeps the new password.
+    const envPath = path.join(__dirname, '.env');
+    let envText = '';
+    try { envText = fs.readFileSync(envPath, 'utf8'); } catch (e) { envText = ''; }
+    const line = 'ADMIN_PASSWORD=' + ADMIN_PASSWORD;
+    if (/^[ \t]*ADMIN_PASSWORD[ \t]*=/m.test(envText)) {
+      envText = envText.replace(/^[ \t]*ADMIN_PASSWORD[ \t]*=.*$/m, line);
+    } else {
+      envText = envText.replace(/\s*$/, '') + '\n' + line + '\n';
+    }
+    fs.writeFileSync(envPath, envText);
+    console.log('[Admin] Password changed and persisted to .env');
+    res.json({ success: true, token: ADMIN_TOKEN });
+  } catch (e) {
+    console.error('[Admin] Change password failed:', e.message);
+    res.status(500).json({ error: 'Failed to change password. Please try again.' });
+  }
 });
 
 // ===== API: Admin — List Messages =====
@@ -1900,10 +1935,15 @@ app.post('/api/admin/products', requireAdmin, (req, res) => {
     description: body.description || '',
     ritual: body.ritual || '',
     properties: Array.isArray(body.properties) ? body.properties : (body.properties ? String(body.properties).split('\n').map(s => s.trim()).filter(Boolean) : []),
-    rating: Number(body.rating) || 5,
+    rating: body.rating != null && body.rating !== '' ? Number(body.rating) : 0,
     reviews: Number(body.reviews) || 0,
     stock: Number(body.stock) || 0,
     variantStock: body.variantStock && typeof body.variantStock === 'object' ? body.variantStock : {},
+    variants: Array.isArray(body.variants) ? body.variants.filter(v => v && typeof v === 'object' && v.name) : [],
+    variantPrices: Array.isArray(body.variantPrices)
+      ? body.variantPrices.map(v => (v === '' || v == null) ? null : Number(v)).filter(v => v !== null && !Number.isNaN(v))
+      : [],
+    supplier: (body.supplier && typeof body.supplier === 'object') ? body.supplier : {},
     badge: body.badge || '',
     image: body.image || '',
     images: Array.isArray(body.images) ? body.images.filter(Boolean) : (body.image ? [body.image] : []),
@@ -1938,6 +1978,28 @@ app.put('/api/admin/products/:id', requireAdmin, (req, res) => {
       }
     } else {
       p.variantStock = {};
+    }
+  }
+  if (body.variants !== undefined) {
+    p.variants = Array.isArray(body.variants)
+      ? body.variants.filter(v => v && typeof v === 'object' && v.name).map(v => ({
+          name: String(v.name || '').slice(0, 60),
+          options: Array.isArray(v.options) ? v.options.map(o => String(o)).filter(Boolean) : [],
+        }))
+      : [];
+  }
+  if (body.variantPrices !== undefined) {
+    p.variantPrices = Array.isArray(body.variantPrices)
+      ? body.variantPrices.map(v => (v === '' || v == null) ? null : Number(v)).filter(v => v !== null && !Number.isNaN(v))
+      : [];
+  }
+  if (body.supplier !== undefined) {
+    if (body.supplier && typeof body.supplier === 'object') {
+      p.supplier = body.supplier;
+    } else if (typeof body.supplier === 'string') {
+      try { p.supplier = JSON.parse(body.supplier); } catch (e) { p.supplier = {}; }
+    } else {
+      p.supplier = {};
     }
   }
   if (body.properties !== undefined) {
@@ -2456,7 +2518,35 @@ app.post('/api/refund-requests', requireAuth, (req, res) => {
 app.get('/api/admin/refund-requests', requireAdmin, (req, res) => {
   res.json({ refunds: loadRefunds() });
 });
-app.post('/api/admin/refund-requests/:id/status', requireAdmin, (req, res) => {
+// Issue a PayPal refund against a captured payment (best-effort).
+// Returns { ok, skipped?, error? }. Never throws.
+async function issuePayPalRefund(captureId) {
+  if (!captureId) return { ok: false, skipped: true };
+  try {
+    if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+      return { ok: false, skipped: true };
+    }
+    const accessToken = await getPayPalAccessToken();
+    const resp = await fetch(`${PAYPAL_API_BASE}/v2/payments/captures/${captureId}/refund`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
+      body: JSON.stringify({}),
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      console.warn('[PayPal] Refund failed for capture', captureId, JSON.stringify(err));
+      return { ok: false, error: err };
+    }
+    const data = await resp.json();
+    console.log('[PayPal] Refund issued for capture', captureId);
+    return { ok: true, data };
+  } catch (e) {
+    console.warn('[PayPal] Refund exception for capture', captureId, e.message);
+    return { ok: false, error: e.message };
+  }
+}
+
+app.post('/api/admin/refund-requests/:id/status', requireAdmin, async (req, res) => {
   const { status, note } = req.body || {};
   if (!['pending', 'approved', 'rejected', 'resolved'].includes(status)) return res.status(400).json({ error: 'Invalid status.' });
   const refunds = loadRefunds();
@@ -2465,11 +2555,27 @@ app.post('/api/admin/refund-requests/:id/status', requireAdmin, (req, res) => {
   r.status = status;
   r.note = note || '';
   r.updatedAt = new Date().toISOString();
-  // Restore inventory when a refund is approved.
+  // On approval: mark the linked order as refunded, restore stock, and (best-effort)
+  // issue a real PayPal refund against the captured payment.
   if (status === 'approved') {
     const orders = loadOrders();
     const order = orders.find(o => o.orderId === r.orderId);
-    if (order && order.items) restoreStock(order.items);
+    if (order) {
+      if (order.items && order.status !== 'refunded') {
+        restoreStock(order.items);
+      }
+      order.status = 'refunded';
+      order.refundedAt = new Date().toISOString();
+      order.refundReason = r.reason || '';
+      if (order.paypalCaptureId && !order.paypalRefunded) {
+        const rr = await issuePayPalRefund(order.paypalCaptureId);
+        order.paypalRefunded = rr.ok;
+        if (!rr.ok && !rr.skipped) {
+          order.paypalRefundError = String((rr.error && rr.error.message) || rr.error || 'unknown error');
+        }
+      }
+      fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
+    }
   }
   saveRefunds(refunds);
   res.json({ success: true, refund: r });
