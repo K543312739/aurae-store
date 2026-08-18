@@ -3122,6 +3122,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else if (isStorePage && urlParams.get('view') === 'contact') {
     renderView('contact');
     window.history.replaceState({}, '', window.location.pathname);
+  } else if (isStorePage && urlParams.get('view') === 'track') {
+    const trackParam = urlParams.get('order') || '';
+    renderView('track', trackParam);
+    window.history.replaceState({}, '', window.location.pathname);
+  } else if (isStorePage && urlParams.get('view') === 'checkout') {
+    renderView('checkout');
+    window.history.replaceState({}, '', window.location.pathname);
   }
 
   // SPA nav + search + account wiring (store shell only).
