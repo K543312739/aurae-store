@@ -79,7 +79,7 @@ const CSP_DIRECTIVES = [
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https:",
   "connect-src 'self' https://ct.pinterest.com https://s.pinimg.com https://www.paypal.com https://www.sandbox.paypal.com",
-  "frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com",
+  "frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://ct.pinterest.com",
   "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",
