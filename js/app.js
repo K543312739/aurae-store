@@ -1730,6 +1730,24 @@ function renderCheckout() {
         <button class="btn btn-dark btn-lg btn-full" onclick="processOrder()" id="placeOrderBtn">
           Place Order • ${formatPrice(total)}
         </button>
+        <div class="trust-badges">
+          <div class="trust-badge">
+            <span class="tb-icon">🔒</span>
+            <span class="tb-text"><strong>SSL Encrypted</strong><small>256-bit secure checkout</small></span>
+          </div>
+          <div class="trust-badge">
+            <span class="tb-icon">🛡️</span>
+            <span class="tb-text"><strong>PayPal Protection</strong><small>Buyer &amp; fraud covered</small></span>
+          </div>
+          <div class="trust-badge">
+            <span class="tb-icon">💎</span>
+            <span class="tb-text"><strong>Genuine Crystals</strong><small>Hand-selected &amp; cleansed</small></span>
+          </div>
+          <div class="trust-badge">
+            <span class="tb-icon">🌍</span>
+            <span class="tb-text"><strong>Worldwide Shipping</strong><small>Tracked delivery</small></span>
+          </div>
+        </div>
         <p style="text-align:center;font-size:12px;color:var(--color-text-muted);margin-top:12px;">
           🔒 Your payment is processed securely by PayPal. We never store your financial details.
         </p>
@@ -1770,6 +1788,10 @@ function renderCheckout() {
           <div class="coupon-applied">✓ <strong>${escapeHtml(cartCoupon.code)}</strong> applied — 10% off first order <a onclick="removeCoupon(); renderCheckout();">Remove</a></div>
         </div>
         `}
+        <div class="trust-returns">
+          <span class="tb-icon">↩️</span>
+          <span><strong>30-Day Easy Returns.</strong> Not in love with your crystals? Return within 30 days for a full refund — no questions asked.</span>
+        </div>
       </div>
     </div>
   `;

@@ -1286,6 +1286,59 @@ h1, h2, h3, h4 {
   color: var(--color-primary-dark);
 }
 
+/* ===== Trust badges (checkout reassurance) ===== */
+.trust-badges {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 18px 0 4px;
+  padding: 16px;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--color-text);
+}
+.trust-badge .tb-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.trust-badge .tb-text strong {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+}
+.trust-badge .tb-text small {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+.trust-returns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+}
+.trust-returns .tb-icon {
+  font-size: 18px;
+}
+
+@media (max-width: 640px) {
+  .trust-badges {
+    grid-template-columns: 1fr;
+  }
+}
+
 .form-section {
   margin-bottom: 32px;
 }
