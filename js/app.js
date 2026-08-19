@@ -1788,10 +1788,6 @@ function renderCheckout() {
           <div class="coupon-applied">✓ <strong>${escapeHtml(cartCoupon.code)}</strong> applied — 10% off first order <a onclick="removeCoupon(); renderCheckout();">Remove</a></div>
         </div>
         `}
-        <div class="trust-returns">
-          <span class="tb-icon">↩️</span>
-          <span><strong>30-Day Easy Returns.</strong> Not in love with your crystals? Return within 30 days for a full refund — no questions asked.</span>
-        </div>
       </div>
     </div>
   `;
