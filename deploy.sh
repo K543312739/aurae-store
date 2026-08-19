@@ -75,14 +75,29 @@ EMAIL_FROM=no-reply@aurae.shop
 EOF
 sed -i "s/__ADMIN_PW__/$ADMIN_PW/" server/.env
 
-# 8) 配置 nginx 反向代理（80 -> 3000）
-echo "[8/9] 配置 nginx 反向代理..."
+# 8) 配置 nginx 反向代理(80 引导; 完整 HTTPS + gzip + 静态缓存由 setup-https.sh 从 infra/nginx-aurae.conf 应用)
+echo "[8/9] 配置 nginx 反向代理(80 引导 + gzip)..."
+# 说明: 完整生产配置(含 gzip + 静态缓存 + 443 SSL)集中在仓库 infra/nginx-aurae.conf,
+#       证书签发后由 setup-https.sh 复制应用, 避免脚本内联模板漂移导致优化配置丢失。
 cat > /etc/nginx/sites-available/aurae << 'EOF'
 server {
     listen 80;
-    server_name 47.253.245.165;
+    server_name aurae.asia www.aurae.asia;
 
     client_max_body_size 10M;
+
+    # gzip 压缩(80 引导阶段也开启, 减少初始传输)
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_types text/plain text/css application/javascript application/json application/xml image/svg+xml image/x-icon;
+
+    # Let's Encrypt 验证用
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
 
     location / {
         proxy_pass http://127.0.0.1:3000;

@@ -57,52 +57,15 @@ certbot certonly --webroot -w /var/www/html \
     -d aurae.asia -d www.aurae.asia \
     --non-interactive --agree-tos --register-unsafely-without-email
 
-# 4) 写入完整 HTTPS 配置(80 跳转 + 443 SSL 反代)
-echo "[4/6] 写入完整 nginx 配置(80->443 + SSL)..."
-cat > /etc/nginx/sites-available/aurae << 'EOF'
-server {
-    listen 80;
-    server_name aurae.asia www.aurae.asia;
-    client_max_body_size 10M;
-
-    # Let's Encrypt 验证用(续期时仍需要)
-    location /.well-known/acme-challenge/ {
-        root /var/www/html;
-    }
-
-    # 其余流量全部跳转 HTTPS
-    location / {
-        return 301 https://$host$request_uri;
-    }
-}
-
-server {
-    listen 443 ssl;
-    server_name aurae.asia www.aurae.asia;
-
-    ssl_certificate     /etc/letsencrypt/live/aurae.asia/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/aurae.asia/privkey.pem;
-    ssl_session_timeout 1d;
-    ssl_session_cache   shared:SSL:10m;
-    ssl_protocols       TLSv1.2 TLSv1.3;
-    ssl_ciphers         ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
-    ssl_prefer_server_ciphers off;
-
-    client_max_body_size 10M;
-
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-EOF
+# 4) 应用完整 HTTPS 配置(来自仓库版本化文件, 含 gzip + 静态缓存 + 443 SSL)
+echo "[4/6] 应用完整 nginx 配置(80->443 + SSL, 从 infra/nginx-aurae.conf)..."
+# 单一可信源: 生产 nginx 配置集中在 infra/nginx-aurae.conf(含 gzip + 静态缓存 + 443),
+# 直接复制应用, 不再内联模板, 避免与已下发的优化配置漂移。
+if [ ! -f /opt/aurae-store/infra/nginx-aurae.conf ]; then
+    echo "错误: 未找到 /opt/aurae-store/infra/nginx-aurae.conf, 请确认代码已克隆到 /opt/aurae-store"
+    exit 1
+fi
+cp /opt/aurae-store/infra/nginx-aurae.conf /etc/nginx/sites-available/aurae
 nginx -t && systemctl reload nginx
 systemctl enable nginx
 
