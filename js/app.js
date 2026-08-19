@@ -716,14 +716,14 @@ function updateProductSEO(product) {
   setMeta('og:title', title, 'property');
   setMeta('og:description', desc, 'property');
   setMeta('og:url', url, 'property');
-  setMeta('og:image', img, 'property');
+  setMeta('og:image', img.replace(/\.webp$/, '.png'), 'property');
   setMeta('og:image:width', '1200', 'property');
   setMeta('og:image:height', '630', 'property');
   setMeta('og:image:alt', imgAlt, 'property');
   setMeta('og:image:type', 'image/png', 'property');
   setMeta('twitter:title', title);
   setMeta('twitter:description', desc);
-  setMeta('twitter:image', img);
+  setMeta('twitter:image', img.replace(/\.webp$/, '.png'));
   setMeta('twitter:image:alt', imgAlt);
   setCanonical(url);
 
@@ -959,7 +959,7 @@ function renderTrack(param) {
 
   container.innerHTML = `
     <section class="hero" style="height:320px;">
-      <div class="hero-bg" style="background: linear-gradient(135deg, rgba(74,93,62,0.8) 0%, rgba(201,169,110,0.5) 100%), url('/images/p001.png') center/cover;"></div>
+      <div class="hero-bg" style="background: linear-gradient(135deg, rgba(74,93,62,0.8) 0%, rgba(201,169,110,0.5) 100%), url('/images/p001.webp') center/cover;"></div>
       <div class="hero-content">
         <h1 style="font-size:40px;">Track Your Order</h1>
         <p>Enter your order ID and email to see the latest status.</p>
@@ -1063,14 +1063,14 @@ function updateBlogSEO(blog) {
   setMeta('og:title', title, 'property');
   setMeta('og:description', desc, 'property');
   setMeta('og:url', url, 'property');
-  setMeta('og:image', img, 'property');
+  setMeta('og:image', img.replace(/\.webp$/, '.png'), 'property');
   setMeta('og:image:width', '1200', 'property');
   setMeta('og:image:height', '630', 'property');
   setMeta('og:image:alt', `${blog.title} — Aurae`, 'property');
   setMeta('og:image:type', 'image/png', 'property');
   setMeta('twitter:title', title);
   setMeta('twitter:description', desc);
-  setMeta('twitter:image', img);
+  setMeta('twitter:image', img.replace(/\.webp$/, '.png'));
   setMeta('twitter:image:alt', `${blog.title} — Aurae`);
   setCanonical(url);
 

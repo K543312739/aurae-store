@@ -17,8 +17,8 @@ var PRODUCTS = [
     chakra: "Heart Chakra (心轮)",
     element: "Water",
     planet: "Venus",
-    image: "/images/p001.png",
-    images: ["/images/p001.png", "/images/p001_2.png", "/images/p001_3.png", "/images/p001_4.png", "/images/p001_5.png", "/images/p001_6.png"],
+    image: "/images/p001.webp",
+    images: ["/images/p001.webp", "/images/p001_2.webp", "/images/p001_3.webp", "/images/p001_4.webp", "/images/p001_5.webp", "/images/p001_6.webp"],
     description: "In the heart of the Earth, where the gentlest waters once flowed, Rose Quartz was born — a crystal so tender it carries the very vibration of love itself. Ancient Egyptians believed Rose Quartz could prevent aging and restore youth, while the Greeks told of Aphrodite's tears turning stone into pink crystal. This bracelet opens your Heart Chakra, dissolves emotional blockages from past wounds, and magnetizes love in all forms — romantic, platonic, and most importantly, self-love. Each bead is hand-strung on durable elastic, ready to wrap your wrist in the frequency of unconditional love.",
     ritual: "Wear on your left wrist to receive love, or your right wrist to project love outward. On a full moon night, place the bracelet under moonlight and set your intention: 'I open my heart to love in all its forms.'",
     properties: [
@@ -67,8 +67,8 @@ var PRODUCTS = [
     chakra: "Heart Chakra & Root Chakra",
     element: "Fire & Earth",
     planet: "Venus & Mars",
-    image: "/images/p002.png",
-    images: ["/images/p002.png", "/images/p002_2.png", "/images/p002_3.png", "/images/p002_4.png", "/images/p002_5.png", "/images/p002_6.png"],
+    image: "/images/p002.webp",
+    images: ["/images/p002.webp", "/images/p002_2.webp", "/images/p002_3.webp", "/images/p002_4.webp", "/images/p002_5.webp", "/images/p002_6.webp"],
     description: "Scattered within the clear depths of Strawberry Quartz are tiny crimson stars — natural iron oxide inclusions that resemble strawberry seeds frozen in crystal time. This rare formation creates a unique energy signature: the grounding warmth of the Earth's iron core combined with the ethereal lightness of quartz. Strawberry Quartz is the crystal of magnetic attraction. It doesn't just draw love — it draws the RIGHT love, aligning your energy field with souls who resonate at your frequency. Wearing this bracelet amplifies your natural charm, enhances social intuition, and creates a subtle but powerful aura of desirability that others feel before they even understand why they're drawn to you.",
     ritual: "Before wearing for the first time, hold the bracelet in both hands and visualize a warm pink light surrounding you. Whisper three times: 'I am a magnet for love, connection, and destined encounters.' Wear on your left wrist during social gatherings or dates.",
     properties: [
@@ -114,8 +114,8 @@ var PRODUCTS = [
     chakra: "Third Eye & Crown Chakra (眉心轮 & 顶轮)",
     element: "Air & Ether",
     planet: "Jupiter",
-    image: "/images/p003.png",
-    images: ["/images/p003.png", "/images/p003_2.png", "/images/p003_3.png", "/images/p003_4.png", "/images/p003_5.png", "/images/p003_6.png"],
+    image: "/images/p003.webp",
+    images: ["/images/p003.webp", "/images/p003_2.webp", "/images/p003_3.webp", "/images/p003_4.webp", "/images/p003_5.webp", "/images/p003_6.webp"],
     description: "Once worth more than gold, Amethyst was the crown jewel of ancient royalty. The word comes from the Greek 'amethystos' — meaning 'not intoxicated,' for the legend of Amethyst, a maiden transformed by Diana to escape Bacchus's wrath, her tears crystallized into purple stone. This necklace features a natural amethyst point pendant, each one unique in its purple gradients — from lavender mist to deep royal violet. Amethyst bridges the Third Eye and Crown Chakras, opening the gateway between earthly awareness and divine wisdom. It quiets the mental chatter, deepens meditation, and allows you to perceive the unseen patterns that govern your life. The sterling silver chain conducts energy purely, making this a talisman of spiritual sovereignty.",
     ritual: "Place the amethyst point on your forehead (Third Eye) during meditation. Visualize a violet light expanding from the crystal into your mind. Set the intention: 'I see beyond the veil. I trust my inner vision.' Wear the necklace so the point rests at your heart to integrate spiritual insights.",
     properties: [
@@ -159,8 +159,8 @@ var PRODUCTS = [
     chakra: "Third Eye & Crown Chakra",
     element: "Air",
     planet: "Jupiter",
-    image: "/images/p004.png",
-    images: ["/images/p004.png", "/images/p004_2.png", "/images/p004_3.png", "/images/p004_4.png", "/images/p004_5.png", "/images/p004_6.png"],
+    image: "/images/p004.webp",
+    images: ["/images/p004.webp", "/images/p004_2.webp", "/images/p004_3.webp", "/images/p004_4.webp", "/images/p004_5.webp", "/images/p004_6.webp"],
     description: "The violet ray of Amethyst carries the frequency of spiritual tranquility — a calm that doesn't come from suppressing emotions, but from transcending them. When you wear this bracelet, its energy works like a gentle filter, transforming chaotic thoughts into crystalline clarity. Amethyst has been used for millennia by mystics, healers, and dreamers. It activates the higher mind while grounding spiritual awareness into the body, creating a state of 'conscious calm' — alert yet peaceful. Each bead is selected for its natural purple depth, some with subtle chevron patterns that form sacred geometry within the stone.",
     ritual: "Before sleep, hold the bracelet and state your intention for your dreams. Place it under your pillow. In the morning, journal whatever you remember — Amethyst enhances dream recall and spiritual messages received during sleep.",
     properties: [
@@ -206,8 +206,8 @@ var PRODUCTS = [
     chakra: "Root Chakra (海底轮) & Solar Plexus",
     element: "Earth & Fire",
     planet: "Pluto",
-    image: "/images/p005_2.png",
-    images: ["/images/p005_2.png", "/images/p005_3.png", "/images/p005_4.png", "/images/p005_5.png", "/images/p005_6.png"],
+    image: "/images/p005_2.webp",
+    images: ["/images/p005_2.webp", "/images/p005_3.webp", "/images/p005_4.webp", "/images/p005_5.webp", "/images/p005_6.webp"],
     description: "Born from volcanic fire and cooled into gleaming black glass, Black Gold Obsidian carries the combined force of Earth's core and the sun's golden ray. Its signature gold sheen appears when light strikes the microscopic mineral inclusions suspended within the volcanic glass — a phenomenon ancient cultures saw as a window into hidden power. Unlike ordinary black obsidian, this golden variety resonates with both the Root Chakra and Solar Plexus, weaving deep grounding with empowered confidence. This bracelet acts as an energetic shield, absorbing negative intentions, environmental stress, and electromagnetic smog while returning your aura to a calm, protected state. For anyone navigating crowded spaces, intense workplaces, or emotionally charged environments, it is essential armor — keeping you centered without carrying others' energy.",
     ritual: "Hold the bracelet in your receiving (non-dominant) hand and tilt it under light until the golden flash appears. Breathe slowly and imagine a sphere of black-gold light expanding from your solar plexus to surround your entire body. Declare: 'I am grounded in my power. I am shielded from all that does not serve me. Only clarity and truth may enter my field.' Wear on your left wrist to absorb protection, right wrist to project confidence and boundaries.",
     properties: [
@@ -251,8 +251,8 @@ var PRODUCTS = [
     chakra: "Root Chakra & Earth Star",
     element: "Fire & Earth",
     planet: "Pluto",
-    image: "/images/p006_2.png",
-    images: ["/images/p006_2.png", "/images/p006_3.png", "/images/p006_4.png", "/images/p006_5.png"],
+    image: "/images/p006_2.webp",
+    images: ["/images/p006_2.webp", "/images/p006_3.webp", "/images/p006_4.webp", "/images/p006_5.webp"],
     description: "Born from volcanic fire that cooled too quickly to crystallize, Obsidian is the Earth's glass — a mirror that reflects without distortion. The Aztecs called it 'teotl' (divine stone) and used Obsidian mirrors for scrying and divination, peering into its depths to see hidden truths and future events. This pendant is your personal mirror of truth. Obsidian doesn't comfort — it reveals. It pulls shadow material from the subconscious, exposes self-deceptions, and cuts through illusions with surgical precision. For those ready to do the deep work of shadow integration, this is the ultimate tool. It also provides the most powerful protective shield of any stone, creating a barrier that negative entities cannot penetrate.",
     ritual: "Sit in a dimly lit room. Hold the pendant at eye level and gaze into its surface. Allow images, feelings, or insights to arise without judgment. When shadow material surfaces, breathe into it and say: 'I see you. I accept you. I integrate you.' Cleanse under running water after each session.",
     properties: [
@@ -298,8 +298,8 @@ var PRODUCTS = [
     chakra: "Solar Plexus & Sacral Chakra (太阳轮 & 脐轮)",
     element: "Fire",
     planet: "Sun",
-    image: "/images/p007_2.png",
-    images: ["/images/p007_2.png", "/images/p007_3.png", "/images/p007_4.png", "/images/p007_5.png", "/images/p007_6.png"],
+    image: "/images/p007_2.webp",
+    images: ["/images/p007_2.webp", "/images/p007_3.webp", "/images/p007_4.webp", "/images/p007_5.webp", "/images/p007_6.webp"],
     description: "Citrine carries the golden fire of the Sun trapped in crystal form. Unlike most crystals that absorb energy, Citrine never needs cleansing because it transmutes — it takes in negativity and radiates it back as golden light. This is why merchants in ancient times kept Citrine in their cash boxes, calling it the 'Merchant's Stone.' It doesn't just attract wealth; it transforms your relationship with abundance. Wearing this ring activates your Solar Plexus — the body's power center — igniting confidence, willpower, and the drive to manifest. The genuine citrine stone, set in adjustable sterling silver, catches light like captured sunshine, reminding you that abundance is your birthright.",
     ritual: "Place the ring in your wallet or cash box overnight to charge it with abundance energy. Before wearing, hold it and visualize golden light filling your body. Affirm: 'I am a conduit for divine abundance. Wealth flows to me effortlessly.' Wear on your index finger (Jupiter) for expansion, or thumb for personal power.",
     properties: [
@@ -343,8 +343,8 @@ var PRODUCTS = [
     chakra: "Solar Plexus & Crown Chakra",
     element: "Fire & Ether",
     planet: "Sun & Jupiter",
-    image: "/images/p008_2.png",
-    images: ["/images/p008_2.png", "/images/p008_3.png", "/images/p008_4.png", "/images/p008_5.png", "/images/p008_6.png"],
+    image: "/images/p008_2.webp",
+    images: ["/images/p008_2.webp", "/images/p008_3.webp", "/images/p008_4.webp", "/images/p008_5.webp", "/images/p008_6.webp"],
     description: "Inside clear quartz, golden needles of rutile shoot through like captured lightning — threads of pure energy frozen in time. This is Rutilated Quartz, the most powerful amplifier in the crystal kingdom. The rutile threads act as energetic antennas, broadcasting your intentions into the universe with amplified force while simultaneously drawing abundance back to you. In Chinese crystal lore, golden rutilated quartz is called '发晶' (Fa Jing) — the 'wealth hair crystal' — believed to attract fortune so powerfully that it's the first choice of business owners and entrepreneurs. Each golden thread represents a channel of prosperity; the more threads, the more pathways for wealth to find you.",
     ritual: "Hold the bracelet in sunlight for 10 minutes to supercharge the golden threads. State your specific financial goal aloud — be precise. Wear on your left wrist to receive wealth energy. Touch the beads when making business decisions to amplify your intuition.",
     properties: [
@@ -390,8 +390,8 @@ var PRODUCTS = [
     chakra: "Solar Plexus & Sacral Chakra (太阳轮 & 脐轮)",
     element: "Fire & Earth",
     planet: "Sun & Mars",
-    image: "/images/p009_2.png",
-    images: ["/images/p009_2.png", "/images/p009_3.png", "/images/p009_4.png", "/images/p009_5.png", "/images/p009_6.png"],
+    image: "/images/p009_2.webp",
+    images: ["/images/p009_2.webp", "/images/p009_3.webp", "/images/p009_4.webp", "/images/p009_5.webp", "/images/p009_6.webp"],
     description: "With bands of gold and brown that shimmer and shift as light moves across them, Tiger's Eye earned its name from the hypnotic gaze of the jungle's apex predator. Roman soldiers carried Tiger's Eye into battle, engraved with symbols of courage. This stone carries the frequency of the warrior — not aggression, but the calm, grounded power of one who knows their strength. Tiger's Eye transmutes fear into action, indecision into clarity, and scattered energy into laser focus. It bridges the fiery willpower of the Solar Plexus with the earthy stability of the Root, creating an unshakable foundation for bold moves. For entrepreneurs, leaders, and anyone stepping into a more powerful version of themselves, this is the talisman of transformation.",
     ritual: "When facing a fearful situation, grip the bracelet tightly and feel the stone's warmth. Visualize a tiger standing beside you — powerful, calm, unafraid. Channel that energy. Whisper: 'Fear becomes fuel. I act with the courage of a tiger.'",
     properties: [
@@ -443,8 +443,8 @@ var PRODUCTS = [
     chakra: "Crown & Third Eye Chakra (顶轮 & 眉心轮)",
     element: "Water & Air",
     planet: "Moon",
-    image: "/images/p010_2.png",
-    images: ["/images/p010_2.png", "/images/p010_3.png", "/images/p010_4.png", "/images/p010_5.png", "/images/p010_6.png"],
+    image: "/images/p010_2.webp",
+    images: ["/images/p010_2.webp", "/images/p010_3.webp", "/images/p010_4.webp", "/images/p010_5.webp", "/images/p010_6.webp"],
     description: "Moonstone holds the captured glow of a full moon — a soft, billowy light that seems to move within the stone as you turn it. Ancient Romans believed Moonstone was formed from frozen moonlight, and in India, it has been sacred for millennia as a stone of divine feminine wisdom. This pendant connects you to the cyclical rhythms of nature — the moon's phases, the tides, the menstrual cycle, the seasons of life. Moonstone enhances intuition to the point of prophecy, balances hormonal fluctuations, and supports women through every life transition — from first menstruation to menopause. For anyone seeking to reconnect with their inner knowing and the deep, intuitive wisdom that modern life often drowns out, this is your talisman.",
     ritual: "Charge under the full moon overnight. Hold the pendant and tune into your body's natural rhythm. Ask: 'What does my body need right now?' Trust the first answer that arises. Wear during the new moon to set intentions, full moon to release.",
     properties: [
@@ -490,8 +490,8 @@ var PRODUCTS = [
     chakra: "Throat & Third Eye Chakra (喉轮 & 眉心轮)",
     element: "Air & Water",
     planet: "Mercury & Uranus",
-    image: "/images/p011.png",
-    images: ["/images/p011.png", "/images/p011_2.png", "/images/p011_3.png", "/images/p011_4.png", "/images/p011_5.png", "/images/p011_6.png"],
+    image: "/images/p011.webp",
+    images: ["/images/p011.webp", "/images/p011_2.webp", "/images/p011_3.webp", "/images/p011_4.webp", "/images/p011_5.webp", "/images/p011_6.webp"],
     description: "At first glance, Labradorite appears as a plain gray stone. But turn it to the light, and an iridescent flash of electric blue, green, gold, and violet erupts from within — a phenomenon called 'labradorescence.' This is the stone's magic: it reveals its true nature only to those who look deeper. Labradorite is the crystal of transformation and magic. It was discovered when an Inuit warrior struck the stone and saw the Northern Lights trapped inside. Wearing Labradorite shields your aura while simultaneously amplifying your magical and manifesting abilities. It's the crystal for those undergoing deep identity transformation — career changes, spiritual awakenings, or shedding old versions of the self. The flashing colors remind you that what appears ordinary on the surface often holds extraordinary depths.",
     ritual: "Turn the bracelet slowly under different light sources and watch the colors flash. Each flash represents a hidden aspect of yourself waiting to be activated. Set the intention: 'I embrace transformation. I am ready to reveal my magic.'",
     properties: [
@@ -542,8 +542,8 @@ var PRODUCTS = [
     chakra: "Heart & Solar Plexus Chakra (心轮 & 太阳轮)",
     element: "Earth & Wood",
     planet: "Earth & Venus",
-    image: "/images/p012.png",
-    images: ["/images/p012.png", "/images/p012_2.png", "/images/p012_3.png", "/images/p012_4.png", "/images/p012_5.png", "/images/p012_6.png"],
+    image: "/images/p012.webp",
+    images: ["/images/p012.webp", "/images/p012_2.webp", "/images/p012_3.webp", "/images/p012_4.webp", "/images/p012_5.webp", "/images/p012_6.webp"],
     description: "Deep within clear quartz, ghostly green pyramids float like ancient forests frozen in crystal amber. These 'phantoms' form when chlorite minerals deposit in layers during the crystal's growth — each phantom marking a chapter in the stone's 100-million-year journey. Green Phantom Quartz is the ultimate career stone in crystal lore. The phantom inclusions represent hidden treasures — wealth that exists but isn't yet visible. Wearing this bracelet aligns you with the energy of growth, expansion, and the slow, inevitable accumulation of abundance. It's particularly powerful for entrepreneurs and career climbers, as each phantom pyramid symbolizes a milestone achieved and a new level of prosperity reached.",
     ritual: "Hold the bracelet up to light and locate the phantom pyramids within each bead. Each one represents a career goal. Touch each phantom while visualizing your next milestone. Wear to job interviews, business meetings, and financial negotiations.",
     properties: [
@@ -594,8 +594,8 @@ var PRODUCTS = [
     chakra: "All Chakras (全脉轮)",
     element: "All Elements",
     planet: "All Planets",
-    image: "/images/p013.png",
-    images: ["/images/p013.png", "/images/p013_2.png", "/images/p013_3.png", "/images/p013_4.png", "/images/p013_5.png", "/images/p013_6.png"],
+    image: "/images/p013.webp",
+    images: ["/images/p013.webp", "/images/p013_2.webp", "/images/p013_3.webp", "/images/p013_4.webp", "/images/p013_5.webp", "/images/p013_6.webp"],
     description: "Clear Quartz is the Grand Master of the crystal kingdom — the only stone that can be programmed with ANY intention. Its perfect hexagonal crystal structure makes it the most efficient energy amplifier on Earth. Aboriginal elders called it 'Maban' — a living stone with consciousness. Clear Quartz works like a crystal singing bowl for your energy field: it clears blockages, amplifies your intentions, and harmonizes all chakras into resonance. Think of it as a blank canvas — whatever energy you imprint into it, it magnifies and radiates back. This is why it pairs with all other crystals, boosting their power. For beginners, this is the essential first crystal; for masters, it remains the most versatile tool in the collection.",
     ritual: "Hold the bracelet between your palms. Breathe deeply and focus on your single most important intention right now. Visualize that intention as a beam of light entering the crystals. The quartz is now programmed. Re-program whenever your intention changes.",
     properties: [
@@ -646,8 +646,8 @@ var PRODUCTS = [
     chakra: "Root & Sacral Chakra (海底轮 & 脐轮)",
     element: "Fire",
     planet: "Mars & Pluto",
-    image: "/images/p014.png",
-    images: ["/images/p014.png", "/images/p014_2.png", "/images/p014_3.png", "/images/p014_4.png", "/images/p014_5.png"],
+    image: "/images/p014.webp",
+    images: ["/images/p014.webp", "/images/p014_2.webp", "/images/p014_3.webp", "/images/p014_4.webp", "/images/p014_5.webp"],
     description: "Garnet glows with the deep red of life force itself — the color of blood, of passion, of the Earth's molten core. Named from 'granatum' (pomegranate seed), this stone has been used since the Bronze Age. Ancient warriors inlaid Garnet into their armor, believing it would stop bleeding and give them the strength to rise again. This is the crystal of the Phoenix — rebirth from destruction. When you feel depleted, burned out, or disconnected from your passion for life, Garnet reignites the inner flame. It stimulates the Root and Sacral Chakras, grounding raw vital energy into the body, boosting circulation, and awakening dormant creative and sexual energy. For those emerging from a period of darkness, Garnet provides the fuel to rebuild.",
     ritual: "When feeling depleted, hold the bracelet against your lower back (sacral area) and breathe deeply. Visualize a red flame growing from your pelvis, spreading warmth through your entire body. Affirm: 'I rise renewed. My fire burns eternal.'",
     properties: [
@@ -698,8 +698,8 @@ var PRODUCTS = [
     chakra: "Throat Chakra (喉轮)",
     element: "Water",
     planet: "Moon & Neptune",
-    image: "/images/p015.png",
-    images: ["/images/p015.png", "/images/p015_2.png", "/images/p015_3.png", "/images/p015_4.png", "/images/p015_5.png", "/images/p015_6.png"],
+    image: "/images/p015.webp",
+    images: ["/images/p015.webp", "/images/p015_2.webp", "/images/p015_3.webp", "/images/p015_4.webp", "/images/p015_5.webp", "/images/p015_6.webp"],
     description: "Aquamarine carries the essence of the ocean in solid form — its blue-green hues shift like sunlight through shallow waters. Sailors carried Aquamarine as a talisman against drowning, believing it was the treasure of mermaids. This stone resonates with the Throat Chakra, the center of authentic expression. It dissolves the fear of speaking your truth, soothes throat tension, and gives your words the calming flow of ocean waves. For those who swallow their feelings, who stay silent when they should speak, or who struggle with communication in relationships, Aquamarine gently teaches the art of fluid, honest expression. Its cooling energy also calms hot tempers and reduces inflammation — physically and emotionally.",
     ritual: "Dip the necklace in clean water (or hold under running water) to activate its ocean energy. Place it against your throat and hum softly until you feel vibration in the stone. Ask: 'What truth am I ready to speak?' Wear when you need to have difficult conversations.",
     properties: [
@@ -745,8 +745,8 @@ var PRODUCTS = [
     chakra: "Third Eye & Throat Chakra (眉心轮 & 喉轮)",
     element: "Air & Spirit",
     planet: "Jupiter & Venus",
-    image: "/images/p016_2.png",
-    images: ["/images/p016_2.png", "/images/p016_3.png", "/images/p016_4.png", "/images/p016_5.png", "/images/p016_6.png"],
+    image: "/images/p016_2.webp",
+    images: ["/images/p016_2.webp", "/images/p016_3.webp", "/images/p016_4.webp", "/images/p016_5.webp", "/images/p016_6.webp"],
     description: "Lapis Lazuli — the stone of kings, queens, and gods. Its deep celestial blue, speckled with golden pyrite like stars in the night sky, made it the most prized gemstone of ancient civilizations. Cleopatra ground Lapis into powder for her iconic eyeshadow. Michelangelo used it for the blue in the Sistine Chapel. The Pharaohs were buried with Lapis scarabs to guide them through the underworld. This is a stone of total truth — it activates both the Third Eye (to SEE truth) and the Throat (to SPEAK truth) simultaneously. Wearing Lapis Lazuli earrings places the stone near both your mind and your voice, creating a continuous circuit of wisdom: you perceive clearly, and you express what you perceive with royal confidence. The golden flecks within remind you that your inner wisdom is worth more than gold.",
     ritual: "Before important conversations or decisions, touch each earring and visualize blue light activating your Third Eye and Throat. Affirm: 'I see clearly. I speak truly. I am a vessel of divine wisdom.'",
     properties: [
@@ -790,8 +790,8 @@ var PRODUCTS = [
     chakra: "Heart Chakra (心轮)",
     element: "Water",
     planet: "Venus",
-    image: "/images/p017_1.jpg",
-    images: ["/images/p017_1.jpg", "/images/p017_2.jpg", "/images/p017_3.jpg", "/images/p017_4.jpg", "/images/p017_5.jpg"],
+    image: "/images/p017_1.webp",
+    images: ["/images/p017_1.webp", "/images/p017_2.webp", "/images/p017_3.webp", "/images/p017_4.webp", "/images/p017_5.webp"],
     description: "In the soft blush of dawn, three kindred stones unite to weave a bracelet of pure tenderness. Rose Quartz - the stone of unconditional love - forms the gentle heart of this piece, its milky-pink glow a quiet reminder that you are worthy of love exactly as you are. Strawberry Quartz dances alongside it, carrying the sweet, magnetic energy of new connections and the warmth of a smile exchanged across a crowded room. Clear Quartz, the master healer, threads through them both as a luminous amplifier, magnifying intention and clarity. Hand-strung on durable elastic, this 10mm bracelet wraps your wrist in a frequency of softness, self-worth, and gentle, irresistible magnetism - a daily talisman for the heart that already knows how to love.",
     ritual: "Slip it onto your left wrist to receive love, or your right to radiate it outward. On a Friday - Venus's day - hold the bracelet to your heart and whisper: 'I am worthy of love, and love flows to me with ease.' Let the full moon charge it each month.",
     properties: ["Opens the Heart Chakra and deepens self-love", "Strawberry Quartz attracts sweet, joyful connections", "Clear Quartz amplifies your intentions and clarity", "Soothes anxiety and invites emotional softness", "A gentle daily reminder of your own worth"],
@@ -830,8 +830,8 @@ var PRODUCTS = [
     chakra: "Crown & Third Eye (顶轮与眉心轮)",
     element: "Air",
     planet: "Jupiter",
-    image: "/images/p018_1.png",
-    images: ["/images/p018_1.png", "/images/p018_2.png", "/images/p018_3.png", "/images/p018_4.png", "/images/p018_5.jpg"],
+    image: "/images/p018_1.webp",
+    images: ["/images/p018_1.webp", "/images/p018_2.webp", "/images/p018_3.webp", "/images/p018_4.webp", "/images/p018_5.webp"],
     description: "Where the violet hush of Amethyst meets the sunny fire of Citrine, a quiet alchemy begins. Amethyst, the stone of the sober mind and open crown, calms the noise of overthinking and wraps your spirit in protective, peaceful clarity. Citrine - the merchant's stone - glows with the warm frequency of abundance and childlike joy, dissolving scarcity thoughts and lighting the path to what you deserve. Clear Quartz weaves through both as the great amplifier, tuning the bracelet to your highest intention. Available in 8mm and 10mm and hand-strung on resilient elastic, this trinity bracelet is a wearable meditation: calm focus by day, abundant ease by night.",
     ritual: "Wear it on your left wrist to receive, your right to project. Each morning, cup the beads in your palm, take three slow breaths, and set one intention - clarity, joy, or abundance. Let the sun charge its Citrine and the moon cleanse its Amethyst.",
     properties: ["Amethyst calms the mind and protects your energy", "Citrine invites abundance, joy, and creative confidence", "Clear Quartz amplifies focus and personal intention", "Supports restful sleep and relieves overthinking", "Balances crown, third-eye, and solar-plexus energy"],
@@ -871,8 +871,8 @@ var PRODUCTS = [
     chakra: "Crown Chakra (顶轮)",
     element: "All Elements",
     planet: "Sun",
-    image: "/images/p019_1.jpg",
-    images: ["/images/p019_1.jpg", "/images/p019_2.jpg", "/images/p019_3.jpg", "/images/p019_4.jpg", "/images/p019_5.jpg"],
+    image: "/images/p019_1.webp",
+    images: ["/images/p019_1.webp", "/images/p019_2.webp", "/images/p019_3.webp", "/images/p019_4.webp", "/images/p019_5.webp"],
     description: "Born from the purest silica the Earth can crystallize, Clear Quartz is the master healer — a blank canvas of light that amplifies whatever intention you place within it. Ancient priests and shamans carried it as a conduit for clarity, and modern energy workers call it the battery of the crystal world. This bracelet acts as a lens for your focus: it clears mental fog, harmonizes scattered energy, and magnifies the frequency of every other stone it touches. Each bead is hand-strung on durable elastic, a quiet amplifier for the life you are consciously creating.",
     ritual: "Hold the bracelet to your forehead for a moment, then state one clear intention aloud three times. Wear it on your left wrist to receive clarity, or keep it near other crystals to amplify their energy.",
     properties: ["Amplifies intentions and the energy of other crystals", "Clears mental fog and sharpens focus", "Balances and harmonizes the entire energy field", "Supports healing on physical, emotional and spiritual levels", "Cleanses and charges other stones"],
@@ -913,8 +913,8 @@ var PRODUCTS = [
     chakra: "Root Chakra (海底轮)",
     element: "Fire",
     planet: "Mars",
-    image: "/images/p020_1.jpg",
-    images: ["/images/p020_1.jpg", "/images/p020_2.jpg", "/images/p020_3.jpg", "/images/p020_4.jpg", "/images/p020_5.jpg"],
+    image: "/images/p020_1.webp",
+    images: ["/images/p020_1.webp", "/images/p020_2.webp", "/images/p020_3.webp", "/images/p020_4.webp", "/images/p020_5.webp"],
     description: "Mined from the sacred Liangshan mountains of Sichuan, Nanhong — southern red — is among the most revered agates in Chinese culture, treasured since the Han dynasty for its warm, flesh-like red glow. Unlike dyed imitations, true Liangshan Nanhong carries a depth of color that seems lit from within, a stone of vitality and quiet courage. This bracelet grounds your life force into the Earth, stokes your inner fire, and wraps the wrist in a texture of warmth that has comforted emperors and seekers alike for two thousand years.",
     ritual: "Wear on your left wrist to draw in vitality. Before an important meeting or challenge, hold a bead and breathe slowly five times, visualizing a steady red light filling your core with grounded confidence.",
     properties: ["Grounds and stabilizes the life force", "Ignites vitality, courage and inner strength", "Connects you to Earth's warm, supportive energy", "Supports circulation and physical warmth", "A traditional stone of protection and status"],
@@ -955,8 +955,8 @@ var PRODUCTS = [
     chakra: "Root Chakra & Third Eye (海底轮·眉心轮)",
     element: "Fire & Earth",
     planet: "Pluto",
-    image: "/images/p021_1.jpg",
-    images: ["/images/p021_1.jpg", "/images/p021_2.jpg", "/images/p021_3.jpg", "/images/p021_4.jpg", "/images/p021_5.jpg"],
+    image: "/images/p021_1.webp",
+    images: ["/images/p021_1.webp", "/images/p021_2.webp", "/images/p021_3.webp", "/images/p021_4.webp", "/images/p021_5.webp"],
     description: "Zijin Cinnabar — purple-gold cinnabar — is a rare, dense form of natural cinnabar prized in Chinese metaphysics for its deep, grounding calm. Long used by Taoist practitioners to still the mind and ward off negative energy, its weighty, wine-dark presence carries an ancient protective stillness. This pendant is a talisman for the overstimulated modern spirit: it settles anxious thoughts, shields your field, and returns you to a centered, watchful calm — the kind that lets intuition speak.",
     ritual: "Hold the pendant in both hands before sleep and exhale slowly, imagining static and worry draining into the stone. Wear it at heart level to receive its protective, calming field through the day.",
     properties: ["Settles anxiety and quiets a racing mind", "Provides a strong protective energetic boundary", "Grounds scattered energy into the body", "Supports deeper, more restful sleep", "A traditional aid for spiritual focus and meditation"],
@@ -997,8 +997,8 @@ var PRODUCTS = [
     chakra: "Root Chakra & Third Eye (海底轮·眉心轮)",
     element: "Earth & Fire",
     planet: "Saturn",
-    image: "/images/p022_1.jpg",
-    images: ["/images/p022_1.jpg", "/images/p022_2.jpg", "/images/p022_3.jpg", "/images/p022_4.jpg", "/images/p022_5.jpg"],
+    image: "/images/p022_1.webp",
+    images: ["/images/p022_1.webp", "/images/p022_2.webp", "/images/p022_3.webp", "/images/p022_4.webp", "/images/p022_5.webp"],
     description: "Forged in the instant cooling of volcanic lava, obsidian is glass born of fire and earth — and Silver Sheen Obsidian holds a secret: turn it to the light and a soft, metallic silver shimmer floods the black, like moonlight on deep water. This is the stone of the mirror: it reflects your truth, cuts through illusion, and protects the sensitive spirit without closing the heart. This pendant is armor for empaths — a calm, watchful guardian that lets you see clearly and stay rooted.",
     ritual: "Wear it at heart level as a daily shield. When you need clarity about a situation, hold the pendant to your Third Eye and ask one honest question, then listen.",
     properties: ["Shields the aura from negativity and drains", "Reflects truth and dissolves self-deception", "Grounds heightened sensitivity and emotion", "Supports psychic protection for empaths", "Connects root stability with inner vision"],
@@ -1039,8 +1039,8 @@ var PRODUCTS = [
     chakra: "Throat Chakra (喉轮)",
     element: "Water & Air",
     planet: "Mercury",
-    image: "/images/p023_1.jpg",
-    images: ["/images/p023_1.jpg", "/images/p023_2.jpg", "/images/p023_3.jpg", "/images/p023_4.jpg", "/images/p023_5.jpg"],
+    image: "/images/p023_1.webp",
+    images: ["/images/p023_1.webp", "/images/p023_2.webp", "/images/p023_3.webp", "/images/p023_4.webp", "/images/p023_5.webp"],
     description: "Blue Quartz carries the stillness of a mountain lake at dawn — a gentle, sky-tinted quartz that cools the noise of an overbusy mind. Aligned with the Throat Chakra, it is the stone of calm, honest expression: it helps you speak your truth without agitation and listen without defense. This bracelet is for the communicator, the caretaker, the overthinking mind — a soft blue exhale for the nervous system, inviting clarity, patience, and the quiet confidence to be heard.",
     ritual: "Before a conversation that matters, touch the bracelet at your throat and take three slow breaths, setting the intention to speak with calm clarity and an open heart.",
     properties: ["Soothes an overactive, anxious mind", "Supports clear, calm and honest communication", "Activates and balances the Throat Chakra", "Encourages patience, tolerance and understanding", "Brings mental clarity and peaceful focus"],
@@ -1081,8 +1081,8 @@ var PRODUCTS = [
     chakra: "Throat Chakra & Root Chakra (喉轮·海底轮)",
     element: "Water & Fire",
     planet: "Mercury & Pluto",
-    image: "/images/p024_1.jpg",
-    images: ["/images/p024_1.jpg", "/images/p024_2.jpg", "/images/p024_3.jpg", "/images/p024_4.jpg", "/images/p024_5.jpg"],
+    image: "/images/p024_1.webp",
+    images: ["/images/p024_1.webp", "/images/p024_2.webp", "/images/p024_3.webp", "/images/p024_4.webp", "/images/p024_5.webp"],
     description: "A rare fusion of cinnabar's grounded protection and blue quartz's serene clarity, this stone marries fire and water into one steady frequency. The cinnabar lineage anchors and shields; the blue quartz cools and clarifies. Together they form a bracelet for the person who must stay both calm and strong — protected at the roots, clear at the throat, unshaken in the middle of noise. It is quiet strength you can wear.",
     ritual: "Wear on your left wrist to receive steady calm. When pressure rises, trace the beads slowly and breathe, letting the stone remind you: rooted, clear, unshaken.",
     properties: ["Blends protective grounding with mental clarity", "Calms the nervous system under pressure", "Shields the aura while keeping you clear", "Supports honest, fearless expression", "Balances fiery drive with watery peace"],
@@ -1123,8 +1123,8 @@ var PRODUCTS = [
     chakra: "Root Chakra (海底轮)",
     element: "Earth",
     planet: "Saturn",
-    image: "/images/p025_1.jpg",
-    images: ["/images/p025_1.jpg", "/images/p025_2.jpg", "/images/p025_3.jpg", "/images/p025_4.jpg", "/images/p025_5.jpg"],
+    image: "/images/p025_1.webp",
+    images: ["/images/p025_1.webp", "/images/p025_2.webp", "/images/p025_3.webp", "/images/p025_4.webp", "/images/p025_5.webp"],
     description: "Tea Quartz — the warm, smoky-brown sibling of clear quartz — is the great neutralizer of the crystal world. Formed when quartz absorbs natural radiation from surrounding rock, it carries an earthy, grounding calm that pulls scattered energy down into the body and out through the feet. This is the stone for overwhelm, for electromagnetic fatigue, for the days when everything feels too much. It detoxifies the field, protects your base, and leaves behind a steady, quiet strength.",
     ritual: "Wear on your left wrist to draw excess energy down and out. After a draining day with screens and crowds, hold the bracelet and visualize tension flowing out through your feet into the Earth.",
     properties: ["Powerfully grounds and centers scattered energy", "Absorbs and transmutes environmental stress", "Protects the Root Chakra and personal space", "Eases overwhelm, fatigue and electromagnetic sensitivity", "Supports gentle physical and emotional detox"],
@@ -1165,8 +1165,8 @@ var PRODUCTS = [
     chakra: "Third Eye & Crown (眉心轮·顶轮)",
     element: "Fire & Earth",
     planet: "Pluto",
-    image: "/images/p026_1.jpg",
-    images: ["/images/p026_1.jpg", "/images/p026_2.jpg", "/images/p026_3.jpg", "/images/p026_4.jpg", "/images/p026_5.jpg"],
+    image: "/images/p026_1.webp",
+    images: ["/images/p026_1.webp", "/images/p026_2.webp", "/images/p026_3.webp", "/images/p026_4.webp", "/images/p026_5.webp"],
     description: "Zijinsha Cinnabar — golden-sand cinnabar — is a luminous, densely packed form of natural cinnabar, its surface scattered with fine metallic flecks like stardust caught in deep wine-red stone. Revered in Taoist tradition as a sacred, high-vibration material, it is carried as a spiritual shield: calming the spirit, deepening meditation, and sealing the aura against intrusion. Worn at the heart or throat, this pendant is a quiet sacrament — protection you can feel, serenity you can see.",
     ritual: "Before meditation, hold the pendant in both hands, close your eyes, and set a single sacred intention. Wear it against the skin to keep its calming, protective field close through the day.",
     properties: ["Creates a calming, protective spiritual shield", "Deepens meditation and inner stillness", "Supports the Third Eye and Crown connection", "Seals and stabilizes the auric field", "A traditional sacred stone for peace and focus"],
@@ -1294,7 +1294,7 @@ const BLOG_POSTS = [
     readTime: "14 min read",
     title: "Healing Crystals: A Guide for Beginners",
     excerpt: "When you are just starting to work with the energy of crystals, it can all feel quite overwhelming. This guide will walk you through everything you need to know...",
-    image: "/images/p013.png",
+    image: "/images/p013.webp",
     content: `<p>Crystals are more than beautiful stones. They are energetic allies, formed over millions of years under immense pressure, each carrying a unique vibration. If you are new to the world of crystal healing, welcome. This guide is your gentle introduction.</p>
       <h3>What Is Crystal Healing?</h3>
       <p>Crystal healing is the practice of using stones to support balance in the body, mind, and spirit. Every crystal has a specific energetic signature. Clear Quartz amplifies intention, Rose Quartz opens the heart, and Black Gold Obsidian creates a protective shield. When you bring a crystal into your field, you invite its frequency to interact with your own.</p>
@@ -1309,7 +1309,7 @@ const BLOG_POSTS = [
     readTime: "16 min read",
     title: "8 Crystals for Money, Wealth & Prosperity & How to Use Them",
     excerpt: "Everyone's been given safe, sensible financial advice at some point. But what if the key to abundance was something you could hold in your hand?",
-    image: "/images/p008_2.png",
+    image: "/images/p008_2.webp",
     content: `<p>Abundance is not just about money. It is about flow, confidence, opportunity, and the willingness to receive. These eight crystals are known for their wealth-attracting energies and have been used by merchants, healers, and manifestors for centuries.</p>
       <h3>1. Citrine — The Merchant's Stone</h3>
       <p>Bright, golden Citrine carries the energy of the sun and prosperity. Keep a Citrine ring on your dominant hand or place a cluster in the wealth corner of your home to invite financial flow.</p>
@@ -1334,7 +1334,7 @@ const BLOG_POSTS = [
     readTime: "5 min read",
     title: "Power Banding 101: Where to Wear Your Crystal Bracelets",
     excerpt: "Not that you need another reason to deck yourself out in crystal jewelry, but in case you want to maximize their energy benefits...",
-    image: "/images/p001.png",
+    image: "/images/p001.webp",
     content: `<p>Your crystal bracelet is more than an accessory. It is a portable energy field. But did you know that where you wear it changes how its energy flows through you?</p>
       <h3>Left Wrist: Receiving Energy</h3>
       <p>The left side of the body is traditionally associated with receiving. Wear Rose Quartz, Moonstone, or Amethyst on your left wrist to invite love, intuition, peace, and healing into your energy field.</p>
@@ -1351,7 +1351,7 @@ const BLOG_POSTS = [
     readTime: "14 min read",
     title: "A Room-by-Room Guide to Using Crystals for the Home",
     excerpt: "Home base may be a term that comes from baseball, but it perfectly describes how your home should feel — safe, grounding, and yours...",
-    image: "/images/p005_2.png",
+    image: "/images/p005_2.webp",
     content: `<p>Your home is your sanctuary. When you place crystals intentionally in each room, you turn your living space into an active energetic support system. Here is how to align your home with crystal energy.</p>
       <h3>Entryway: Protection & Welcome</h3>
       <p>The entryway is where outside energy enters your home. Place Black Gold Obsidian or Obsidian near the door to absorb negativity and create a protective boundary. Add Rose Quartz nearby to ensure what enters feels loving and soft.</p>
@@ -1372,7 +1372,7 @@ const BLOG_POSTS = [
     readTime: "12 min read",
     title: "How to Spot Fake vs. Real Crystals: A Buyer's Guide",
     excerpt: "The crystal market is beautiful — and crowded with fakes. Learn the simple tests that separate genuine stones from glass, dye, and resin.",
-    image: "/images/p013.png",
+    image: "/images/p013.webp",
     content: `<p>As crystals have gone mainstream, so have counterfeits. Glass, dyed quartz, and resin imitations now fill many marketplaces. The good news: with a few simple checks, you can protect yourself and buy with confidence.</p>
       <h3>1. The Temperature Test</h3>
       <p>Real crystals feel cool to the touch and stay cool longer than glass. Hold the stone in your palm for thirty seconds. Glass warms almost immediately; a genuine quartz or amethyst will still feel slightly cool.</p>
@@ -1393,7 +1393,7 @@ const BLOG_POSTS = [
     readTime: "10 min read",
     title: "Crystal Meditation for Beginners: A Step-by-Step Ritual",
     excerpt: "You don't need to be a mystic to meditate with crystals. Here is a simple, grounding ritual you can do in ten quiet minutes.",
-    image: "/images/p004.png",
+    image: "/images/p004.webp",
     content: `<p>Meditation can feel intimidating when you are starting out. Crystals give your wandering mind a gentle anchor. This ten-minute ritual is perfect for beginners and requires only one stone and a few minutes of quiet.</p>
       <h3>Step 1: Choose Your Stone</h3>
       <p>Start with one crystal. Amethyst is ideal for calm and focus, Rose Quartz for heart-opening, Clear Quartz for clarity. Pick the stone whose energy you are most curious about today.</p>
@@ -1414,7 +1414,7 @@ const BLOG_POSTS = [
     readTime: "9 min read",
     title: "The Ultimate Crystal Gift Guide: What to Give & When",
     excerpt: "A crystal is more than a gift — it is a wish for someone's wellbeing. Here is what to give for every occasion that matters.",
-    image: "/images/p001.png",
+    image: "/images/p001.webp",
     content: `<p>Few gifts carry as much intention as a crystal. Whether you believe in their energy or simply love their beauty, giving a stone is a quiet way of saying "I wish you well." Here is a quick guide for the moments that matter.</p>
       <h3>For Love & Anniversaries</h3>
       <p>Rose Quartz is the unmistakable stone of love. A Rose Quartz bracelet is a daily reminder of affection, while a Moonstone pendant celebrates intuition and devotion. Give it to a partner, a new spouse, or yourself.</p>
@@ -1435,7 +1435,7 @@ const BLOG_POSTS = [
     readTime: "11 min read",
     title: "Crystal Care 101: How to Cleanse, Charge & Store Your Stones",
     excerpt: "Your crystals work quietly to hold and shift energy — so they deserve care too. Learn the gentle, effective ways to cleanse, charge, and store every stone in your collection.",
-    image: "/images/p013.png",
+    image: "/images/p013.webp",
     content: `<p>A crystal is not a static decoration. In the traditions that surround it, every stone is a living carrier of energy — absorbing what you release, holding what you ask it to, and slowly taking on the residue of the rooms and moods it passes through. That is exactly why care matters. A well-tended stone stays clear, bright, and ready to support you. A neglected one simply goes dull.</p>
       <h3>Why Crystals Need Cleansing</h3>
       <p>Cleansing is the practice of clearing stagnant or absorbed energy so the stone returns to a neutral, receptive state. Think of it like washing your hands: not because the stone is "dirty," but because you want a clean slate before the next intention. A good rule of thumb is to cleanse a stone when it first arrives, after any intense emotional moment, and roughly once a month as routine maintenance.</p>
@@ -1458,7 +1458,7 @@ const BLOG_POSTS = [
     readTime: "10 min read",
     title: "Crystal Pairings: The Best Stone Combinations for Love, Protection & Abundance",
     excerpt: "Some crystals shine on their own — but paired with the right companion, they tell a stronger story. Discover the combinations that amplify love, shield your energy, and draw in abundance.",
-    image: "/images/p001.png",
+    image: "/images/p001.webp",
     content: `<p>Working with one crystal is a wonderful start. But just as people bring out different sides of each other, stones combine to build a richer, more layered energy. The art of pairing is simply matching intentions so two stones pull in the same direction. Here are the combinations our community reaches for most.</p>
       <h3>For Love & the Open Heart</h3>
       <p><strong>Rose Quartz + Rhodonite.</strong> Rose Quartz opens the heart; Rhodonite soothes the old wounds that keep it closed. Together they support both new love and self-forgiveness.</p>
@@ -1483,7 +1483,7 @@ const BLOG_POSTS = [
     readTime: "12 min read",
     title: "Crystals for Sleep, Anxiety & Calm: A Practical Nighttime Ritual",
     excerpt: "If your mind races the moment your head hits the pillow, you are not alone. These calming crystals and a simple 10-minute nighttime ritual can help you wind down, release the day, and finally rest.",
-    image: "/images/p007_2.png",
+    image: "/images/p007_2.webp",
     content: `<p>There is a particular kind of tired that sleep does not touch. The kind where you climb into bed, the lights go off, and suddenly your brain decides now is the perfect time to replay every awkward moment from 2009 and list everything you forgot to do tomorrow. If that sounds familiar, you are in good company — and crystals can be a surprisingly gentle ally in quieting the noise.</p>
       <h3>Why Crystals for Sleep & Anxiety?</h3>
       <p>Nobody is claiming a stone is a substitute for rest, therapy, or a good mattress. But crystals work on the level of ritual and attention. The simple act of choosing a stone, holding it, and setting the intention to slow down signals your nervous system that it is safe to power down. The stone becomes an anchor for the evening — a physical reminder that the day is done.</p>
@@ -1510,7 +1510,7 @@ const BLOG_POSTS = [
     readTime: "13 min read",
     title: "Chakra Healing with Crystals: A Beginner's Map of the 7 Energy Centers",
     excerpt: "Chakras are the body's seven energy centers, from root to crown. Learn which crystal pairs with each one — and how to begin balancing them in five quiet minutes a day.",
-    image: "/images/p003.png",
+    image: "/images/p003.webp",
     content: `<p>You have probably heard the word "chakra" dropped in a yoga class or a wellness post, but the idea is simpler and older than the trend. In many traditions, the body is threaded with energy, and that energy moves through seven main centers. When a center is sluggish or overloaded, something feels off. Crystals are one of the gentlest ways to bring these centers back into balance — and you do not need to be a mystic to start.</p>
       <h3>What Are Chakras?</h3>
       <p>Think of chakras as spinning wheels of energy along the spine, each one linked to a different part of your physical, emotional, and spiritual life. They run from the base of the spine to the top of the head. When energy flows freely through all seven, you tend to feel grounded, open, and alive. When one is blocked, you might feel stuck, anxious, or disconnected in that area of life.</p>
@@ -1535,7 +1535,7 @@ const BLOG_POSTS = [
     readTime: "11 min read",
     title: "Crystals for Manifestation: A Practical Step-by-Step Guide",
     excerpt: "Manifestation is not magic \u2014 it is focused intention meeting daily action. These crystals and a simple 7-step ritual help you attract love, money, and peace with clarity.",
-    image: "/images/p007_2.png",
+    image: "/images/p007_2.webp",
     content: `<p>You have probably heard that "thoughts become things." Manifestation is simply the practice of aiming your attention, emotion, and action at one clear outcome until it arrives. Crystals are not a shortcut \u2014 but they are a powerful anchor. They give your intention a physical home, a daily reminder, and a quiet focus your scattered mind can return to. This guide walks you through exactly how to manifest with crystals, step by step.</p>
       <h3>What Does "Manifestation" Actually Mean?</h3>
       <p>At its core, manifestation is the alignment of three things: what you <em>think</em>, what you <em>feel</em>, and what you <em>do</em>. A crystal helps hold that alignment when life gets noisy. It is not the source of the outcome \u2014 you are. The stone simply keeps your frequency steady while you do the work.</p>
@@ -1559,7 +1559,7 @@ const BLOG_POSTS = [
     readTime: "10 min read",
     title: "The Best Crystals for Protection & Grounding (and How to Use Them Daily)",
     excerpt: "If you feel drained after crowds, scrolling, or hard conversations, you may be an energetic sponge. These protective stones and a 5-minute daily shield ritual help you stay rooted and safe.",
-    image: "/images/p005_2.png",
+    image: "/images/p005_2.webp",
     content: `<p>Some people walk into a room and absorb everything \u2014 the tension, the noise, the unspoken moods. If that is you, you are not weak; you are sensitive. And sensitive people need boundaries they can wear. That is where protection and grounding crystals come in. They do not "block" life \u2014 they help you stay centered in your own energy instead of leaking it everywhere.</p>
       <h3>Protection vs. Grounding: What's the Difference?</h3>
       <p><strong>Protection</strong> stones absorb or deflect outside energy you do not want \u2014 stress, negativity, the static of a crowded train. <strong>Grounding</strong> stones pull your attention out of your racing head and back into your body and the earth. You usually want both: a shield and an anchor.</p>
@@ -1584,7 +1584,7 @@ const BLOG_POSTS = [
     readTime: "12 min read",
     title: "Crystals for Love, Relationships & Self-Love: A Gentle Guide",
     excerpt: "Whether you are calling in new love, deepening a partnership, or healing a broken heart, these stones meet you where you are. A practical, judgment-free guide to the crystals of the heart.",
-    image: "/images/p001.png",
+    image: "/images/p001.webp",
     content: `<p>Love is the most-asked-about reason people pick up a crystal — and the most misunderstood. There is no magic stone that makes someone fall for you. What crystals can do is quieter and more useful: they help you soften, get honest with yourself, and become the kind of person who recognizes love when it arrives. This guide covers the stones for every version of love you might be working with right now.</p>
       <h3>Why Crystals for Love?</h3>
       <p>Most love work happens at the heart chakra — the energy center at the center of the chest that governs how openly you give and receive. When that center is guarded, love feels risky. When it is open, connection flows. The stones below are chosen because, in tradition and practice, they gently coax the heart open without forcing it. You are not trying to "manifest a specific person" — you are building the capacity to love and be loved.</p>
@@ -1613,7 +1613,7 @@ const BLOG_POSTS = [
     readTime: "11 min read",
     title: "Crystals for Focus, Productivity & Study: Build a Clear-Mind Workspace",
     excerpt: "Struggling to concentrate in a noisy world? These clarity-boosting crystals and a simple desk ritual help students, remote workers, and busy minds find calm, steady focus.",
-    image: "/images/p004.png",
+    image: "/images/p004.webp",
     content: `<p>Focus is a muscle, and the modern world is doing its best to exhaust it. Notifications, open tabs, and a brain that treats rest as a productivity problem — sound familiar? Crystals will not replace deep work or a good night's sleep, but they are a surprisingly effective tool for one thing: giving your scattered attention a single, calm anchor to return to. Here is how to build a focus-friendly crystal routine.</p>
       <h3>Why Crystals for Focus?</h3>
       <p>The benefit is mostly ritual and environment. When you set a stone on your desk with the intention "this is where I do my best thinking," you are training your brain to associate that spot and that object with concentration. The stone becomes a visual off-switch for distraction. Combined with the right mineral energies, it is a low-effort way to signal "work mode" to your nervous system.</p>
@@ -1645,7 +1645,7 @@ const BLOG_POSTS = [
     readTime: "13 min read",
     title: "Crystals for Protection & Grounding: Build Your Everyday Energy Shield",
     excerpt: "Feeling drained by other people's moods or the chaos of the day? These protective and grounding stones help you stay centered, shielded, and calm — plus a simple 5-minute ritual.",
-    image: "/images/p002.png",
+    image: "/images/p002.webp",
     content: `<p>You cannot control the room, the news, or the mood of the person sitting next to you. But you can control how much of it sticks to you. That is what protection and grounding crystals are for — not to "fight" anything, but to keep you rooted in yourself so outside noise passes through instead of lodging in your chest. If you have ever come home from a crowded day feeling inexplicably tired, this is for you.</p>
       <h3>Why Protection & Grounding Matter</h3>
       <p>Grounding is the practice of pulling your energy down into your body and the earth instead of letting it float anxiously in your head. It is governed by the root chakra, the energy center at the base of the spine. When you feel safe and physically present, everything else — focus, love, confidence — has a stable foundation to stand on. Protection stones support that boundary; grounding stones build the floor beneath it.</p>
@@ -1673,7 +1673,7 @@ const BLOG_POSTS = [
     readTime: "12 min read",
     title: "Crystals for Confidence, Courage & Self-Esteem: Wear Your Inner Power",
     excerpt: "Confidence isn't something you either have or don't — it's a muscle, and certain stones are surprisingly good at reminding you it's there. Here are the best crystals for stepping into your power.",
-    image: "/images/p006_2.png",
+    image: "/images/p006_2.webp",
     content: `<p>Confidence is not a personality trait you are born with or without. It is a muscle, built in small acts of keeping promises to yourself. The trick is that the muscle is invisible until you use it — and that is exactly where crystals help. They give you a physical anchor for the quiet sentence "I've got this," so you can reach for it on the days your brain insists you don't. Here are the stones worth knowing.</p>
       <h3>Why Crystals for Confidence?</h3>
       <p>In the body's energy map, personal power lives at the solar plexus chakra — the spot just above the navel. When it is strong, you make decisions without spiraling; when it is weak, you second-guess everything. The stones below are traditionally associated with warming, charging, and steadying that center. They will not do the hard conversation for you, but they make a surprisingly good wingman.</p>
@@ -1701,7 +1701,7 @@ const BLOG_POSTS = [
     readTime: "13 min read",
     title: "How to Choose Your First Crystal: A Beginner's Buying Guide",
     excerpt: "Buying your first crystal shouldn't feel like a test. Here's a calm, practical framework for picking a stone you'll actually wear, love, and feel — without overthinking it.",
-    image: "/images/p001.png",
+    image: "/images/p001.webp",
     content: `<p>Buying your first crystal should feel like the beginning of a relationship, not a pop quiz. There is no wrong answer, and you do not need to memorize a chart of meanings before you are allowed to buy one. The goal is simple: pick a stone you will actually wear, keep, and feel — then let the rest unfold. Here is the framework we wish every first-time buyer had.</p>
       <h3>Start With How You Want to Feel</h3>
       <p>Before you read a single meaning, ask one question: what do I want more of in my life right now? Calm? Warmth? Focus? Protection? Crystals work best as gentle reminders of an intention you already hold, so lead with the feeling, not the stone name. A clear goal makes the rest of the choice easy.</p>
@@ -1722,7 +1722,7 @@ const BLOG_POSTS = [
     readTime: "11 min read",
     title: "Crystal Care Mistakes: 7 Things That Quietly Damage Your Stones (and How to Fix Them)",
     excerpt: "Most crystal damage isn't dramatic — it's slow, silent, and totally avoidable. Here are the seven care mistakes we see most often, and exactly what to do instead.",
-    image: "/images/p004.png",
+    image: "/images/p004.webp",
     content: `<p>Most crystal damage is not dramatic. It is not a stone shattering on the floor — it is slow, silent, and totally avoidable: a faded Amethyst, a frayed cord, a scratched surface you did not notice until months later. After helping thousands of first-time owners, we have seen the same seven mistakes again and again. Here is what they are, and exactly what to do instead.</p>
       <h3>1. Leaving Them in Direct Sunlight Too Long</h3>
       <p>Sunlight is a popular charging method — but it is also the fastest way to fade color. Amethyst, Citrine, and Rose Quartz can all lose their vibrancy after prolonged baking. Use indirect light or moonlight instead, and reserve full sun for sturdy, color-stable stones only.</p>

@@ -34,3 +34,7 @@ server/uploads/
 
 # Local audit/dev artifacts (may contain secrets)
 full-audit.js
+
+# Generated WebP images — deployed via SFTP, not tracked in git (avoid repo bloat)
+images/**/*.webp
+images/*.webp
