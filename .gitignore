@@ -27,6 +27,7 @@ server/reviews.json
 server/users.json
 server/subscribers.json
 server/refund-requests.json
+server/abandoned-carts.json
 
 # Uploaded images (product photos, review photos) — runtime data
 uploads/

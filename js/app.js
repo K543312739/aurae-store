@@ -1919,6 +1919,26 @@ function getCheckoutCustomerData() {
   };
 }
 
+// Capture the cart server-side for abandoned-cart recovery emails.
+// Non-blocking: a failure here must never break the checkout flow.
+function captureAbandonedCart(customer, items) {
+  try {
+    const email = (customer && customer.email || '').trim().toLowerCase();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    if (!Array.isArray(items) || !items.length) return;
+    const payload = {
+      email,
+      name: customer.name || '',
+      items: items.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty, variant: i.variant || '', image: i.image || '' })),
+    };
+    fetch('/api/abandoned-cart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(() => {});
+  } catch (e) { /* non-blocking */ }
+}
+
 async function processOrder() {
   // Validate form
   if (!validateCheckoutForm()) {
@@ -1947,6 +1967,9 @@ async function processOrder() {
   const auth = {};
   const u = JSON.parse(localStorage.getItem('auraeUser') || 'null');
   if (u) { auth.userId = u.id; auth.userEmail = u.email; }
+
+  // Fire-and-forget: capture cart for abandoned-cart recovery (must not block checkout)
+  captureAbandonedCart(customer, items);
 
   try {
     const config = await loadPaymentConfig();

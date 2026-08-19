@@ -670,6 +670,7 @@ function initMailer() {
   }
 }
 initMailer();
+startAbandonedCartJob();
 
 async function sendEmail({ to, subject, html, text }) {
   const body = text || (html ? html.replace(/<[^>]+>/g, '') : '');
@@ -686,6 +687,94 @@ async function sendEmail({ to, subject, html, text }) {
     console.error('[Email] Send failed:', e.message);
     return { error: e.message };
   }
+}
+
+// ===== Abandoned Cart Recovery =====
+// When a shopper reaches checkout but doesn't complete payment, we keep their
+// cart and send a gentle recovery email after a configurable delay.
+const ABANDONED_CARTS_FILE = path.join(__dirname, 'abandoned-carts.json');
+function loadAbandonedCarts() {
+  try { if (fs.existsSync(ABANDONED_CARTS_FILE)) return JSON.parse(fs.readFileSync(ABANDONED_CARTS_FILE, 'utf8')); } catch (e) { console.error('Error loading abandoned carts:', e.message); }
+  return [];
+}
+function saveAbandonedCarts(list) { fs.writeFileSync(ABANDONED_CARTS_FILE, JSON.stringify(list, null, 2)); }
+
+// Mark any open abandoned cart for this email as converted so we stop emailing.
+function markAbandonedConverted(email) {
+  if (!email) return;
+  const key = String(email).trim().toLowerCase();
+  const carts = loadAbandonedCarts();
+  let changed = false;
+  for (const c of carts) {
+    if (c.email === key && !c.converted) { c.converted = true; changed = true; }
+  }
+  if (changed) saveAbandonedCarts(carts);
+}
+
+function emailAbandonedCart(cart) {
+  const domain = process.env.DOMAIN || 'https://www.aurae.asia';
+  const checkoutUrl = domain + '/index.html?view=checkout';
+  const itemsHtml = (cart.items || []).map(i =>
+    `<div style="display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid #eee;">
+      ${i.image ? `<img src="${escapeHtmlServer(i.image)}" width="48" height="48" style="border-radius:8px;object-fit:cover;">` : ''}
+      <div>${escapeHtmlServer(i.name)}${i.variant ? ' (' + escapeHtmlServer(i.variant) + ')' : ''} &times; ${i.qty || 1}</div>
+    </div>`).join('');
+  return sendEmail({
+    to: cart.email,
+    subject: `🌙 You left something beautiful behind at Aurae`,
+    html: `<div style="font-family:Inter,Arial,sans-serif;max-width:520px;margin:auto;color:#2a2a2a;">
+      <h2 style="font-family:'Cormorant Garamond',serif;">Your crystals are waiting 💎</h2>
+      <p>Hi ${escapeHtmlServer(cart.name || 'Beautiful Soul')}, you started checking out but didn't finish — your cart is safely saved:</p>
+      <div style="background:#f8f5f0;border-radius:12px;padding:16px;margin:16px 0;">${itemsHtml}</div>
+      <p>Complete your order and enjoy <strong>10% off your first order</strong> with code <strong>CRYSTAL10</strong> at checkout.</p>
+      <a href="${checkoutUrl}" style="display:inline-block;background:#2a2a2a;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;margin:8px 0;">Return to my cart</a>
+      <p style="color:#888;font-size:12px;">This is a friendly reminder about items you added to your cart. If you'd rather not receive these, just ignore this email.</p>
+    </div>`,
+  });
+}
+
+// Periodic job: email open carts that have aged past the first/reminder delay.
+function startAbandonedCartJob() {
+  if (!mailer) { console.log('[AbandonedCart] SMTP not configured — recovery emails disabled.'); return; }
+  const FIRST_DELAY = (Number(process.env.ABANDONED_CART_FIRST_DELAY_HOURS) || 1) * 3600 * 1000;
+  const REMINDER_DELAY = (Number(process.env.ABANDONED_CART_REMINDER_DELAY_HOURS) || 24) * 3600 * 1000;
+  let MAX_REMINDERS = Number(process.env.ABANDONED_CART_MAX_REMINDERS);
+  if (!MAX_REMINDERS || MAX_REMINDERS < 0) MAX_REMINDERS = 1;
+  const PRUNE_AGE = 30 * 24 * 3600 * 1000;
+
+  const run = () => {
+    try {
+      const carts = loadAbandonedCarts();
+      if (!carts.length) return;
+      const now = Date.now();
+      let changed = false;
+      const next = [];
+      for (const c of carts) {
+        const age = now - new Date(c.createdAt).getTime();
+        if (c.converted) {
+          if (age > PRUNE_AGE) { changed = true; continue; }
+          next.push(c);
+          continue;
+        }
+        if (c.reminders < MAX_REMINDERS && (c.reminders === 0 ? age >= FIRST_DELAY : age >= REMINDER_DELAY)) {
+          emailAbandonedCart(c);
+          c.emailed = true;
+          c.lastEmailedAt = new Date().toISOString();
+          c.reminders = (c.reminders || 0) + 1;
+          changed = true;
+        } else if (c.reminders >= MAX_REMINDERS && age > PRUNE_AGE) {
+          changed = true; // prune fully-reminded carts after 30 days
+          continue;
+        }
+        next.push(c);
+      }
+      if (changed) saveAbandonedCarts(next);
+    } catch (e) {
+      console.error('[AbandonedCart] job error:', e.message);
+    }
+  };
+  setInterval(run, 15 * 60 * 1000); // every 15 minutes
+  console.log('[AbandonedCart] recovery job started (first delay=' + (Number(process.env.ABANDONED_CART_FIRST_DELAY_HOURS) || 1) + 'h, max reminders=' + MAX_REMINDERS + ')');
 }
 
 function emailOrderConfirmation(order) {
@@ -784,6 +873,7 @@ function finalizePaidOrder(orderId) {
   const orders = loadOrders();
   const order = orders.find(o => o.orderId === orderId);
   if (!order) return;
+  markAbandonedConverted(order.customer?.email); // stop any pending recovery email
   decrementStock(order.items || []);
   if (order.coupon) {
     const coupons = loadCoupons();
@@ -2346,6 +2436,47 @@ app.post('/api/newsletter', publicLimiter, async (req, res) => {
     </div>`,
   });
   res.json({ success: true });
+});
+
+// ===== API: Public — Capture abandoned cart for recovery emails =====
+app.post('/api/abandoned-cart', publicLimiter, (req, res) => {
+  const email = String(req.body?.email || '').trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Valid email required.' });
+  const rawItems = Array.isArray(req.body?.items) ? req.body.items : [];
+  const items = rawItems.slice(0, 20).map(i => ({
+    id: String(i.id || ''),
+    name: String(i.name || '').slice(0, 120),
+    price: Number(i.price) || 0,
+    qty: Math.max(1, parseInt(i.qty, 10) || 1),
+    variant: String(i.variant || '').slice(0, 60),
+    image: String(i.image || '').slice(0, 300),
+  })).filter(i => i.name);
+  if (!items.length) return res.status(400).json({ error: 'Cart is empty.' });
+
+  const carts = loadAbandonedCarts();
+  const now = Date.now();
+  const existing = carts.find(c => c.email === email && !c.converted);
+  if (existing) {
+    const age = now - new Date(existing.createdAt).getTime();
+    existing.items = items;
+    existing.name = String(req.body?.name || existing.name || '').slice(0, 120);
+    existing.createdAt = new Date().toISOString();
+    if (age >= 24 * 3600 * 1000) { existing.emailed = false; existing.reminders = 0; } // allow a fresh recovery cycle
+    saveAbandonedCarts(carts);
+    return res.json({ success: true, captured: true });
+  }
+  carts.push({
+    id: 'ac_' + now.toString(36) + Math.random().toString(36).slice(2, 8),
+    email,
+    name: String(req.body?.name || '').slice(0, 120),
+    items,
+    createdAt: new Date().toISOString(),
+    emailed: false,
+    converted: false,
+    reminders: 0,
+  });
+  saveAbandonedCarts(carts);
+  res.json({ success: true, captured: true });
 });
 
 // ===== API: Admin — Subscribers list =====
