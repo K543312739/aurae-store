@@ -1193,6 +1193,54 @@ var PRODUCTS = [
       rating: "待补充"
     }
   },
+  {
+    id: "b20",
+    category: "guides",
+    readTime: "12 min read",
+    title: "Crystal Grids: How to Build One for Manifestation",
+    excerpt: "A crystal grid turns a scattered wish into a focused intention. Here's a simple, step-by-step way to build one that actually works - no geometry degree required.",
+    image: "/images/p012.webp",
+    content: `<p>There is a moment in every crystal practice when a single stone stops feeling like enough - when you want to aim a whole field of energy at one goal. That is the moment a crystal grid becomes your best friend. A crystal grid is a deliberate arrangement of stones laid out in a geometric pattern, all working toward a single intention. It is part altar, part amplifier, part daily reminder. Here is how to build one that actually works.</p>
+      <h3>Why a Grid Works</h3>
+      <p>Three things combine. First, intention: you decide, clearly, what you are calling in. Second, sacred geometry: the pattern itself is believed to focus and direct energy along specific pathways. Third, amplification: a central <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> point broadcasts the intention of every stone around it. Together they turn a scattered wish into a structured, daily-visible commitment.</p>
+      <h3>Step 1 - Set One Clear Intention</h3>
+      <p>Pick a single goal. "More abundance," not "fix my whole life." Write it on a small slip of paper and place it under the center stone. The narrower the focus, the sharper the grid's signal.</p>
+      <h3>Step 2 - Choose a Center Stone</h3>
+      <p>The center is your amplifier and anchor. <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> is the classic choice because it magnifies anything nearby. For heart goals use <a href="/products/rose-quartz-love-bracelet/">Rose Quartz</a>; for momentum use <a href="/products/citrine-merchant-s-ring/">Citrine</a>.</p>
+      <h3>Step 3 - Pick Your Supporting Stones</h3>
+      <p>Surround the center with 6 or 12 stones that each hold one facet of your goal. Want a calm, prosperous home? Ring Clear Quartz with <a href="/products/green-phantom-wealth-bracelet/">Green Phantom</a>, <a href="/products/amethyst-serenity-bracelet/">Amethyst</a>, and <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye</a>. Each stone = one supporting belief.</p>
+      <h3>Step 4 - Arrange in Sacred Geometry</h3>
+      <p>You do not need a math degree. A simple flower-of-life cloth or a circle of stones around the center works beautifully. What matters is that the layout feels intentional to you - symmetry tells your brain "this means something."</p>
+      <h3>Step 5 - Activate the Grid</h3>
+      <p>Using a Clear Quartz point or your finger, trace from the outer stones inward to the center, then back out, voicing your intention once. This "switches it on." Many people feel a subtle shift the first time they do it - that is the point.</p>
+      <h3>Step 6 - Place, Trust, and Maintain</h3>
+      <p>Leave the grid somewhere you will see it daily but not disturb it. Re-activate it weekly with a quick trace and a restated intention. When the goal is met, thank the stones, dismantle the grid, and cleanse the pieces before their next use. For a deeper dive on intention-setting, read our <a href="/blog/crystals-for-manifestation-a-practical-step-by-step-guide/">manifestation guide</a>.</p>
+      <h3>Start Small</h3>
+      <p>You do not need a dozen stones to begin. Three pieces - one center, two supporters - on a windowsill is a complete grid. Browse our <a href="/shop/">collection</a> to choose stones that speak to your goal, and let the grid do the quiet work.</p>`
+  },
+  {
+    id: "b21",
+    category: "crystals",
+    readTime: "10 min read",
+    title: "Crystals for Emotional Healing & Letting Go",
+    excerpt: "Some healing can't be seen on a scan. These are the crystals we reach for when the heart needs tending - plus a simple letting-go ritual you can do tonight.",
+    image: "/images/p003.webp",
+    content: `<p>Some healing can't be seen on a scan. It lives in the chest after a hard day, in the tightness that won't quite release, in the things we keep carrying long after we should have set them down. Crystals won't replace a friend or a therapist - but as gentle, tactile companions they can help you slow down, feel, and finally let go. Here are the stones we reach for when the heart needs tending.</p>
+      <h3>Rose Quartz - The Stone of Self-Compassion</h3>
+      <p>When you are your own harshest critic, <a href="/products/rose-quartz-love-bracelet/">Rose Quartz</a> is the antidote. Its soft pink frequency invites you to speak to yourself the way you would to someone you love. Wear it on the left wrist - the receiving side - so its warmth filters in before the inner critic wakes up.</p>
+      <h3>Amethyst - Calm for a Racing Mind</h3>
+      <p>Grief and anxiety often show up as a mind that won't slow down. <a href="/products/amethyst-serenity-bracelet/">Amethyst</a> settles that static, creating space between a feeling and your reaction to it. Keep a piece on your nightstand; many people find the edges of hard emotions soften by morning.</p>
+      <h3>Black Gold Obsidian - Release and Protect</h3>
+      <p>Letting go sometimes means first feeling what you have been avoiding. <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian</a> helps you surface and release old wounds, then shields the tender space underneath. It is the stone for the brave work of emotional honesty.</p>
+      <h3>Moonstone - For the Cycles of Grief</h3>
+      <p>Healing is rarely linear; it comes in waves, like the moon. Moonstone honors those cycles, reminding you that retreat and return are both part of the process. It is especially gentle through periods of loss or transition.</p>
+      <h3>Green Aventurine - Mending the Heart</h3>
+      <p>Once the hard feelings move through, Green Aventurine helps knit the heart back together and reopen it to good things. It is the "after" stone - the one you reach for when you are ready to feel hopeful again.</p>
+      <h3>A Simple Letting-Go Ritual</h3>
+      <p>Hold your chosen stone, name aloud what you are ready to release, and imagine it draining out through the stone into the earth. Then rinse the stone under cool water (hard stones only) to symbolize the wash. Do this for nine nights, or simply whenever the weight returns. Pair it with our <a href="/blog/crystals-for-love-relationships-self-love-a-gentle-guide/">self-love guide</a> for a fuller heart practice.</p>
+      <h3>Carry the Reminder</h3>
+      <p>The stone's real power is that it is there - on your wrist, in your pocket - a quiet cue to breathe and feel. Explore <a href="/shop/">our emotional-healing pieces</a> and pick the one your heart is asking for. Healing isn't a straight line, and you don't have to do it alone.</p>`
+  }
 ];
 
 // ===== Intention Categories =====
