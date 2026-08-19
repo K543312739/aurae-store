@@ -271,18 +271,35 @@ function renderView(view, param) {
   pintrkTrack('pagevisit', {});
 }
 
+// ===== Static URL scheme =====
+// IMPORTANT: slugify() and the path builders MUST stay byte-for-byte identical
+// to the copies in server/ssr.js so frontend and backend agree on every URL.
+function slugify(s) {
+  return String(s == null ? '' : s).trim().toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+function productPath(p) { return '/products/' + slugify(p && p.name) + '/'; }
+function blogPath(b) { return '/blog/' + slugify(b && b.title) + '/'; }
+function shopPath(param) {
+  const v = String(param == null ? 'all' : param);
+  if (v === 'all' || v === '') return '/shop/';
+  if (v.startsWith('category:')) return '/shop/' + slugify(v.slice('category:'.length)) + '/';
+  if (v.startsWith('intention:')) return '/shop/intention/' + slugify(v.slice('intention:'.length)) + '/';
+  return '/shop/';
+}
+
 // Build the canonical URL for a given view (used for History API state).
 function viewToUrl(view, param) {
-  const base = window.location.pathname;
-  if (view === 'home') return base;
-  if (view === 'shop') return base + '?shop=' + encodeURIComponent(param || 'all');
-  if (view === 'product') return base + '?product=' + encodeURIComponent(param || '');
-  if (view === 'blog' && param) return base + '?blog=' + encodeURIComponent(param);
-  if (view === 'about') return base + '?view=about';
-  if (view === 'contact') return base + '?view=contact';
-  if (view === 'checkout') return base + '?view=checkout';
-  if (view === 'track') return base + '?view=track';
-  return base;
+  if (view === 'home') return '/';
+  if (view === 'shop') return shopPath(param);
+  if (view === 'product') { const p = PRODUCTS.find(x => x.id === param); return p ? productPath(p) : '/'; }
+  if (view === 'blog') { const b = BLOG_POSTS.find(x => x.id === param); return b ? blogPath(b) : '/'; }
+  if (view === 'about') return '/about/';
+  if (view === 'contact') return '/?view=contact';
+  if (view === 'checkout') return '/?view=checkout';
+  if (view === 'track') return '/?view=track';
+  return '/';
 }
 
 // navigate: in-app navigation that pushes a real history entry so the
@@ -293,13 +310,13 @@ function navigate(view, param, opts) {
 
   // Standalone pages (no SPA shell, e.g. legal pages) → full reload.
   if (!hasViews) {
-    if (view === 'home') window.location.href = 'index.html';
-    else if (view === 'shop') window.location.href = 'index.html?shop=' + encodeURIComponent(param || 'all');
-    else if (view === 'product') window.location.href = 'index.html?product=' + encodeURIComponent(param || '');
-    else if (view === 'about') window.location.href = 'index.html?view=about';
-    else if (view === 'contact') window.location.href = 'index.html?view=contact';
-    else if (view === 'blog') window.location.href = 'index.html?blog=' + encodeURIComponent(param || '');
-    else if (view === 'track') window.location.href = 'index.html?view=track';
+    if (view === 'home') window.location.href = '/';
+    else if (view === 'shop') window.location.href = shopPath(param);
+    else if (view === 'product') { const p = PRODUCTS.find(x => x.id === param); window.location.href = p ? productPath(p) : '/'; }
+    else if (view === 'about') window.location.href = '/about/';
+    else if (view === 'contact') window.location.href = '/contact.html';
+    else if (view === 'blog') { const b = BLOG_POSTS.find(x => x.id === param); window.location.href = b ? blogPath(b) : '/'; }
+    else if (view === 'track') window.location.href = '/?view=track';
     return;
   }
 
@@ -312,8 +329,35 @@ function navigate(view, param, opts) {
   renderView(view, param);
 }
 
+// Parse a static path into a {view, param} route. Returns null for "/" (home)
+// or "/index.html" (legacy query routing) so the query-param fallback runs.
+function parsePathToRoute() {
+  let path = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+  if (path === '/' || path === '/index.html') return null;
+  if (path === '/shop') return { view: 'shop', param: 'all' };
+  if (path.startsWith('/shop/intention/')) return { view: 'shop', param: 'intention:' + decodeURIComponent(path.slice('/shop/intention/'.length)) };
+  if (path.startsWith('/shop/')) return { view: 'shop', param: 'category:' + decodeURIComponent(path.slice('/shop/'.length)) };
+  if (path === '/about') return { view: 'about' };
+  if (path.startsWith('/products/')) {
+    const slug = path.slice('/products/'.length);
+    const p = PRODUCTS.find(x => slugify(x.name) === slug);
+    if (p) return { view: 'product', param: p.id };
+    return null;
+  }
+  if (path.startsWith('/blog/')) {
+    const slug = path.slice('/blog/'.length);
+    const b = BLOG_POSTS.find(x => slugify(x.title) === slug);
+    if (b) return { view: 'blog', param: b.id };
+    return null;
+  }
+  return null;
+}
+
 // Handle browser Back/Forward: re-render the view that the URL describes.
 function handlePopState() {
+  const route = parsePathToRoute();
+  if (route) { renderView(route.view, route.param); return; }
+
   const params = new URLSearchParams(window.location.search);
   if (params.has('product')) {
     const pid = params.get('product');
@@ -539,7 +583,7 @@ function renderShop(filter, keepState) {
     const catId = state.filter.split(':')[1];
     const cat = CATEGORIES.find(c => c.id === catId);
     setBreadcrumbSEO(cat
-      ? [{ name: 'Home', url: '/' }, { name: cat.name, url: `/index.html?shop=category:${catId}` }]
+      ? [{ name: 'Home', url: '/' }, { name: cat.name, url: shopPath('category:' + catId) }]
       : [{ name: 'Home', url: '/' }, { name: title }]);
   } else if (state.filter && state.filter.startsWith('intention:')) {
     const intentId = state.filter.split(':')[1];
@@ -759,7 +803,7 @@ function renderProductDetail(productId) {
 function updateProductSEO(product) {
   if (!product) return;
   const base = window.location.origin;
-  const url = `${base}/index.html?product=${encodeURIComponent(product.id)}`;
+  const url = `${base}${productPath(product)}`;
   const defaultImg = `${base}/images/og-default.png`;
   const img = product.image && !product.image.startsWith('http') ? base + product.image : (product.image || defaultImg);
   const desc = (product.tagline || product.description || '').slice(0, 160);
@@ -780,6 +824,7 @@ function updateProductSEO(product) {
   setMeta('twitter:description', desc);
   setMeta('twitter:image', img.replace(/\.webp$/, '.png'));
   setMeta('twitter:image:alt', imgAlt);
+  setMeta('robots', 'index, follow');
   setCanonical(url);
 
   let ld = document.getElementById('aurae-jsonld');
@@ -812,7 +857,7 @@ function updateProductSEO(product) {
   const cat = CATEGORIES.find(c => c.id === product.category);
   setBreadcrumbSEO([
     { name: 'Home', url: '/' },
-    ...(cat ? [{ name: cat.name, url: `/index.html?shop=category:${product.category}` }] : []),
+    ...(cat ? [{ name: cat.name, url: shopPath('category:' + product.category) }] : []),
     { name: product.name }
   ]);
 }
@@ -874,12 +919,12 @@ const SEO_VIEWS = {
   shop: {
     title: 'Shop Crystals & Healing Jewelry — Aurae',
     desc: 'Browse authentic healing crystals, crystal jewelry, and energy tools by category. Find the perfect stone for your intention.',
-    canonical: '/index.html?shop=all'
+    canonical: '/shop/'
   },
   about: {
     title: 'About Aurae — Our Story & Craft',
     desc: 'Learn about Aurae: our mission, our ethically-sourced crystals, and the intention behind every piece we craft.',
-    canonical: '/index.html?view=about'
+    canonical: '/about/'
   },
   contact: {
     title: 'Contact Aurae — We’re Here to Help',
@@ -889,7 +934,8 @@ const SEO_VIEWS = {
   track: {
     title: 'Track Your Order — Aurae',
     desc: 'Track your Aurae crystal order status, shipping updates, and delivery information.',
-    canonical: '/index.html?view=track'
+    canonical: '/?view=track',
+    robots: 'noindex, nofollow'
   }
 };
 
@@ -897,8 +943,9 @@ function updateViewSEO(view, param) {
   const meta = SEO_VIEWS[view];
   if (!meta) return;
   let canonical = meta.canonical;
-  if (view === 'shop' && param && param !== 'all') canonical = `/index.html?shop=${encodeURIComponent(param)}`;
+  if (view === 'shop' && param && param !== 'all') canonical = shopPath(param);
   const fullUrl = window.location.origin + canonical;
+  setMeta('robots', meta.robots || 'index, follow');
   const base = window.location.origin;
   const defaultImg = `${base}/images/og-default.png`;
   const imgAlt = 'Aurae — Where Energy Meets Well-Being. Healing crystals and crystal jewelry.';
@@ -952,17 +999,31 @@ function updateStockDisplay() {
 }
 
 // ===== Render Blog Detail =====
+function relatedProductsForBlog(blog) {
+  const haystack = (blog.title + ' ' + String(blog.content || '').replace(/<[^>]+>/g, ' ')).toLowerCase();
+  const scored = PRODUCTS.map(p => {
+    let s = 0;
+    const parts = (p.crystal || '').split(/[·,&/]/).map(x => x.trim().toLowerCase()).filter(Boolean);
+    parts.forEach(nm => { if (nm && haystack.includes(nm)) s += 2; });
+    if (p.intention && haystack.includes(p.intention.toLowerCase())) s += 1;
+    return { p, s };
+  }).filter(x => x.s > 0).sort((a, b) => b.s - a.s).map(x => x.p).slice(0, 4);
+  if (scored.length) return scored;
+  return PRODUCTS.filter(p => p.badge === 'Best Seller').slice(0, 4);
+}
+
 function renderBlogDetail(blogId) {
   const blog = BLOG_POSTS.find(b => b.id === blogId);
   if (!blog) return;
 
-  const relatedProductIds = {
-    b1: ['p013','p001','p005'],
-    b2: ['p007','p008','p012'],
-    b3: ['p001','p004','p009','p013'],
-    b4: ['p005','p006','p013','p003']
-  };
-  const relatedProducts = PRODUCTS.filter(p => (relatedProductIds[blog.id] || []).includes(p.id)).slice(0, 4);
+  const relatedProducts = relatedProductsForBlog(blog);
+  const relatedArticles = BLOG_POSTS
+    .filter(b => b.id !== blog.id && b.category === blog.category)
+    .slice(0, 3);
+  if (relatedArticles.length < 3) {
+    BLOG_POSTS.filter(b => b.id !== blog.id && !relatedArticles.includes(b))
+      .forEach(b => { if (relatedArticles.length < 3) relatedArticles.push(b); });
+  }
 
   document.getElementById('blogDetailContent').innerHTML = `
     <section class="hero" style="height:400px;">
@@ -990,6 +1051,19 @@ function renderBlogDetail(blogId) {
           <div class="product-grid">
             ${relatedProducts.map(p => productCardHTML(p, { showHeart: true })).join('')}
           </div>
+        </div>
+      ` : ''}
+      ${relatedArticles.length > 0 ? `
+        <div class="blog-detail-related" style="margin-top:56px;">
+          <h3 class="section-title" style="font-size:28px;margin-bottom:24px;">Related Articles</h3>
+          <ul class="blog-related-list" style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
+            ${relatedArticles.map(b => `
+              <li>
+                <a href="${blogPath(b)}" onclick="event.preventDefault(); navigate('blog','${escapeHtml(b.id)}')" style="display:block;padding:18px 20px;background:var(--color-bg-alt);border-radius:var(--radius-md);color:inherit;text-decoration:none;font-weight:600;line-height:1.4;">
+                  ${escapeHtml(b.title)}
+                </a>
+              </li>`).join('')}
+          </ul>
         </div>
       ` : ''}
     </div>
@@ -1108,7 +1182,7 @@ async function submitTrack(e) {
 function updateBlogSEO(blog) {
   if (!blog) return;
   const base = window.location.origin;
-  const url = `${base}/index.html?blog=${encodeURIComponent(blog.id)}`;
+  const url = `${base}${blogPath(blog)}`;
   const img = (blog.image && blog.image.startsWith('/')) ? base + blog.image : (blog.image || `${base}/images/og-default.png`);
   const title = `${blog.title} — Aurae`;
   const desc = (blog.excerpt || blog.title || '').slice(0, 160);
@@ -1127,6 +1201,7 @@ function updateBlogSEO(blog) {
   setMeta('twitter:description', desc);
   setMeta('twitter:image', img.replace(/\.webp$/, '.png'));
   setMeta('twitter:image:alt', `${blog.title} — Aurae`);
+  setMeta('robots', 'index, follow');
   setCanonical(url);
 
   setJsonLd('blog', {
@@ -3196,35 +3271,44 @@ document.addEventListener('DOMContentLoaded', async () => {
       successModal.classList.add('open');
       window.history.replaceState({}, '', window.location.pathname);
     }
-  } else if (isStorePage && urlParams.has('product')) {
-    const pid = urlParams.get('product');
-    if (PRODUCTS.find(p => p.id === pid)) {
-      renderView('product', pid);
+  } else if (isStorePage) {
+    const route = parsePathToRoute();
+    if (route) {
+      if (route.view === 'shop') {
+        const q = urlParams.get('search');
+        if (q) { shopState.search = q.toLowerCase(); shopState.filter = 'all'; }
+      }
+      renderView(route.view, route.param);
+    } else if (urlParams.has('product')) {
+      const pid = urlParams.get('product');
+      if (PRODUCTS.find(p => p.id === pid)) {
+        renderView('product', pid);
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    } else if (urlParams.has('blog')) {
+      const bid = urlParams.get('blog');
+      if (BLOG_POSTS.find(b => b.id === bid)) {
+        renderView('blog', bid);
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    } else if (urlParams.has('shop') || urlParams.get('view') === 'shop') {
+      const shopParam = urlParams.get('shop') || (urlParams.get('category') ? 'category:' + urlParams.get('category') : 'all');
+      renderView('shop', shopParam);
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (urlParams.get('view') === 'about') {
+      renderView('about');
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (urlParams.get('view') === 'contact') {
+      renderView('contact');
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (urlParams.get('view') === 'track') {
+      const trackParam = urlParams.get('order') || '';
+      renderView('track', trackParam);
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (urlParams.get('view') === 'checkout') {
+      renderView('checkout');
       window.history.replaceState({}, '', window.location.pathname);
     }
-  } else if (isStorePage && urlParams.has('blog')) {
-    const bid = urlParams.get('blog');
-    if (BLOG_POSTS.find(b => b.id === bid)) {
-      renderView('blog', bid);
-      window.history.replaceState({}, '', window.location.pathname);
-    }
-  } else if (isStorePage && (urlParams.has('shop') || urlParams.get('view') === 'shop')) {
-    const shopParam = urlParams.get('shop') || (urlParams.get('category') ? 'category:' + urlParams.get('category') : 'all');
-    renderView('shop', shopParam);
-    window.history.replaceState({}, '', window.location.pathname);
-  } else if (isStorePage && urlParams.get('view') === 'about') {
-    renderView('about');
-    window.history.replaceState({}, '', window.location.pathname);
-  } else if (isStorePage && urlParams.get('view') === 'contact') {
-    renderView('contact');
-    window.history.replaceState({}, '', window.location.pathname);
-  } else if (isStorePage && urlParams.get('view') === 'track') {
-    const trackParam = urlParams.get('order') || '';
-    renderView('track', trackParam);
-    window.history.replaceState({}, '', window.location.pathname);
-  } else if (isStorePage && urlParams.get('view') === 'checkout') {
-    renderView('checkout');
-    window.history.replaceState({}, '', window.location.pathname);
   }
 
   // SPA nav + search + account wiring (store shell only).

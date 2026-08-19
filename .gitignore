@@ -39,3 +39,7 @@ full-audit.js
 # Generated WebP images — deployed via SFTP, not tracked in git (avoid repo bloat)
 images/**/*.webp
 images/*.webp
+
+# Sitemap mirrors — regenerated on server startup alongside sitemap.xml
+sitemap-google.xml
+sitemap-v3.xml

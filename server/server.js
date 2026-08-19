@@ -165,6 +165,17 @@ setInterval(() => {
 // Serve static frontend files from parent directory
 const frontendDir = path.join(__dirname, '..');
 
+// ===== SEO: 301 redirect legacy dynamic URLs → static URLs =====
+// Keeps every old ?product= / ?blog= / ?shop= / ?view=about link alive (no 404s)
+// while consolidating link equity onto the new clean, keyword-rich URLs.
+app.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  if ((req.path || '').startsWith('/api/')) return next();
+  const target = ssr.legacyRedirectTarget(req.path, req.query, loadProducts(), ssr.loadBlogPosts());
+  if (target) return res.redirect(301, target);
+  next();
+});
+
 // ===== SEO: server-side prerender for crawlers =====
 // Mounted BEFORE express.static so bot requests to "/" return a fully-rendered
 // HTML snapshot (with product data + JSON-LD), not the empty SPA shell.
@@ -461,36 +472,32 @@ function generateSitemapXML(domain, products) {
   const escapeXML = (str) => String(str || '').replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
   const url = (loc, priority = '0.6', changefreq = 'weekly') => `  <url>\n    <loc>${escapeXML(loc)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 
-  let urls = [
+  const urls = [
     url(`${domain}/`, '1.0', 'daily'),
-    url(`${domain}/index.html?shop=all`, '0.9', 'weekly'),
-    url(`${domain}/index.html?view=about`, '0.7', 'monthly'),
+    url(`${domain}/shop/`, '0.9', 'weekly'),
+    url(`${domain}/about/`, '0.7', 'monthly'),
     url(`${domain}/contact.html`, '0.6', 'monthly'),
     url(`${domain}/faq.html`, '0.6', 'monthly'),
     url(`${domain}/privacy-policy.html`, '0.4', 'monthly'),
     url(`${domain}/shipping-returns.html`, '0.4', 'monthly'),
     url(`${domain}/refund-policy.html`, '0.4', 'monthly'),
     url(`${domain}/terms-of-service.html`, '0.4', 'monthly'),
-    url(`${domain}/track.html`, '0.5', 'monthly'),
   ];
 
   (products || []).forEach(p => {
-    urls.push(url(`${domain}/index.html?product=${encodeURIComponent(p.id)}`, '0.8', 'weekly'));
+    urls.push(url(`${domain}${ssr.productPath(p)}`, '0.8', 'weekly'));
   });
 
   const categories = [...new Set((products || []).map(p => p.category).filter(Boolean))];
   categories.forEach(c => {
-    // Encode the entire query value (including the colon) so the URL is fully
-    // percent-encoded. Some sitemap parsers (including GSC) are strict about
-    // unencoded colons in query strings.
-    urls.push(url(`${domain}/index.html?shop=${encodeURIComponent(`category:${c}`)}`, '0.7', 'weekly'));
+    urls.push(url(`${domain}${ssr.shopPath(`category:${c}`)}`, '0.7', 'weekly'));
   });
 
-  // Blog posts — keep in sync with the ids in js/data.js (BLOG_POSTS).
-  const BLOG_IDS = ['b1','b2','b3','b4','b5','b6','b7','b8','b9','b10','b11','b12','b13'];
-  generateSitemapXML.BLOG_IDS = BLOG_IDS;
-  BLOG_IDS.forEach(id => {
-    urls.push(url(`${domain}/index.html?blog=${encodeURIComponent(id)}`, '0.6', 'monthly'));
+  // Blog posts — derived live from BLOG_POSTS so slugs always match data.js.
+  const blogs = ssr.loadBlogPosts();
+  generateSitemapXML.BLOG_IDS = blogs.map(b => b.id);
+  blogs.forEach(b => {
+    urls.push(url(`${domain}${ssr.blogPath(b)}`, '0.6', 'monthly'));
   });
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`;

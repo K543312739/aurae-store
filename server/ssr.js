@@ -23,6 +23,24 @@ function esc(s) {
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
+// ===== Static URL scheme =====
+// IMPORTANT: slugify() and the path builders MUST stay byte-for-byte identical
+// to the copies in js/app.js so frontend and backend agree on every URL.
+function slugify(s) {
+  return String(s == null ? '' : s).trim().toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+function productPath(p) { return '/products/' + slugify(p && p.name) + '/'; }
+function blogPath(b) { return '/blog/' + slugify(b && b.title) + '/'; }
+function shopPath(param) {
+  const v = String(param == null ? 'all' : param);
+  if (v === 'all' || v === '') return '/shop/';
+  if (v.startsWith('category:')) return '/shop/' + slugify(v.slice('category:'.length)) + '/';
+  if (v.startsWith('intention:')) return '/shop/intention/' + slugify(v.slice('intention:'.length)) + '/';
+  return '/shop/';
+}
+
 function absUrl(domain, p) {
   if (!p) return domain + '/images/p001.png';
   if (/^https?:\/\//i.test(p)) return p;
@@ -53,18 +71,30 @@ function loadBlogPosts() {
 
 function parseRoute(req) {
   const q = req.query || {};
-  const pathname = (req.path || '/').split('?')[0];
-  // Static real pages are served by express.static; only SPA routes hit SSR.
+  let pathname = (req.path || '/').split('?')[0];
+  pathname = pathname.replace(/\/+$/, '') || '/';
+
+  // New static SEO paths. Only SPA roots reach here; real files are served by
+  // express.static. Resolve slugs to ids in renderSSR (which has products/blogs).
   if (pathname !== '/' && pathname !== '/index.html') {
+    if (pathname === '/shop') return { type: 'shop', cat: null, intent: null };
+    if (pathname.startsWith('/shop/intention/')) return { type: 'shop', cat: null, intent: pathname.slice('/shop/intention/'.length) };
+    if (pathname.startsWith('/shop/')) return { type: 'shop', cat: pathname.slice('/shop/'.length), intent: null };
+    if (pathname === '/about') return { type: 'about' };
+    if (pathname.startsWith('/products/')) return { type: 'product', slug: pathname.slice('/products/'.length) };
+    if (pathname.startsWith('/blog/')) return { type: 'blog', slug: pathname.slice('/blog/'.length) };
     return { type: 'static', path: pathname };
   }
+
+  // Legacy query-string routes (server.js 301-redirects these to static, but we
+  // keep parsing them so a stray link never 404s).
   if (q.product) return { type: 'product', id: String(q.product) };
   if (q.shop) {
     const v = String(q.shop);
-    if (v === 'all' || v === '') return { type: 'shop', cat: null };
-    if (v.startsWith('category:')) return { type: 'shop', cat: v.slice('category:'.length) };
-    if (v.startsWith('intention:')) return { type: 'shop', intent: v.slice('intention:'.length) };
-    return { type: 'shop', cat: v };
+    if (v === 'all' || v === '') return { type: 'shop', cat: null, intent: null };
+    if (v.startsWith('category:')) return { type: 'shop', cat: v.slice('category:'.length), intent: null };
+    if (v.startsWith('intention:')) return { type: 'shop', cat: null, intent: v.slice('intention:'.length) };
+    return { type: 'shop', cat: v, intent: null };
   }
   if (q.view) {
     const v = String(q.view);
@@ -75,6 +105,32 @@ function parseRoute(req) {
   }
   if (q.blog) return { type: 'blog', id: String(q.blog) };
   return { type: 'home' };
+}
+
+// Build the 301 target for legacy dynamic URLs (used by server.js middleware).
+// Returns a static path string, or null when the request must NOT be redirected.
+function legacyRedirectTarget(pathname, query, products, blogs) {
+  if (!query) return null;
+  const keys = Object.keys(query);
+  // Never touch payment/order return URLs.
+  if (keys.some(k => k === 'order_success' || k === 'order_id' || k === 'token' || k === 'PayerID')) return null;
+  const p = (pathname || '/').replace(/\/+$/, '') || '/';
+  if (p !== '/' && p !== '/index.html') return null;
+  if (keys.length === 0) return (p === '/index.html') ? '/' : null;
+  if (query.product) {
+    const prod = (products || []).find(x => x.id === String(query.product));
+    return prod ? productPath(prod) : null;
+  }
+  if (query.blog) {
+    const blog = (blogs || []).find(x => x.id === String(query.blog));
+    return blog ? blogPath(blog) : null;
+  }
+  if (query.shop !== undefined) return shopPath(String(query.shop));
+  if (query.view !== undefined) {
+    if (String(query.view) === 'about') return '/about/';
+    return null; // contact/track/checkout etc → leave functional URLs as-is
+  }
+  return null;
 }
 
 function doc({ title, desc, canonical, domain, bodyHTML, jsonLd, gscMeta }) {
@@ -106,18 +162,18 @@ ${og}${ld}
 </head>
 <body>
 <header class="site-header"><a href="/" class="logo">Aur<span>ae</span></a>
-<nav><a href="/">Home</a><a href="/index.html?shop=all">Shop</a><a href="/index.html?view=about">About</a><a href="/contact.html">Contact</a></nav></header>
+<nav><a href="/">Home</a><a href="/shop/">Shop</a><a href="/about/">About</a><a href="/contact.html">Contact</a></nav></header>
 <main class="site-main">
 ${bodyHTML}
 </main>
 <footer class="site-footer"><p>Aurae — Where Energy Meets Well-Being. Authentic healing crystals, crystal jewelry, and energy tools.</p>
-<p><a href="/index.html?shop=all">Shop Crystals</a> · <a href="/contact.html">Contact</a> · <a href="/privacy-policy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></p></footer>
+<p><a href="/shop/">Shop Crystals</a> · <a href="/contact.html">Contact</a> · <a href="/privacy-policy.html">Privacy</a> · <a href="/terms-of-service.html">Terms</a></p></footer>
 </body>
 </html>`;
 }
 
 function productCard(p, domain) {
-  const url = `${domain}/index.html?product=${encodeURIComponent(p.id)}`;
+  const url = `${domain}${productPath(p)}`;
   const img = absUrl(domain, p.image || (p.images && p.images[0]));
   return `<li class="product">
   <a href="${esc(url)}">
@@ -145,20 +201,20 @@ function renderSSR(req, ctx) {
 <ul class="product-grid">${featured.map(p => productCard(p, domain)).join('')}</ul>`;
     const jsonLd = [
       { '@context': 'https://schema.org', '@type': 'Organization', name: 'Aurae', url: domain + '/', logo: domain + '/images/p001.png', description: 'Authentic healing crystals, crystal jewelry, and energy tools crafted with intention.' },
-      { '@context': 'https://schema.org', '@type': 'WebSite', url: domain + '/', name: 'Aurae', potentialAction: { '@type': 'SearchAction', target: domain + '/index.html?shop={search_term_string}', 'query-input': 'required name=search_term_string' } },
-      { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: featured.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: domain + '/index.html?product=' + encodeURIComponent(p.id), name: p.name })) }
+      { '@context': 'https://schema.org', '@type': 'WebSite', url: domain + '/', name: 'Aurae', potentialAction: { '@type': 'SearchAction', target: domain + '/shop/?search={search_term_string}', 'query-input': 'required name=search_term_string' } },
+      { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: featured.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: domain + productPath(p), name: p.name })) }
     ];
     return { status: 200, html: doc({ title: 'Aurae — Where Energy Meets Well-Being', desc: 'Shop healing crystals, crystal jewelry, and energy tools. Where energy meets well-being.', canonical: domain + '/', domain, bodyHTML: body, jsonLd, gscMeta }) };
   }
 
   if (route.type === 'product') {
-    const p = byId(route.id);
-    if (!p) return { status: 404, html: doc({ title: 'Product not found — Aurae', desc: 'The requested product could not be found.', canonical: domain + '/index.html?shop=all', domain, bodyHTML: '<h1>Product not found</h1><p><a href="/index.html?shop=all">Browse all crystals</a></p>', jsonLd: [], gscMeta }) };
-    const url = domain + '/index.html?product=' + encodeURIComponent(p.id);
+    const p = route.slug ? products.find(x => slugify(x.name) === route.slug) : byId(route.id);
+    if (!p) return { status: 404, html: doc({ title: 'Product not found — Aurae', desc: 'The requested product could not be found.', canonical: domain + '/shop/', domain, bodyHTML: '<h1>Product not found</h1><p><a href="/shop/">Browse all crystals</a></p>', jsonLd: [], gscMeta }) };
+    const url = domain + productPath(p);
     const img = absUrl(domain, p.image || (p.images && p.images[0]));
     const imgs = (Array.isArray(p.images) && p.images.length ? p.images : [p.image]).map(i => absUrl(domain, i));
     const cat = p.category || '';
-    const catUrl = domain + '/index.html?shop=category:' + encodeURIComponent(cat);
+    const catUrl = domain + shopPath('category:' + cat);
     const availability = (Number(p.stock) > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
     const price = Number(p.price || 0).toFixed(2);
     const body = `<nav class="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="${esc(catUrl)}">${esc(catName(cat))}</a> &rsaquo; <span>${esc(p.name)}</span></nav>
@@ -192,17 +248,18 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
     let title = 'All Crystal Jewelry';
     let subtitle = 'Discover authentic crystal jewelry crafted with intention for every energy need.';
     if (route.cat) {
-      list = products.filter(p => p.category === route.cat);
-      if (!list.length) return { status: 404, html: doc({ title: 'Category not found — Aurae', desc: 'This category could not be found.', canonical: domain + '/index.html?shop=all', domain, bodyHTML: '<h1>Category not found</h1><p><a href="/index.html?shop=all">Browse all crystals</a></p>', jsonLd: [], gscMeta }) };
+      list = products.filter(p => slugify(p.category) === route.cat);
+      if (!list.length) return { status: 404, html: doc({ title: 'Category not found — Aurae', desc: 'This category could not be found.', canonical: domain + '/shop/', domain, bodyHTML: '<h1>Category not found</h1><p><a href="/shop/">Browse all crystals</a></p>', jsonLd: [], gscMeta }) };
       title = catName(route.cat) + ' Crystals & Jewelry';
     } else if (route.intent) {
-      list = products.filter(p => p.intention === route.intent);
+      list = products.filter(p => slugify(p.intention) === route.intent);
       title = 'Crystals for ' + catName(route.intent);
     }
     const body = `<h1>${esc(title)}</h1><p>${esc(subtitle)}</p>
 <ul class="product-grid">${list.map(p => productCard(p, domain)).join('')}</ul>`;
-    const jsonLd = [{ '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: domain + '/index.html?product=' + encodeURIComponent(p.id), name: p.name })) }];
-    const canonical = route.cat ? domain + '/index.html?shop=' + encodeURIComponent('category:' + route.cat) : domain + '/index.html?shop=all';
+    const jsonLd = [{ '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: domain + productPath(p), name: p.name })) }];
+    const param = route.cat ? 'category:' + route.cat : (route.intent ? 'intention:' + route.intent : 'all');
+    const canonical = domain + shopPath(param);
     return { status: 200, html: doc({ title: `${title} — Aurae`, desc: subtitle, canonical, domain, bodyHTML: body, jsonLd, gscMeta }) };
   }
 
@@ -210,7 +267,7 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
     const body = `<h1>About Aurae</h1>
 <p>Aurae crafts authentic healing crystals, crystal jewelry, and energy tools with intention. Every piece is selected for its energy and beauty, helping you invite balance, protection, and well-being into daily life.</p>
 <h2>Our Craft</h2><p>From raw stone to finished jewel, each creation is made to carry meaning — a small, daily ritual of intention.</p>`;
-    return { status: 200, html: doc({ title: 'About Aurae — Our Story & Craft', desc: 'Learn about Aurae: our mission, our ethically-sourced crystals, and the intention behind every piece we craft.', canonical: domain + '/index.html?view=about', domain, bodyHTML: body, jsonLd: [], gscMeta }) };
+    return { status: 200, html: doc({ title: 'About Aurae — Our Story & Craft', desc: 'Learn about Aurae: our mission, our ethically-sourced crystals, and the intention behind every piece we craft.', canonical: domain + '/about/', domain, bodyHTML: body, jsonLd: [], gscMeta }) };
   }
 
   if (route.type === 'contact') {
@@ -222,11 +279,11 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
 
   if (route.type === 'blog') {
     const blogs = loadBlogPosts();
-    const blog = blogs.find(b => b.id === route.id);
+    const blog = route.slug ? blogs.find(b => slugify(b.title) === route.slug) : blogs.find(b => b.id === route.id);
     if (!blog) {
       return { status: 404, html: doc({ title: 'Article not found — Aurae', desc: 'The requested article could not be found.', canonical: domain + '/', domain, bodyHTML: '<h1>Article not found</h1><p><a href="/">Return home</a></p>', jsonLd: [], gscMeta }) };
     }
-    const url = domain + '/index.html?blog=' + encodeURIComponent(blog.id);
+    const url = domain + blogPath(blog);
     const img = absUrl(domain, blog.image);
     const desc = stripTags(blog.excerpt || blog.content).slice(0, 160);
     const body = `<article class="blog-post">
@@ -253,4 +310,8 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
   return { status: 404, html: doc({ title: 'Page not found — Aurae', desc: 'The page you requested could not be found.', canonical: domain + '/', domain, bodyHTML: '<h1>Page not found</h1><p><a href="/">Return home</a></p>', jsonLd: [], gscMeta }) };
 }
 
-module.exports = { isBot, parseRoute, renderSSR, BOT_UA };
+module.exports = {
+  isBot, parseRoute, renderSSR, BOT_UA,
+  slugify, productPath, blogPath, shopPath,
+  loadBlogPosts, legacyRedirectTarget
+};

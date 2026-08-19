@@ -81,7 +81,7 @@
     "name": "Aurae",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.aurae.asia/index.html?shop={search_term_string}",
+      "target": "https://www.aurae.asia/shop/?search={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
@@ -96,11 +96,11 @@
       <p>Shop ethically sourced crystals, crystal bracelets, necklaces, earrings, and energy tools. Each piece is thoughtfully selected to help you carry intention, balance, and well-being into everyday life.</p>
       <h2>Explore Our Collections</h2>
       <ul>
-        <li><a href="/index.html?shop=category:bracelet">Crystal Bracelets</a></li>
-        <li><a href="/index.html?shop=category:necklace">Crystal Necklaces</a></li>
-        <li><a href="/index.html?shop=category:earring">Crystal Earrings</a></li>
-        <li><a href="/index.html?shop=all">All Crystal Jewelry</a></li>
-        <li><a href="/blog">Crystal Guide & Blog</a></li>
+        <li><a href="/shop/bracelet/">Crystal Bracelets</a></li>
+        <li><a href="/shop/necklace/">Crystal Necklaces</a></li>
+        <li><a href="/shop/earring/">Crystal Earrings</a></li>
+        <li><a href="/shop/">All Crystal Jewelry</a></li>
+        <li><a href="/shop/">Crystal Guide &amp; Blog</a></li>
       </ul>
       <p>Free shipping on orders over $50. New customers save 10% with code CRYSTAL10.</p>
     </div>
@@ -116,12 +116,12 @@
     <div class="header-inner">
       <div class="logo" onclick="navigate('home')">Aur<span>ae</span></div>
       <nav class="nav">
-        <a id="navHome" onclick="navigate('home')" class="active">Home</a>
-        <a onclick="navigate('shop', 'category:bracelet')">Bracelets</a>
-        <a onclick="navigate('shop', 'category:necklace')">Necklaces</a>
-        <a onclick="navigate('shop', 'all')">All Jewelry</a>
-        <a id="navAbout" onclick="navigate('about')">About</a>
-        <a id="navContact" onclick="navigate('contact')">Contact</a>
+        <a id="navHome" href="/" onclick="event.preventDefault(); navigate('home')" class="active">Home</a>
+        <a href="/shop/bracelet/" onclick="event.preventDefault(); navigate('shop', 'category:bracelet')">Bracelets</a>
+        <a href="/shop/necklace/" onclick="event.preventDefault(); navigate('shop', 'category:necklace')">Necklaces</a>
+        <a href="/shop/" onclick="event.preventDefault(); navigate('shop', 'all')">All Jewelry</a>
+        <a id="navAbout" href="/about/" onclick="event.preventDefault(); navigate('about')">About</a>
+        <a id="navContact" href="/contact.html" onclick="event.preventDefault(); navigate('contact')">Contact</a>
       </nav>
       <div class="header-actions">
         <button class="icon-btn" id="searchBtn" title="Search">🔍</button>
@@ -140,7 +140,7 @@
     <section class="hero">
       <div class="hero-bg"></div>
       <div class="hero-content">
-        <h1>Where Energy Meets Well-Being</h1>
+        <h1>Aurae — Where Energy Meets Well-Being</h1>
         <p>Your next chapter starts here. Discover authentic crystal jewelry crafted with intention — each piece carrying ancient energy to bring balance, protection, and alignment to your daily life.</p>
         <button class="btn btn-primary btn-lg" onclick="navigate('shop', 'all')">Shop Crystal Jewelry</button>
       </div>
@@ -148,11 +148,11 @@
 
     <!-- Quick Nav -->
     <div class="quick-nav">
-      <a onclick="navigate('shop', 'category:bracelet')">Bracelets</a>
-      <a onclick="navigate('shop', 'category:necklace')">Necklaces</a>
-      <a onclick="navigate('shop', 'category:pendant')">Pendants</a>
-      <a onclick="navigate('shop', 'category:ring')">Rings</a>
-      <a onclick="navigate('shop', 'category:earring')">Earrings</a>
+      <a href="/shop/bracelet/" onclick="event.preventDefault(); navigate('shop', 'category:bracelet')">Bracelets</a>
+      <a href="/shop/necklace/" onclick="event.preventDefault(); navigate('shop', 'category:necklace')">Necklaces</a>
+      <a href="/shop/pendant/" onclick="event.preventDefault(); navigate('shop', 'category:pendant')">Pendants</a>
+      <a href="/shop/ring/" onclick="event.preventDefault(); navigate('shop', 'category:ring')">Rings</a>
+      <a href="/shop/earring/" onclick="event.preventDefault(); navigate('shop', 'category:earring')">Earrings</a>
     </div>
 
     <!-- Best Sellers -->
@@ -186,7 +186,7 @@
     <section class="brand-story">
       <div class="brand-story-inner">
         <div class="brand-story-img">
-          <img src="/images/p003.webp" alt="Crystal collection" loading="lazy" decoding="async">
+          <img src="/images/p003.webp" alt="Aurae healing crystal jewelry collection" loading="lazy" decoding="async">
         </div>
         <div class="brand-story-text">
           <div class="experience-badge">
@@ -517,30 +517,30 @@
       <div class="footer-col">
         <h4>Shop</h4>
         <ul>
-          <li><a onclick="navigate('shop','category:bracelet')">Bracelets</a></li>
-          <li><a onclick="navigate('shop','category:necklace')">Necklaces</a></li>
-          <li><a onclick="navigate('shop','category:pendant')">Pendants</a></li>
-          <li><a onclick="navigate('shop','category:ring')">Rings</a></li>
-          <li><a onclick="navigate('shop','category:earring')">Earrings</a></li>
-          <li><a onclick="navigate('shop','all')">All Jewelry</a></li>
+          <li><a href="/shop/bracelet/" onclick="event.preventDefault(); navigate('shop','category:bracelet')">Bracelets</a></li>
+          <li><a href="/shop/necklace/" onclick="event.preventDefault(); navigate('shop','category:necklace')">Necklaces</a></li>
+          <li><a href="/shop/pendant/" onclick="event.preventDefault(); navigate('shop','category:pendant')">Pendants</a></li>
+          <li><a href="/shop/ring/" onclick="event.preventDefault(); navigate('shop','category:ring')">Rings</a></li>
+          <li><a href="/shop/earring/" onclick="event.preventDefault(); navigate('shop','category:earring')">Earrings</a></li>
+          <li><a href="/shop/" onclick="event.preventDefault(); navigate('shop','all')">All Jewelry</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Support</h4>
         <ul>
-          <li><a onclick="navigate('contact')">Contact Us</a></li>
+          <li><a href="/contact.html" onclick="event.preventDefault(); navigate('contact')">Contact Us</a></li>
           <li><a href="shipping-returns.html">Shipping Info</a></li>
-          <li><a onclick="navigate('track')">Track Order</a></li>
-          <li><a href="shipping-returns.html">Returns & Exchanges</a></li>
+          <li><a href="/?view=track" onclick="event.preventDefault(); navigate('track')">Track Order</a></li>
+          <li><a href="shipping-returns.html">Returns &amp; Exchanges</a></li>
           <li><a href="faq.html">FAQ</a></li>
           <li><a href="refund-policy.html">Refund Policy</a></li>
-          <li><a onclick="navigate('shop','all')">Crystal Guide</a></li>
+          <li><a href="/shop/" onclick="event.preventDefault(); navigate('shop','all')">Crystal Guide</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
         <ul>
-          <li><a onclick="navigate('about')">About Us</a></li>
+          <li><a href="/about/" onclick="event.preventDefault(); navigate('about')">About Us</a></li>
           <li><a href="privacy-policy.html">Privacy Policy</a></li>
           <li><a href="terms-of-service.html">Terms of Service</a></li>
         </ul>
