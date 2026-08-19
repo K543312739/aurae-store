@@ -551,6 +551,45 @@ function renderShop(filter, keepState) {
 }
 
 // ===== Render Product Detail (Enhanced with crystal story, ritual, supplier) =====
+// ===== Related / Upsell / Cross-sell recommendation engine =====
+function scoreRelated(prod, ref, mode) {
+  if (!prod || prod.id === ref.id) return -Infinity;
+  let score = 0;
+  if (prod.intention === ref.intention) score += 40;
+  if (prod.crystal === ref.crystal) score += 25;
+  if (prod.category === ref.category) score += 15;
+  const refChakra = (ref.chakra || '').split(/[ (&/]/)[0].trim().toLowerCase();
+  const prodChakra = (prod.chakra || '').split(/[ (&/]/)[0].trim().toLowerCase();
+  if (refChakra && prodChakra && refChakra === prodChakra) score += 8;
+  const rp = new Set((ref.properties || []).map(s => s.toLowerCase()));
+  let shared = 0;
+  (prod.properties || []).forEach(p => { if (rp.has(p.toLowerCase())) shared++; });
+  score += Math.min(shared, 3) * 5;
+  score += (prod.rating || 0) * 2;
+  score += Math.min((prod.reviews || 0) / 100, 5);
+  if (mode === 'complement') {
+    // Cross-sell: a DIFFERENT category makes a real "pairs well with" pairing
+    // (e.g. a pendant to wear with a bracelet). Exclude same-category items.
+    if (prod.category === ref.category) return -Infinity;
+    // Upsell: gently prefer a slightly higher price point
+    if (prod.price > ref.price) score += 10; else score -= 5;
+    // Must share crystal or intention to be a meaningful "pairs well with"
+    if (prod.crystal !== ref.crystal && prod.intention !== ref.intention) score -= 30;
+  } else {
+    if (prod.category === ref.category) score += 5;
+  }
+  return score;
+}
+
+function getRelatedProducts(ref, mode, limit) {
+  return PRODUCTS
+    .filter(p => p.id !== ref.id)
+    .map(p => ({ p, s: scoreRelated(p, ref, mode) }))
+    .sort((a, b) => b.s - a.s)
+    .slice(0, limit)
+    .map(x => x.p);
+}
+
 function renderProductDetail(productId) {
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
@@ -558,7 +597,14 @@ function renderProductDetail(productId) {
   selectedVariant = {};
   qty = 1;
 
-  const related = PRODUCTS.filter(p => p.intention === product.intention && p.id !== product.id).slice(0, 4);
+  const related = getRelatedProducts(product, 'similar', 4);
+  let pairsWellWith = getRelatedProducts(product, 'complement', 4)
+    .filter(p => p.crystal === product.crystal || p.intention === product.intention);
+  if (pairsWellWith.length === 0) {
+    // Fallback: upsell to a higher-priced item sharing crystal/intention
+    pairsWellWith = getRelatedProducts(product, 'similar', 4)
+      .filter(p => p.price > product.price && (p.crystal === product.crystal || p.intention === product.intention));
+  }
 
   const breadcrumb = `
     <div class="breadcrumb">
@@ -681,6 +727,15 @@ function renderProductDetail(productId) {
         </div>
       </div>
     </div>
+    ${pairsWellWith.length > 0 ? `
+    <div style="max-width:1280px;margin:48px auto 0;padding:0 24px;">
+      <h3 class="section-title" style="font-size:28px;margin-bottom:8px;">✨ Complete the Look</h3>
+      <p style="color:var(--color-text-muted);font-size:14px;margin:0 0 28px;">Pairs beautifully with your ${escapeHtml(product.name)}</p>
+      <div class="product-grid">
+        ${pairsWellWith.map(p => productCardHTML(p, { showHeart: true })).join('')}
+      </div>
+    </div>
+    ` : ''}
     <div id="productReviews" class="product-reviews">
       <h3 class="section-title" style="font-size:28px;margin:64px 0 8px;">Customer Reviews</h3>
       <div id="reviewsContent"><p class="reviews-loading">Loading reviews…</p></div>
