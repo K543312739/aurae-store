@@ -2724,6 +2724,26 @@ app.post('/api/admin/refund-requests/:id/status', requireAdmin, async (req, res)
 // and served by express.static. This is more reliable for Google Search Console
 // than a dynamic route, and it is regenerated whenever products change.
 
+// Inject per-page <title>/<description>/<canonical>/OG into the SPA shell so that
+// real users (and "View Source") see the correct page metadata — not the
+// hardcoded homepage values — before the client-side JS takes over.
+function injectSeoHead(html, meta) {
+  if (!meta) return html;
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return html
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(meta.title)}</title>`)
+    .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(meta.desc)}">`)
+    .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${esc(meta.canonical)}">`)
+    .replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${esc(meta.title)}">`)
+    .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(meta.desc)}">`)
+    .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${esc(meta.canonical)}">`);
+}
+const SPA_SHELL = (() => {
+  try { return fs.readFileSync(path.join(frontendDir, 'index.html'), 'utf8'); }
+  catch (e) { console.error('[SEO] failed to read index.html shell:', e.message); return ''; }
+})();
+
 // ===== Catch-all: SPA fallback (Express 4 safe) =====
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) {
@@ -2738,7 +2758,10 @@ app.get('*', (req, res) => {
       '<p><a href="/">Return to Aurae home</a></p></body></html>'
     );
   }
-  res.sendFile(path.join(frontendDir, 'index.html'));
+  // Real user: serve the SPA shell with the correct per-page title/canonical
+  // injected server-side (so View Source shows the right values).
+  const meta = ssr.getPageMeta(req, { products: loadProducts(), domain: DOMAIN });
+  res.type('html').send(injectSeoHead(SPA_SHELL, meta));
 });
 
 // ===== Global error handler (must be registered last) =====

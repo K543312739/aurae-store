@@ -314,8 +314,49 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
   return { status: 404, html: doc({ title: 'Page not found — Aurae', desc: 'The page you requested could not be found.', canonical: domain + '/', domain, bodyHTML: '<h1>Page not found</h1><p><a href="/">Return home</a></p>', jsonLd: [], gscMeta }) };
 }
 
+// Per-page SEO head metadata (title / description / canonical) for a request.
+// Used by server.js to inject the correct <head> tags into the SPA shell that is
+// served to real (non-bot) users, so "View Source" shows the right title and
+// canonical instead of the homepage defaults. Returns null when no injection is
+// needed (unknown/functional routes).
+function getPageMeta(req, ctx) {
+  const { products = [], domain } = ctx;
+  const route = parseRoute(req);
+  const SHOP_DESC = 'Discover authentic crystal jewelry crafted with intention for every energy need.';
+
+  if (route.type === 'home') {
+    return { title: 'Aurae — Where Energy Meets Well-Being', desc: 'Shop healing crystals, crystal jewelry, and energy tools. Where energy meets well-being.', canonical: domain + '/' };
+  }
+  if (route.type === 'product') {
+    const p = route.slug ? products.find(x => slugify(x.name) === route.slug) : products.find(x => x.id === route.id);
+    if (!p) return null;
+    return { title: `${p.name} | Aurae`, desc: (p.tagline || p.description || '').slice(0, 160), canonical: domain + productPath(p) };
+  }
+  if (route.type === 'blog') {
+    const blogs = loadBlogPosts();
+    const blog = route.slug ? blogs.find(b => slugify(b.title) === route.slug) : blogs.find(b => b.id === route.id);
+    if (!blog) return null;
+    return { title: `${blog.title} | Aurae`, desc: stripTags(blog.excerpt || blog.content).slice(0, 160), canonical: domain + blogPath(blog) };
+  }
+  if (route.type === 'shop') {
+    if (route.cat) return { title: `${catDisplay(route.cat)} | Aurae`, desc: SHOP_DESC, canonical: domain + shopPath('category:' + route.cat) };
+    if (route.intent) {
+      const intent = route.intent.charAt(0).toUpperCase() + route.intent.slice(1);
+      return { title: `Crystals for ${intent} | Aurae`, desc: SHOP_DESC, canonical: domain + shopPath('intention:' + route.intent) };
+    }
+    return { title: 'Shop Crystal Jewelry | Aurae', desc: SHOP_DESC, canonical: domain + '/shop/' };
+  }
+  if (route.type === 'about') {
+    return { title: 'About Aurae — Our Story & Mission', desc: 'Learn about Aurae: our mission, our ethically-sourced crystals, and the intention behind every piece we craft.', canonical: domain + '/about/' };
+  }
+  if (route.type === 'contact') {
+    return { title: 'Contact Aurae — Get in Touch', desc: 'Get in touch with the Aurae team for order questions, custom requests, or crystal guidance.', canonical: domain + '/contact.html' };
+  }
+  return null;
+}
+
 module.exports = {
   isBot, parseRoute, renderSSR, BOT_UA,
   slugify, productPath, blogPath, shopPath,
-  loadBlogPosts, legacyRedirectTarget
+  loadBlogPosts, legacyRedirectTarget, getPageMeta
 };
