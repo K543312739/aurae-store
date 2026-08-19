@@ -361,7 +361,7 @@ function renderHome() {
   // Blog
   document.getElementById('blogGrid').innerHTML = BLOG_POSTS.map(b => `
     <div class="blog-card" onclick="navigate('blog', '${escapeHtml(b.id)}')">
-      <img src="${escapeHtml(b.image)}" alt="${escapeHtml(b.title)}">
+      <img src="${escapeHtml(b.image)}" alt="${escapeHtml(b.title)}" loading="lazy" decoding="async">
       <div class="blog-meta">${escapeHtml(b.category)} • ${escapeHtml(b.readTime)}</div>
       <h4>${escapeHtml(b.title)}</h4>
       <p>${escapeHtml(b.excerpt)}</p>
@@ -570,10 +570,10 @@ function renderProductDetail(productId) {
 
   const gallery = `
     <div class="product-gallery">
-      <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" id="mainProductImage">
+      <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" id="mainProductImage" decoding="async">
       ${product.images && product.images.length > 1 ? `
         <div class="product-gallery-thumbs">
-          ${product.images.map((img, i) => `<img src="${escapeHtml(img)}" alt="${escapeHtml(product.name)} ${i+1}" class="${i === 0 ? 'active' : ''}" onclick="changeMainImage(this, '${escapeHtml(img)}')">`).join('')}
+          ${product.images.map((img, i) => `<img src="${escapeHtml(img)}" alt="${escapeHtml(product.name)} ${i+1}" class="${i === 0 ? 'active' : ''}" onclick="changeMainImage(this, '${escapeHtml(img)}')" decoding="async">`).join('')}
         </div>
       ` : ''}
     </div>
@@ -1312,7 +1312,7 @@ function renderCart() {
 
   cartItems.innerHTML = cart.map((item, i) => `
     <div class="cart-item">
-      <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
+      <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async">
       <div class="cart-item-info">
         <div class="cart-item-name">${escapeHtml(item.name)}</div>
         <div class="cart-item-tagline">${escapeHtml(item.tagline)}</div>
@@ -1579,7 +1579,7 @@ function renderQuizResult() {
   // Product cards
   const productCards = recommended.map((p, i) => `
     <div class="quiz-product-card" data-product-id="${p.id}">
-      <img src="${p.image}" alt="${p.name}">
+      <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async">
       <div class="quiz-product-info">
         <div class="quiz-match-badge">${i === 0 ? '★ Best Match' : 'Recommended'}</div>
         <div class="quiz-product-name">${p.name}</div>
@@ -1739,7 +1739,7 @@ function renderCheckout() {
         <div class="summary-items">
           ${cart.map(item => `
             <div class="summary-item">
-              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
+              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async">
               <div class="summary-item-info">
                 <div class="summary-item-name">${escapeHtml(item.name)}</div>
                 <div class="summary-item-qty">Qty: ${escapeHtml(item.qty)}</div>
@@ -2284,7 +2284,7 @@ function renderProductReviews(reviews, average, count) {
             </div>
             <div class="review-title">${escapeHtml(r.title)}</div>
             <div class="review-body">${escapeHtml(r.comment)}</div>
-            ${r.images && r.images.length ? `<div class="review-images">${r.images.map(img => `<a href="${escapeHtml(img)}" target="_blank" rel="noopener"><img src="${escapeHtml(img)}" alt="Customer photo"></a>`).join('')}</div>` : ''}
+            ${r.images && r.images.length ? `<div class="review-images">${r.images.map(img => `<a href="${escapeHtml(img)}" target="_blank" rel="noopener"><img src="${escapeHtml(img)}" alt="Customer photo" loading="lazy" decoding="async"></a>`).join('')}</div>` : ''}
           </div>
         `).join('')}
       </div>

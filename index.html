@@ -46,6 +46,10 @@
   <!-- Load web fonts asynchronously (non-render-blocking) to improve LCP -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
+  <!-- Preload critical SPA assets to improve LCP/TTI -->
+  <link rel="preload" href="/js/data.js" as="script">
+  <link rel="preload" href="/js/app.js" as="script">
+  <link rel="preload" as="image" href="/images/p001.webp">
   <meta name="theme-color" content="#4a5d3e">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -165,7 +169,7 @@
     <section class="brand-story">
       <div class="brand-story-inner">
         <div class="brand-story-img">
-          <img src="/images/p003.webp" alt="Crystal collection">
+          <img src="/images/p003.webp" alt="Crystal collection" loading="lazy" decoding="async">
         </div>
         <div class="brand-story-text">
           <div class="experience-badge">
