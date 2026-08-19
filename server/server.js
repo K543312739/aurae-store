@@ -96,7 +96,7 @@ app.use((req, res, next) => {
   // Do not send CSP on plain-text/XML static resources (sitemap, robots) to avoid
   // confusing crawlers / Search Console parsers.
   const p = (req.path || '').toLowerCase();
-  if (!p.endsWith('/sitemap.xml') && !p.endsWith('/sitemap-google.xml') && !p.endsWith('/sitemap-v3.xml') && !p.endsWith('/robots.txt')) {
+  if (!p.endsWith('/sitemap.xml') && !p.endsWith('/robots.txt')) {
     res.setHeader('Content-Security-Policy', CSP_DIRECTIVES);
   }
   next();
@@ -215,15 +215,16 @@ function serveCleanStaticFile(fileName, contentType) {
   };
 }
 app.get('/sitemap.xml', serveCleanStaticFile('sitemap.xml', 'text/xml; charset=utf-8'));
-app.get('/sitemap-google.xml', serveCleanStaticFile('sitemap-google.xml', 'text/xml; charset=utf-8'));
-app.get('/sitemap-v3.xml', serveCleanStaticFile('sitemap-v3.xml', 'text/xml; charset=utf-8'));
+// Legacy sitemap URLs are removed — return 404 so crawlers drop them.
+app.get('/sitemap-google.xml', (req, res) => res.status(404).end());
+app.get('/sitemap-v3.xml', (req, res) => res.status(404).end());
 app.get('/robots.txt', serveCleanStaticFile('robots.txt', 'text/plain; charset=utf-8'));
 
 app.use(express.static(frontendDir, {
   dotfiles: 'deny',
   setHeaders: (res, filePath) => {
     const lowerPath = filePath.toLowerCase();
-    if (lowerPath.endsWith('sitemap.xml') || lowerPath.endsWith('sitemap-google.xml') || lowerPath.endsWith('sitemap-v3.xml')) {
+    if (lowerPath.endsWith('sitemap.xml')) {
       res.set('Content-Type', 'text/xml; charset=utf-8');
       res.removeHeader('ETag');
       res.removeHeader('Cache-Control');
@@ -508,12 +509,12 @@ function writeSitemapFile(domain, products) {
   const xml = generateSitemapXML(domain, products);
   const filePath = path.join(frontendDir, 'sitemap.xml');
   fs.writeFileSync(filePath, xml, 'utf8');
-  // Mirror sitemap under alternate filenames to work around GSC caching a
-  // stuck "Couldn't fetch" state on previously submitted paths.
-  const altPath = path.join(frontendDir, 'sitemap-google.xml');
-  fs.writeFileSync(altPath, xml, 'utf8');
-  const v3Path = path.join(frontendDir, 'sitemap-v3.xml');
-  fs.writeFileSync(v3Path, xml, 'utf8');
+  // Only sitemap.xml is kept. Remove legacy mirror sitemaps so the old
+  // URLs (sitemap-google.xml / sitemap-v3.xml) go away and return 404.
+  for (const legacy of ['sitemap-google.xml', 'sitemap-v3.xml']) {
+    const lp = path.join(frontendDir, legacy);
+    if (fs.existsSync(lp)) { try { fs.unlinkSync(lp); } catch (e) { /* ignore */ } }
+  }
   console.log('[sitemap] wrote', filePath, `(${(products || []).length} products, ${(generateSitemapXML.BLOG_IDS || []).length} blogs)`);
 }
 
