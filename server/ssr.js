@@ -41,6 +41,10 @@ function shopPath(param) {
   return '/shop/';
 }
 
+// Humanized (plural) category display names — keep in sync with js/data.js CATEGORIES.
+const CATEGORY_NAMES = { bracelet: 'Bracelets', necklace: 'Necklaces', pendant: 'Pendants', ring: 'Rings', earring: 'Earrings' };
+function catDisplay(c) { return CATEGORY_NAMES[c] || (c ? c.charAt(0).toUpperCase() + c.slice(1) : 'All'); }
+
 function absUrl(domain, p) {
   if (!p) return domain + '/images/p001.png';
   if (/^https?:\/\//i.test(p)) return p;
@@ -217,7 +221,7 @@ function renderSSR(req, ctx) {
     const catUrl = domain + shopPath('category:' + cat);
     const availability = (Number(p.stock) > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
     const price = Number(p.price || 0).toFixed(2);
-    const body = `<nav class="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="${esc(catUrl)}">${esc(catName(cat))}</a> &rsaquo; <span>${esc(p.name)}</span></nav>
+    const body = `<nav class="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="${esc(catUrl)}">${esc(catDisplay(cat))}</a> &rsaquo; <span>${esc(p.name)}</span></nav>
 <h1>${esc(p.name)}</h1>
 <img class="hero" src="${esc(img)}" alt="${esc(p.name)}" width="600" height="600">
 <p class="price">$${price}${p.compareAt ? ` <s class="compare">$${Number(p.compareAt).toFixed(2)}</s>` : ''}</p>
@@ -235,22 +239,22 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: domain + '/' },
-        { '@type': 'ListItem', position: 2, name: catName(cat), item: catUrl },
+        { '@type': 'ListItem', position: 2, name: catDisplay(cat), item: catUrl },
         { '@type': 'ListItem', position: 3, name: p.name, item: url }
       ]
     }];
     if (!jsonLd[0].aggregateRating) delete jsonLd[0].aggregateRating;
-    return { status: 200, html: doc({ title: `${p.name} — Aurae`, desc: (p.tagline || p.description || '').slice(0, 160), canonical: url, domain, bodyHTML: body, jsonLd, gscMeta }) };
+    return { status: 200, html: doc({ title: `${p.name} | Aurae`, desc: (p.tagline || p.description || '').slice(0, 160), canonical: url, domain, bodyHTML: body, jsonLd, gscMeta }) };
   }
 
   if (route.type === 'shop') {
     let list = products;
-    let title = 'All Crystal Jewelry';
+    let title = 'Shop Crystal Jewelry';
     let subtitle = 'Discover authentic crystal jewelry crafted with intention for every energy need.';
     if (route.cat) {
       list = products.filter(p => slugify(p.category) === route.cat);
       if (!list.length) return { status: 404, html: doc({ title: 'Category not found — Aurae', desc: 'This category could not be found.', canonical: domain + '/shop/', domain, bodyHTML: '<h1>Category not found</h1><p><a href="/shop/">Browse all crystals</a></p>', jsonLd: [], gscMeta }) };
-      title = catName(route.cat) + ' Crystals & Jewelry';
+      title = catDisplay(route.cat);
     } else if (route.intent) {
       list = products.filter(p => slugify(p.intention) === route.intent);
       title = 'Crystals for ' + catName(route.intent);
@@ -260,21 +264,21 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
     const jsonLd = [{ '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: domain + productPath(p), name: p.name })) }];
     const param = route.cat ? 'category:' + route.cat : (route.intent ? 'intention:' + route.intent : 'all');
     const canonical = domain + shopPath(param);
-    return { status: 200, html: doc({ title: `${title} — Aurae`, desc: subtitle, canonical, domain, bodyHTML: body, jsonLd, gscMeta }) };
+    return { status: 200, html: doc({ title: `${title} | Aurae`, desc: subtitle, canonical, domain, bodyHTML: body, jsonLd, gscMeta }) };
   }
 
   if (route.type === 'about') {
     const body = `<h1>About Aurae</h1>
 <p>Aurae crafts authentic healing crystals, crystal jewelry, and energy tools with intention. Every piece is selected for its energy and beauty, helping you invite balance, protection, and well-being into daily life.</p>
 <h2>Our Craft</h2><p>From raw stone to finished jewel, each creation is made to carry meaning — a small, daily ritual of intention.</p>`;
-    return { status: 200, html: doc({ title: 'About Aurae — Our Story & Craft', desc: 'Learn about Aurae: our mission, our ethically-sourced crystals, and the intention behind every piece we craft.', canonical: domain + '/about/', domain, bodyHTML: body, jsonLd: [], gscMeta }) };
+    return { status: 200, html: doc({ title: 'About Aurae — Our Story & Mission', desc: 'Learn about Aurae: our mission, our ethically-sourced crystals, and the intention behind every piece we craft.', canonical: domain + '/about/', domain, bodyHTML: body, jsonLd: [], gscMeta }) };
   }
 
   if (route.type === 'contact') {
     const body = `<h1>Contact Aurae</h1>
 <p>We're here to help with order questions, custom requests, or crystal guidance.</p>
 <ul><li>Email: <a href="mailto:no-reply@mail.aurae.asia">no-reply@mail.aurae.asia</a></li><li>Visit: <a href="/contact.html">Contact page</a></li></ul>`;
-    return { status: 200, html: doc({ title: 'Contact Aurae — We’re Here to Help', desc: 'Get in touch with the Aurae team for order questions, custom requests, or crystal guidance.', canonical: domain + '/contact.html', domain, bodyHTML: body, jsonLd: [], gscMeta }) };
+    return { status: 200, html: doc({ title: 'Contact Aurae — Get in Touch', desc: 'Get in touch with the Aurae team for order questions, custom requests, or crystal guidance.', canonical: domain + '/contact.html', domain, bodyHTML: body, jsonLd: [], gscMeta }) };
   }
 
   if (route.type === 'blog') {
@@ -303,7 +307,7 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
       author: { '@type': 'Organization', name: 'Aurae' },
       publisher: { '@type': 'Organization', name: 'Aurae', logo: { '@type': 'ImageObject', url: domain + '/images/p001.png' } }
     }];
-    return { status: 200, html: doc({ title: `${blog.title} — Aurae Journal`, desc, canonical: url, domain, bodyHTML: body, jsonLd, gscMeta }) };
+    return { status: 200, html: doc({ title: `${blog.title} | Aurae`, desc, canonical: url, domain, bodyHTML: body, jsonLd, gscMeta }) };
   }
 
   // Unknown SPA route -> soft-404 eliminated: return 404 to crawler

@@ -807,7 +807,7 @@ function updateProductSEO(product) {
   const defaultImg = `${base}/images/og-default.png`;
   const img = product.image && !product.image.startsWith('http') ? base + product.image : (product.image || defaultImg);
   const desc = (product.tagline || product.description || '').slice(0, 160);
-  const title = `${product.name} — Aurae`;
+  const title = `${product.name} | Aurae`;
   const imgAlt = `${product.name} — Aurae crystal product image`;
 
   document.title = title;
@@ -917,17 +917,17 @@ const SEO_VIEWS = {
     canonical: '/'
   },
   shop: {
-    title: 'Shop Crystals & Healing Jewelry — Aurae',
+    title: 'Shop Crystal Jewelry | Aurae',
     desc: 'Browse authentic healing crystals, crystal jewelry, and energy tools by category. Find the perfect stone for your intention.',
     canonical: '/shop/'
   },
   about: {
-    title: 'About Aurae — Our Story & Craft',
+    title: 'About Aurae — Our Story & Mission',
     desc: 'Learn about Aurae: our mission, our ethically-sourced crystals, and the intention behind every piece we craft.',
     canonical: '/about/'
   },
   contact: {
-    title: 'Contact Aurae — We’re Here to Help',
+    title: 'Contact Aurae — Get in Touch',
     desc: 'Get in touch with the Aurae team for order questions, custom requests, or crystal guidance.',
     canonical: '/contact.html'
   },
@@ -943,15 +943,27 @@ function updateViewSEO(view, param) {
   const meta = SEO_VIEWS[view];
   if (!meta) return;
   let canonical = meta.canonical;
-  if (view === 'shop' && param && param !== 'all') canonical = shopPath(param);
+  let title = meta.title;
+  if (view === 'shop' && param && param !== 'all') {
+    canonical = shopPath(param);
+    if (String(param).startsWith('category:')) {
+      const cid = String(param).slice(9);
+      const cat = CATEGORIES.find(c => c.id === cid);
+      title = (cat ? cat.name : cid) + ' | Aurae';
+    } else if (String(param).startsWith('intention:')) {
+      const iid = String(param).slice(10);
+      const intent = INTENTIONS.find(i => i.id === iid);
+      title = (intent ? intent.name : iid) + ' | Aurae';
+    }
+  }
   const fullUrl = window.location.origin + canonical;
   setMeta('robots', meta.robots || 'index, follow');
   const base = window.location.origin;
   const defaultImg = `${base}/images/og-default.png`;
   const imgAlt = 'Aurae — Where Energy Meets Well-Being. Healing crystals and crystal jewelry.';
-  document.title = meta.title;
+  document.title = title;
   setMeta('description', meta.desc);
-  setMeta('og:title', meta.title, 'property');
+  setMeta('og:title', title, 'property');
   setMeta('og:description', meta.desc, 'property');
   setMeta('og:url', fullUrl, 'property');
   setMeta('og:image', defaultImg, 'property');
@@ -959,7 +971,7 @@ function updateViewSEO(view, param) {
   setMeta('og:image:height', '630', 'property');
   setMeta('og:image:alt', imgAlt, 'property');
   setMeta('og:image:type', 'image/png', 'property');
-  setMeta('twitter:title', meta.title);
+  setMeta('twitter:title', title);
   setMeta('twitter:description', meta.desc);
   setMeta('twitter:image', defaultImg);
   setMeta('twitter:image:alt', imgAlt);
@@ -1184,7 +1196,7 @@ function updateBlogSEO(blog) {
   const base = window.location.origin;
   const url = `${base}${blogPath(blog)}`;
   const img = (blog.image && blog.image.startsWith('/')) ? base + blog.image : (blog.image || `${base}/images/og-default.png`);
-  const title = `${blog.title} — Aurae`;
+  const title = `${blog.title} | Aurae`;
   const desc = (blog.excerpt || blog.title || '').slice(0, 160);
 
   document.title = title;
@@ -1494,7 +1506,7 @@ function openCart() {
   const drawer = document.getElementById('cartDrawer');
   const overlay = document.getElementById('cartOverlay');
   if (!drawer || !overlay) {
-    window.location.href = 'index.html';
+    window.location.href = '/';
     return;
   }
   drawer.classList.add('open');
@@ -2910,7 +2922,7 @@ async function renderAccountOrders(container, user) {
           <span class="account-order-total">${formatPrice(total)}</span>
           <div style="display:flex;gap:12px;align-items:center;">
             ${canRefund ? `<button class="btn btn-text" style="font-size:13px;" onclick="openRefundModal('${escapeHtml(o.orderId)}')">Request Return</button>` : ''}
-            <a href="track.html?orderId=${encodeURIComponent(o.orderId)}&email=${encodeURIComponent(user.email)}" class="account-order-track">Track</a>
+            <a href="/track.html?orderId=${encodeURIComponent(o.orderId)}&email=${encodeURIComponent(user.email)}" class="account-order-track">Track</a>
           </div>
         </div>
       </div>`;
@@ -3117,7 +3129,7 @@ async function handleResetPassword() {
   if (password !== confirm) { showToast('Passwords do not match.'); return; }
   try {
     const resp = await fetch('/api/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password }) });
-    if (resp.ok) { showToast('Password updated! Please log in.'); window.location.href = 'index.html'; }
+    if (resp.ok) { showToast('Password updated! Please log in.'); window.location.href = '/'; }
     else { showToast('Reset link expired or invalid.'); }
   } catch (e) { showToast('Network error. Please try again.'); }
 }
