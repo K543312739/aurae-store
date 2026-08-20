@@ -1192,56 +1192,10 @@ var PRODUCTS = [
       years: "待补充",
       rating: "待补充"
     }
-  },
-  {
-    id: "b20",
-    category: "guides",
-    readTime: "12 min read",
-    title: "Crystal Grids: How to Build One for Manifestation",
-    excerpt: "A crystal grid turns a scattered wish into a focused intention. Here's a simple, step-by-step way to build one that actually works - no geometry degree required.",
-    image: "/images/p012.webp",
-    content: `<p>There is a moment in every crystal practice when a single stone stops feeling like enough - when you want to aim a whole field of energy at one goal. That is the moment a crystal grid becomes your best friend. A crystal grid is a deliberate arrangement of stones laid out in a geometric pattern, all working toward a single intention. It is part altar, part amplifier, part daily reminder. Here is how to build one that actually works.</p>
-      <h3>Why a Grid Works</h3>
-      <p>Three things combine. First, intention: you decide, clearly, what you are calling in. Second, sacred geometry: the pattern itself is believed to focus and direct energy along specific pathways. Third, amplification: a central <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> point broadcasts the intention of every stone around it. Together they turn a scattered wish into a structured, daily-visible commitment.</p>
-      <h3>Step 1 - Set One Clear Intention</h3>
-      <p>Pick a single goal. "More abundance," not "fix my whole life." Write it on a small slip of paper and place it under the center stone. The narrower the focus, the sharper the grid's signal.</p>
-      <h3>Step 2 - Choose a Center Stone</h3>
-      <p>The center is your amplifier and anchor. <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> is the classic choice because it magnifies anything nearby. For heart goals use <a href="/products/rose-quartz-love-bracelet/">Rose Quartz</a>; for momentum use <a href="/products/citrine-merchant-s-ring/">Citrine</a>.</p>
-      <h3>Step 3 - Pick Your Supporting Stones</h3>
-      <p>Surround the center with 6 or 12 stones that each hold one facet of your goal. Want a calm, prosperous home? Ring Clear Quartz with <a href="/products/green-phantom-wealth-bracelet/">Green Phantom</a>, <a href="/products/amethyst-serenity-bracelet/">Amethyst</a>, and <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye</a>. Each stone = one supporting belief.</p>
-      <h3>Step 4 - Arrange in Sacred Geometry</h3>
-      <p>You do not need a math degree. A simple flower-of-life cloth or a circle of stones around the center works beautifully. What matters is that the layout feels intentional to you - symmetry tells your brain "this means something."</p>
-      <h3>Step 5 - Activate the Grid</h3>
-      <p>Using a Clear Quartz point or your finger, trace from the outer stones inward to the center, then back out, voicing your intention once. This "switches it on." Many people feel a subtle shift the first time they do it - that is the point.</p>
-      <h3>Step 6 - Place, Trust, and Maintain</h3>
-      <p>Leave the grid somewhere you will see it daily but not disturb it. Re-activate it weekly with a quick trace and a restated intention. When the goal is met, thank the stones, dismantle the grid, and cleanse the pieces before their next use. For a deeper dive on intention-setting, read our <a href="/blog/crystals-for-manifestation-a-practical-step-by-step-guide/">manifestation guide</a>.</p>
-      <h3>Start Small</h3>
-      <p>You do not need a dozen stones to begin. Three pieces - one center, two supporters - on a windowsill is a complete grid. Browse our <a href="/shop/">collection</a> to choose stones that speak to your goal, and let the grid do the quiet work.</p>`
-  },
-  {
-    id: "b21",
-    category: "crystals",
-    readTime: "10 min read",
-    title: "Crystals for Emotional Healing & Letting Go",
-    excerpt: "Some healing can't be seen on a scan. These are the crystals we reach for when the heart needs tending - plus a simple letting-go ritual you can do tonight.",
-    image: "/images/p003.webp",
-    content: `<p>Some healing can't be seen on a scan. It lives in the chest after a hard day, in the tightness that won't quite release, in the things we keep carrying long after we should have set them down. Crystals won't replace a friend or a therapist - but as gentle, tactile companions they can help you slow down, feel, and finally let go. Here are the stones we reach for when the heart needs tending.</p>
-      <h3>Rose Quartz - The Stone of Self-Compassion</h3>
-      <p>When you are your own harshest critic, <a href="/products/rose-quartz-love-bracelet/">Rose Quartz</a> is the antidote. Its soft pink frequency invites you to speak to yourself the way you would to someone you love. Wear it on the left wrist - the receiving side - so its warmth filters in before the inner critic wakes up.</p>
-      <h3>Amethyst - Calm for a Racing Mind</h3>
-      <p>Grief and anxiety often show up as a mind that won't slow down. <a href="/products/amethyst-serenity-bracelet/">Amethyst</a> settles that static, creating space between a feeling and your reaction to it. Keep a piece on your nightstand; many people find the edges of hard emotions soften by morning.</p>
-      <h3>Black Gold Obsidian - Release and Protect</h3>
-      <p>Letting go sometimes means first feeling what you have been avoiding. <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian</a> helps you surface and release old wounds, then shields the tender space underneath. It is the stone for the brave work of emotional honesty.</p>
-      <h3>Moonstone - For the Cycles of Grief</h3>
-      <p>Healing is rarely linear; it comes in waves, like the moon. Moonstone honors those cycles, reminding you that retreat and return are both part of the process. It is especially gentle through periods of loss or transition.</p>
-      <h3>Green Aventurine - Mending the Heart</h3>
-      <p>Once the hard feelings move through, Green Aventurine helps knit the heart back together and reopen it to good things. It is the "after" stone - the one you reach for when you are ready to feel hopeful again.</p>
-      <h3>A Simple Letting-Go Ritual</h3>
-      <p>Hold your chosen stone, name aloud what you are ready to release, and imagine it draining out through the stone into the earth. Then rinse the stone under cool water (hard stones only) to symbolize the wash. Do this for nine nights, or simply whenever the weight returns. Pair it with our <a href="/blog/crystals-for-love-relationships-self-love-a-gentle-guide/">self-love guide</a> for a fuller heart practice.</p>
-      <h3>Carry the Reminder</h3>
-      <p>The stone's real power is that it is there - on your wrist, in your pocket - a quiet cue to breathe and feel. Explore <a href="/shop/">our emotional-healing pieces</a> and pick the one your heart is asking for. Healing isn't a straight line, and you don't have to do it alone.</p>`
   }
 ];
+
+
 
 // ===== Intention Categories =====
 const INTENTIONS = [
@@ -1788,6 +1742,102 @@ const BLOG_POSTS = [
       <p>A crystal with no intention is just a pretty rock. The single most common mistake is forgetting to recommit: hold it, restate why it is yours, and let that be the moment it works for you again. Care is physical and energetic.</p>
       <h3>A Simple Weekly Care Routine</h3>
       <p>Pick one day a week — Sunday evening works well. Wipe each piece with a soft cloth, give it a quick smoke or sound cleanse, and restate its intention. Ten minutes, once a week, and your collection stays clear, bright, and genuinely yours. Browse <a href="/shop/">our full collection</a> to start or expand yours.</p>`
+  },
+  {
+    id: "b20",
+    category: "guides",
+    readTime: "12 min read",
+    title: "Crystal Grids: How to Build One for Manifestation",
+    excerpt: "A crystal grid turns a scattered wish into a focused intention. Here's a simple, step-by-step way to build one that actually works - no geometry degree required.",
+    image: "/images/p012.webp",
+    content: `<p>There is a moment in every crystal practice when a single stone stops feeling like enough - when you want to aim a whole field of energy at one goal. That is the moment a crystal grid becomes your best friend. A crystal grid is a deliberate arrangement of stones laid out in a geometric pattern, all working toward a single intention. It is part altar, part amplifier, part daily reminder. Here is how to build one that actually works.</p>
+      <h3>Why a Grid Works</h3>
+      <p>Three things combine. First, intention: you decide, clearly, what you are calling in. Second, sacred geometry: the pattern itself is believed to focus and direct energy along specific pathways. Third, amplification: a central <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> point broadcasts the intention of every stone around it. Together they turn a scattered wish into a structured, daily-visible commitment.</p>
+      <h3>Step 1 - Set One Clear Intention</h3>
+      <p>Pick a single goal. "More abundance," not "fix my whole life." Write it on a small slip of paper and place it under the center stone. The narrower the focus, the sharper the grid's signal.</p>
+      <h3>Step 2 - Choose a Center Stone</h3>
+      <p>The center is your amplifier and anchor. <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> is the classic choice because it magnifies anything nearby. For heart goals use <a href="/products/rose-quartz-love-bracelet/">Rose Quartz</a>; for momentum use <a href="/products/citrine-merchant-s-ring/">Citrine</a>.</p>
+      <h3>Step 3 - Pick Your Supporting Stones</h3>
+      <p>Surround the center with 6 or 12 stones that each hold one facet of your goal. Want a calm, prosperous home? Ring Clear Quartz with <a href="/products/green-phantom-wealth-bracelet/">Green Phantom</a>, <a href="/products/amethyst-serenity-bracelet/">Amethyst</a>, and <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye</a>. Each stone = one supporting belief.</p>
+      <h3>Step 4 - Arrange in Sacred Geometry</h3>
+      <p>You do not need a math degree. A simple flower-of-life cloth or a circle of stones around the center works beautifully. What matters is that the layout feels intentional to you - symmetry tells your brain "this means something."</p>
+      <h3>Step 5 - Activate the Grid</h3>
+      <p>Using a Clear Quartz point or your finger, trace from the outer stones inward to the center, then back out, voicing your intention once. This "switches it on." Many people feel a subtle shift the first time they do it - that is the point.</p>
+      <h3>Step 6 - Place, Trust, and Maintain</h3>
+      <p>Leave the grid somewhere you will see it daily but not disturb it. Re-activate it weekly with a quick trace and a restated intention. When the goal is met, thank the stones, dismantle the grid, and cleanse the pieces before their next use. For a deeper dive on intention-setting, read our <a href="/blog/crystals-for-manifestation-a-practical-step-by-step-guide/">manifestation guide</a>.</p>
+      <h3>Start Small</h3>
+      <p>You do not need a dozen stones to begin. Three pieces - one center, two supporters - on a windowsill is a complete grid. Browse our <a href="/shop/">collection</a> to choose stones that speak to your goal, and let the grid do the quiet work.</p>`
+  },
+  {
+    id: "b21",
+    category: "crystals",
+    readTime: "10 min read",
+    title: "Crystals for Emotional Healing & Letting Go",
+    excerpt: "Some healing can't be seen on a scan. These are the crystals we reach for when the heart needs tending - plus a simple letting-go ritual you can do tonight.",
+    image: "/images/p003.webp",
+    content: `<p>Some healing can't be seen on a scan. It lives in the chest after a hard day, in the tightness that won't quite release, in the things we keep carrying long after we should have set them down. Crystals won't replace a friend or a therapist - but as gentle, tactile companions they can help you slow down, feel, and finally let go. Here are the stones we reach for when the heart needs tending.</p>
+      <h3>Rose Quartz - The Stone of Self-Compassion</h3>
+      <p>When you are your own harshest critic, <a href="/products/rose-quartz-love-bracelet/">Rose Quartz</a> is the antidote. Its soft pink frequency invites you to speak to yourself the way you would to someone you love. Wear it on the left wrist - the receiving side - so its warmth filters in before the inner critic wakes up.</p>
+      <h3>Amethyst - Calm for a Racing Mind</h3>
+      <p>Grief and anxiety often show up as a mind that won't slow down. <a href="/products/amethyst-serenity-bracelet/">Amethyst</a> settles that static, creating space between a feeling and your reaction to it. Keep a piece on your nightstand; many people find the edges of hard emotions soften by morning.</p>
+      <h3>Black Gold Obsidian - Release and Protect</h3>
+      <p>Letting go sometimes means first feeling what you have been avoiding. <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian</a> helps you surface and release old wounds, then shields the tender space underneath. It is the stone for the brave work of emotional honesty.</p>
+      <h3>Moonstone - For the Cycles of Grief</h3>
+      <p>Healing is rarely linear; it comes in waves, like the moon. Moonstone honors those cycles, reminding you that retreat and return are both part of the process. It is especially gentle through periods of loss or transition.</p>
+      <h3>Green Aventurine - Mending the Heart</h3>
+      <p>Once the hard feelings move through, Green Aventurine helps knit the heart back together and reopen it to good things. It is the "after" stone - the one you reach for when you are ready to feel hopeful again.</p>
+      <h3>A Simple Letting-Go Ritual</h3>
+      <p>Hold your chosen stone, name aloud what you are ready to release, and imagine it draining out through the stone into the earth. Then rinse the stone under cool water (hard stones only) to symbolize the wash. Do this for nine nights, or simply whenever the weight returns. Pair it with our <a href="/blog/crystals-for-love-relationships-self-love-a-gentle-guide/">self-love guide</a> for a fuller heart practice.</p>
+      <h3>Carry the Reminder</h3>
+      <p>The stone's real power is that it is there - on your wrist, in your pocket - a quiet cue to breathe and feel. Explore <a href="/shop/">our emotional-healing pieces</a> and pick the one your heart is asking for. Healing isn't a straight line, and you don't have to do it alone.</p>`
+  },
+  {
+    id: "b22",
+    category: "guides",
+    readTime: "12 min read",
+    title: "Crystals for Career Success & Workplace Confidence",
+    excerpt: "Whether you're climbing, switching, or starting out, these career-boosting crystals help you walk into work with focus, confidence, and calm under pressure.",
+    image: "/images/p006_2.webp",
+    content: `<p>Work is where a lot of us spend the most energy - and feel the most pressure. The meetings, the deadlines, the politics, the quiet voice asking "am I good enough?" Crystals won't write your report or take your interview, but they are a surprisingly effective way to anchor the mindset that lets you show up at your best. Here are the stones we recommend for career momentum, and exactly how to use them.</p>
+      <h3>Why Crystals for Work?</h3>
+      <p>The benefit is mostly ritual, intention, and environment. When you place a stone on your desk or wear it to a meeting with a clear job in mind, you are giving your brain a physical cue: "this is focus mode" or "this is my confident self." Combined with the right mineral energies, that cue becomes a habit - and habits beat willpower every time.</p>
+      <h3>The Best Crystals for Career Energy</h3>
+      <p><strong>Citrine - the momentum stone.</strong> Warm and optimistic, the <a href="/products/citrine-merchant-s-ring/">Citrine</a> ring carries the energy of "I am enough, and I'm going after it." Keep it on your dominant hand or desk for confidence and a sunny, proactive edge in meetings.</p>
+      <p><strong>Tiger's Eye - the steady-nerve stone.</strong> <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye</a> blends grounded courage with clear thinking. Wear it on your right wrist before presentations, negotiations, or anything that scares you a little. It is the stone for doing the thing anyway.</p>
+      <p><strong>Pyrite - the discipline stone.</strong> Often called fool's gold, Pyrite reflects ambition and follow-through. A small piece on your desk quietly pushes ideas into action - the difference between planning and doing.</p>
+      <p><strong>Clear Quartz - the amplifier.</strong> <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> magnifies whatever you pair it with. Rest it next to your primary work stone, or hold it while you name your top priority for the day.</p>
+      <p><strong>Amethyst - the calm-focus stone.</strong> <a href="/products/amethyst-serenity-bracelet/">Amethyst</a> quiets the mental static so your best thinking surfaces. A small cluster near the laptop is a classic focus companion.</p>
+      <h3>Build a Career Confidence Stack</h3>
+      <p>You do not need all five. A minimal, high-impact setup is <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye</a> for nerve + <a href="/products/citrine-merchant-s-ring/">Citrine</a> for warmth and drive. Stack them with intention (see our <a href="/blog/power-banding-101-where-to-wear-your-crystal-bracelets/">bracelet guide</a>) so the pair tells a story: "I am capable, and I know it."</p>
+      <h3>A 5-Minute Pre-Work Ritual</h3>
+      <p><strong>1.</strong> Before a big task or meeting, hold your Tiger's Eye at the solar plexus for thirty seconds. <strong>2.</strong> Breathe once, slow. <strong>3.</strong> Say one sentence you can stand behind: "I am prepared. I am allowed to take up space." <strong>4.</strong> Touch the stone as you walk in - that touch becomes the trigger your nervous system learns. <strong>5.</strong> Do the thing. The stone was only ever a reminder that the confidence was yours already. For more on this, read our <a href="/blog/crystals-for-confidence-courage-self-esteem-wear-your-inner-power/">confidence guide</a>.</p>
+      <h3>For Job Hunters & Career Switchers</h3>
+      <p>Uncertainty is the hardest part. Citrine for self-worth, Tiger's Eye for brave action, and Clear Quartz to keep your intention sharp through the long search. Pair the stones with one real daily action - one application, one message, one practice question - because manifestation without motion stays a daydream.</p>
+      <h3>Start This Week</h3>
+      <p>Pick one work stone, give it one clear job, and wear or place it through one brave moment. Confidence compounds - every time you act while afraid, the muscle grows, and the stone just helps you remember it was there. Explore <a href="/shop/">our career-supporting pieces</a> and choose the one your hand reaches for first.</p>`
+  },
+  {
+    id: "b23",
+    category: "guides",
+    readTime: "11 min read",
+    title: "Crystals for Travel: Stay Protected & Grounded on Every Journey",
+    excerpt: "From delayed flights to unfamiliar cities, travel can fray your energy. These protective, grounding crystals help you stay calm, safe, and centered wherever you go.",
+    image: "/images/p002.webp",
+    content: `<p>Travel opens the world - and sometimes frays your nervous system. New places, long lines, recycled air, and the low hum of being slightly untethered can leave even seasoned travelers feeling scattered. Crystals are a small, portable way to keep your energy steady on the move. Here are the stones worth packing, and how to use them on the road.</p>
+      <h3>Why Crystals for Travel?</h3>
+      <p>Travel pulls your attention out of your body and into logistics. Grounding and protective stones do the opposite - they pull you back into yourself, so the chaos around you feels less like it is happening inside you. A stone in your pocket becomes a portable boundary and a quiet "you're okay" from your own hand.</p>
+      <h3>The Best Travel Crystals</h3>
+      <p><strong>Black Tourmaline - the buffer.</strong> The go-to stone for empaths and travelers alike, Tourmaline is said to form a buffer between you and external stress. Toss a small piece in your carry-on and another in your pocket for commutes, flights, and crowded terminals.</p>
+      <p><strong>Black Gold Obsidian - the shield.</strong> <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian</a> absorbs and reflects negativity while rooting you to the earth. Wear it on your right wrist through long travel days so outside noise passes through instead of lodging in your chest.</p>
+      <p><strong>Hematite - the landing stone.</strong> Heavy and metallic, Hematite pulls scattered, anxious energy down into the body. Hold it for thirty seconds in a chaotic terminal and feel the "landing."</p>
+      <p><strong>Amethyst - the calm companion.</strong> <a href="/products/amethyst-serenity-bracelet/">Amethyst</a> settles a racing, jet-lagged mind. A tumbled piece by your hotel pillow helps unfamiliar rooms feel safer and sleep come easier.</p>
+      <p><strong>Moonstone - the traveller's stone.</strong> Traditionally carried by those who roam, Moonstone is linked to safe passage and intuition. Keep one close when you are navigating new cities or trusting your gut about which street to take.</p>
+      <h3>A Simple Travel Ritual</h3>
+      <p><strong>1.</strong> Before you leave, hold your protective stone and set one intention: "I travel safe, grounded, and open to good things." <strong>2.</strong> Tuck Black Tourmaline in your bag and Black Gold Obsidian on your wrist. <strong>3.</strong> At each transition - security, boarding, arrival - touch the stone and take one slow breath. <strong>4.</strong> At the hotel, place Amethyst by the bed and let the new room feel like yours. <strong>5.</strong> When you return, cleanse the stones (smoke or moonlight) to release what they absorbed on the road.</p>
+      <h3>What to Pack (and What to Leave)</h3>
+      <p>Travel light: one protective bracelet, one grounding pocket stone, one calm stone for sleep. Skip fragile or water-soluble pieces (selenite, raw pyrite) that don't love humidity and bumps. For more on protection at home and work, see our <a href="/blog/crystals-for-protection-grounding-build-your-everyday-energy-shield/">energy shield guide</a>.</p>
+      <h3>Start Before Your Next Trip</h3>
+      <p>You do not need an elaborate kit. Pick one protective stone, give it a clear job for the journey, and let it become the cue that keeps you centered far from home. Browse <a href="/shop/">our travel-ready pieces</a> and choose the one that feels like a lucky charm you'll actually carry.</p>`
   }
 ];
 
