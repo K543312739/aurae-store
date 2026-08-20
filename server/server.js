@@ -165,6 +165,38 @@ setInterval(() => {
 // Serve static frontend files from parent directory
 const frontendDir = path.join(__dirname, '..');
 
+// ===== SEO: 301 normalize trailing slash on SPA content routes =====
+// Googlebot probes both "/products/x" and "/products/x/". Without this, both
+// return 200 — the no-slash copy carrying a canonical pointing at the slash
+// copy — which GSC reports as "Alternate page with proper canonical tag".
+// Canonicalize every SPA route to its trailing-slash form so there is exactly
+// one indexable URL per page. Query strings (e.g. /shop?search=) are preserved.
+function trailingSlashTarget(pathname, query) {
+  if (!pathname || pathname === '/' || pathname.endsWith('/')) return null;
+  if (pathname.includes('.') || pathname.startsWith('/api/')) return null;
+  const SPA_ROUTES = [
+    /^\/shop$/,
+    /^\/shop\/([^/]+)$/,
+    /^\/shop\/intention\/([^/]+)$/,
+    /^\/products\/([^/]+)$/,
+    /^\/blog\/([^/]+)$/,
+    /^\/about$/,
+  ];
+  let matched = false;
+  for (const re of SPA_ROUTES) { if (re.test(pathname)) { matched = true; break; } }
+  if (!matched) return null;
+  const qs = query && Object.keys(query).length
+    ? '?' + new URLSearchParams(query).toString()
+    : '';
+  return pathname + '/' + qs;
+}
+app.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  const target = trailingSlashTarget(req.path, req.query);
+  if (target) return res.redirect(301, target);
+  next();
+});
+
 // ===== SEO: 301 redirect legacy dynamic URLs → static URLs =====
 // Keeps every old ?product= / ?blog= / ?shop= / ?view=about link alive (no 404s)
 // while consolidating link equity onto the new clean, keyword-rich URLs.
