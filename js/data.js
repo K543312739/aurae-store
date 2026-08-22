@@ -1884,6 +1884,52 @@ const BLOG_POSTS = [
       <p>Stones in constant contact with skin and each other pick up energy faster - so cleanse a worn stack a little more often (weekly is plenty). Smoke, moonlight, or a soft cloth all work; full method in our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">care guide</a>.</p>
       <h3>Build Yours</h3>
       <p>Pick one goal, choose two or three stones that serve it, and let the stack become the story you wear. Browse <a href="/shop/">our bracelets and pendants</a> and start with the intention you most need today.</p>`
+  },
+  {
+    id: "b26",
+    category: "guides",
+    readTime: "12 min read",
+    title: "Crystals for Creativity & Inspiration: Unblock Your Artistic Flow",
+    excerpt: "Whether you write, paint, build, or brainstorm for a living, the right crystal can help you drop into flow. Here are the stones artists, makers, and thinkers reach for when inspiration runs dry.",
+    image: "/images/p004.webp",
+    content: `<p>Creativity isn't a switch you flip - it's a state you slip into. Some days the ideas pour; other days the page stays blank and the well feels dry. Crystals won't write the song for you, but many makers find that a stone on the desk or wrist becomes a tactile cue: "it's time to make something." Here are the crystals most often turned to for imagination, originality, and getting unstuck - and how to actually use them while you work.</p>
+      <h3>Why Crystals for Creativity?</h3>
+      <p>The benefit is partly focus, partly ritual. When you set a stone beside your notebook and give it one job - "hold the doubt so I can play" - you offload a little of the inner critic. The stone becomes a permission slip to experiment. You're still doing the work; the crystal just quiets the noise that usually talks you out of starting.</p>
+      <h3>The Best Crystals for Creative Flow</h3>
+      <p><strong>Labradorite - the muse stone.</strong> With its shifting blue-green flash, the <a href="/products/labradorite-magic-weaver-bracelet/">Labradorite Magic Weaver bracelet</a> is linked to imagination, intuition, and the "happy accident" that becomes the best part of the piece. Keep it within arm's reach during brainstorming.</p>
+      <p><strong>Citrine - the creative fire.</strong> The <a href="/products/citrine-merchant-s-ring/">Citrine Merchant's ring</a> carries sunny, confident energy that helps you start before you feel ready. Creativity dies in hesitation; Citrine nudges you past the blank page.</p>
+      <p><strong>Clear Quartz - the amplifier.</strong> <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> magnifies whatever you point it at. Pair it with any stone above to turn a flicker of an idea into a committed direction.</p>
+      <p><strong>Blue Quartz - the calm thinker.</strong> The <a href="/products/blue-quartz-serenity-bracelet/">Blue Quartz serenity bracelet</a> supports clear, uncluttered thought - useful when you have the idea but can't find the words.</p>
+      <p><strong>Amethyst - the visionary.</strong> The <a href="/products/amethyst-crown-of-wisdom-necklace/">Amethyst Crown of Wisdom necklace</a> quiets mental chatter so the quieter, more original ideas can surface. Wear it when you need to think differently.</p>
+      <h3>A Simple Pre-Create Ritual</h3>
+      <p><strong>1.</strong> Before you start, hold your Labradorite and name the one thing you want to make. <strong>2.</strong> Set a timer for twenty minutes and give yourself permission to make something bad. <strong>3.</strong> Touch the stone whenever you feel the critic arrive - let it stand in for "not yet, just make." <strong>4.</strong> When the timer ends, thank the stone and the attempt. <strong>5.</strong> Repeat tomorrow; flow is a muscle, not a mood. For a focused-work setup, see our <a href="/blog/crystals-for-focus-productivity-study-build-a-clear-mind-workspace/">focus guide</a>.</p>
+      <h3>Build a Creativity Stack</h3>
+      <p>For a maker's desk or wrist: Labradorite for imagination + Citrine for brave starts + Clear Quartz to amplify. Wear or place them with one intention: "I am allowed to make imperfect things." For more on combining stones, see our <a href="/blog/crystal-bracelet-stacking-build-intentional-combos-for-any-goal/">bracelet stacking guide</a>.</p>
+      <h3>Pair It With Real Practice</h3>
+      <p>A stone is a cue, not a substitute for the work. Pair it with a tiny daily creative habit - one sketch, one paragraph, one chord - and let the crystal be the thing that makes starting easier. Browse <a href="/shop/">our imagination-friendly pieces</a> and choose the one your hands keep returning to.</p>`
+  },
+  {
+    id: "b27",
+    category: "crystals",
+    readTime: "11 min read",
+    title: "Crystals for Energy & Motivation: Beat the Afternoon Slump Naturally",
+    excerpt: "That 3 p.m. wall is real - and crystals can help you meet it with steadier energy. Here are the stones to wear or keep close when motivation dips, and how to use them through the day.",
+    image: "/images/p001.webp",
+    content: `<p>Everyone knows the feeling: mid-afternoon, the to-do list is still long, and your energy has quietly left the building. Before you reach for another coffee, consider a gentler, steadier ally - crystals traditionally used to support vitality, drive, and follow-through. They won't replace sleep or a good meal, but they can help you meet the slump with intention instead of friction.</p>
+      <h3>How Crystals Support Energy</h3>
+      <p>Think of them as environmental cues. When you wear a stone you've assigned the job "keep me moving," every glance at your wrist is a small reminder to take the next step. The stones below are the ones most often reached for when the battery runs low - grounding enough to avoid jitter, warming enough to actually feel like momentum.</p>
+      <h3>The Best Crystals for Energy & Drive</h3>
+      <p><strong>Garnet - the vitality stone.</strong> Deep and warming, the <a href="/products/garnet-phoenix-vitality-bracelet/">Garnet Phoenix Vitality bracelet</a> is linked to stamina and the grounded energy that gets you off the couch and into action. Wear it on sluggish mornings or long afternoons.</p>
+      <p><strong>Citrine - the sunstone of drive.</strong> The <a href="/products/citrine-merchant-s-ring/">Citrine Merchant's ring</a> carries bright, confident energy that helps you start the thing you've been avoiding. A great "first task of the day" stone.</p>
+      <p><strong>Tiger's Eye - the doer.</strong> The <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye Warrior bracelet</a> blends earthy grounding with sharp focus, so you act instead of overthink. Keep it on the dominant hand for task energy.</p>
+      <p><strong>Rutilated Quartz - the connector.</strong> The <a href="/products/rutilated-quartz-power-bracelet/">Rutilated Quartz power bracelet</a> is said to link intention to action - useful when you know what to do but can't seem to begin.</p>
+      <p><strong>Clear Quartz - the amplifier.</strong> <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> boosts whichever stone you pair it with, turning a small spark into a steadier flame.</p>
+      <h3>A 3-Minute Energy Reset</h3>
+      <p><strong>1.</strong> When the slump hits, hold your Garnet at the center of the chest for thirty seconds. <strong>2.</strong> Breathe once, slow, and name the single next action (not the whole list). <strong>3.</strong> Touch the stone and do that one thing for five minutes. <strong>4.</strong> Momentum usually arrives once you've started. <strong>5.</strong> Re-center with the stone whenever you stall again. For more on focus at work, read our <a href="/blog/crystals-for-focus-productivity-study-build-a-clear-mind-workspace/">focus guide</a>.</p>
+      <h3>Build an Energy Stack</h3>
+      <p>A minimal, high-impact setup: Garnet for stamina + Tiger's Eye for action + Clear Quartz to amplify. Wear them with one intention: "I have what I need to begin." If low energy is more emotional than physical, our <a href="/blog/crystals-for-emotional-healing-letting-go/">emotional healing guide</a> may speak to what's underneath the tiredness.</p>
+      <h3>Pair It With the Basics</h3>
+      <p>Crystals work best next to the unglamorous truths: water, real food, movement, and enough sleep. Let the stone be the nudge that makes those easier to do - not a replacement for them. Browse <a href="/shop/">our energy-supporting pieces</a> and pick the one your body is asking for.</p>`
   }
 ];
 
