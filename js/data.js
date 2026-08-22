@@ -1838,6 +1838,52 @@ const BLOG_POSTS = [
       <p>Travel light: one protective bracelet, one grounding pocket stone, one calm stone for sleep. Skip fragile or water-soluble pieces (selenite, raw pyrite) that don't love humidity and bumps. For more on protection at home and work, see our <a href="/blog/crystals-for-protection-grounding-build-your-everyday-energy-shield/">energy shield guide</a>.</p>
       <h3>Start Before Your Next Trip</h3>
       <p>You do not need an elaborate kit. Pick one protective stone, give it a clear job for the journey, and let it become the cue that keeps you centered far from home. Browse <a href="/shop/">our travel-ready pieces</a> and choose the one that feels like a lucky charm you'll actually carry.</p>`
+  },
+  {
+    id: "b24",
+    category: "crystals",
+    readTime: "11 min read",
+    title: "Crystals for Health, Vitality & Physical Wellness",
+    excerpt: "Crystals aren't medicine - but the right stones can support energy, rest, and a body that feels looked-after. Here are the crystals we reach for when we want to feel more alive.",
+    image: "/images/p013.webp",
+    content: `<p>Let's be clear from the start: crystals are not a substitute for a doctor, medicine, or rest. But many people find that a stone in the hand, on the body, or by the bed becomes a quiet partner in feeling better - a cue to slow down, hydrate, breathe, and care. Here are the crystals most often turned to for vitality and everyday wellness, and gentle, realistic ways to use them.</p>
+      <h3>How Crystals Support Wellness</h3>
+      <p>The effect is mostly ritual, attention, and environment. When you place a calming stone by your pillow or wear an energizing one through a sluggish afternoon, you are telling your nervous system what state to aim for. The stone is the reminder; you are the one who follows through with water, sleep, and movement.</p>
+      <h3>The Best Crystals for Vitality</h3>
+      <p><strong>Garnet - the vitality stone.</strong> Deep red and warming, the <a href="/products/garnet-phoenix-vitality-bracelet/">Garnet Phoenix Vitality bracelet</a> is linked to circulation, stamina, and the kind of grounded energy that gets you off the couch. Wear it when you feel run-down.</p>
+      <p><strong>Clear Quartz - the master healer.</strong> <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> is the baseline of any wellness practice - it amplifies intention and is said to support the body's own balancing work. Keep one by the bed and one on the desk.</p>
+      <p><strong>Amethyst - the recovery stone.</strong> <a href="/products/amethyst-serenity-bracelet/">Amethyst</a> quiets an over-active mind and supports restful sleep, which is where most physical repair actually happens. A cluster near the head is a classic wellness companion.</p>
+      <p><strong>Rose Quartz - the heart stone.</strong> The <a href="/products/rose-quartz-love-bracelet/">Rose Quartz</a> bracelet gently supports self-compassion and the nervous-system calm that lets the body heal. Wear it over the heart space when you're recuperating.</p>
+      <p><strong>Aquamarine - the flow stone.</strong> Cool and soothing, <a href="/products/aquamarine-ocean-calm-necklace/">Aquamarine</a> is linked to calm, clear communication and a sense of ease in the body. It's a lovely stone for tense, inflamed, or overheated days.</p>
+      <h3>A Simple Daily Wellness Stack</h3>
+      <p>You don't need the whole shelf. A minimal, supportive setup is <a href="/products/garnet-phoenix-vitality-bracelet/">Garnet</a> for warmth and stamina + <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> for balance + <a href="/products/amethyst-serenity-bracelet/">Amethyst</a> for rest. Wear or place them with one clear intention: "I am tending to my body today."</p>
+      <h3>A 3-Minute Wellness Pause</h3>
+      <p><strong>1.</strong> Hold your Garnet at the center of the chest for thirty seconds. <strong>2.</strong> Breathe slowly and name one thing your body needs (water, a walk, earlier sleep). <strong>3.</strong> Touch the stone as a cue through the day. <strong>4.</strong> Do the small thing. The stone only ever reminds you that you're worth the care - see our <a href="/blog/how-to-choose-your-first-crystal-a-beginner-s-buying-guide/">first-crystal guide</a> to start.</p>
+      <h3>Pair It With Real Care</h3>
+      <p>Crystals work best alongside the boring, proven stuff: hydration, sleep, movement, and a doctor when something's wrong. Let the stone be the nudge that makes those easier to do. Browse <a href="/shop/">our wellness-minded pieces</a> and pick the one your body is asking for.</p>`
+  },
+  {
+    id: "b25",
+    category: "guides",
+    readTime: "10 min read",
+    title: "Crystal Bracelet Stacking: Build Intentional Combos for Any Goal",
+    excerpt: "Stacking bracelets isn't just styling - it's how you wear several intentions at once. Here's how to combine crystals so the stack tells a coherent story, not a muddle.",
+    image: "/images/p008_2.webp",
+    content: `<p>One bracelet carries one intention. Stack two or three and you're wearing a small, personal system - calm plus focus, protection plus love, confidence plus flow. Stacking is both styling and practice, and done with a little thought it becomes one of the easiest ways to keep your goals physically present all day. Here's how to build stacks that actually work.</p>
+      <h3>Start With One Goal</h3>
+      <p>The most common mistake is stacking every stone you own "just in case." A stack with five unrelated intentions reads as noise to your own brain. Pick one primary goal - sleep, confidence, protection, love - then choose one or two stones that serve it. See our <a href="/blog/crystal-pairings-the-best-stone-combinations-for-love-protection-abundance/">pairings guide</a> for tested combinations.</p>
+      <h3>The Anatomy of a Good Stack</h3>
+      <p><strong>Anchor stone</strong> - one grounding or protective piece, usually on the wrist closest to you (often the left). <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian</a> or <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye</a> do this job well. <strong>Intention stone</strong> - the stone for your actual goal, worn on the dominant hand. <strong>Amplifier</strong> - <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> can sit anywhere to boost the others. For wrist placement detail, read our <a href="/blog/power-banding-101-where-to-wear-your-crystal-bracelets/">where-to-wear guide</a>.</p>
+      <h3>5 Ready-Made Stacks</h3>
+      <p><strong>1. Calm & Sleep:</strong> <a href="/products/amethyst-serenity-bracelet/">Amethyst</a> + <a href="/products/blue-quartz-serenity-bracelet/">Blue Quartz</a> + <a href="/products/rose-quartz-love-bracelet/">Rose Quartz</a>. Wear on the left before bed.</p>
+      <p><strong>2. Confidence & Courage:</strong> <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye</a> + <a href="/products/citrine-merchant-s-ring/">Citrine</a> + <a href="/products/garnet-phoenix-vitality-bracelet/">Garnet</a>. Right wrist for meetings and brave moments.</p>
+      <p><strong>3. Protection & Grounding:</strong> <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian</a> + <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye</a>. Everyday armor for crowded or stressful days.</p>
+      <p><strong>4. Love & Self-Worth:</strong> <a href="/products/rose-quartz-love-bracelet/">Rose Quartz</a> + <a href="/products/moonstone-divine-feminine-pendant/">Moonstone pendant</a> + <a href="/products/garnet-phoenix-vitality-bracelet/">Garnet</a>. Soft, open, steady.</p>
+      <p><strong>5. Focus & Flow:</strong> <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> + <a href="/products/labradorite-magic-weaver-bracelet/">Labradorite</a> + <a href="/products/green-phantom-wealth-bracelet/">Green Phantom</a>. For deep work and creative days.</p>
+      <h3>Care & Cleansing of a Stack</h3>
+      <p>Stones in constant contact with skin and each other pick up energy faster - so cleanse a worn stack a little more often (weekly is plenty). Smoke, moonlight, or a soft cloth all work; full method in our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">care guide</a>.</p>
+      <h3>Build Yours</h3>
+      <p>Pick one goal, choose two or three stones that serve it, and let the stack become the story you wear. Browse <a href="/shop/">our bracelets and pendants</a> and start with the intention you most need today.</p>`
   }
 ];
 
