@@ -233,7 +233,32 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
       '@context': 'https://schema.org', '@type': 'Product',
       name: p.name, image: imgs, description: (p.tagline || p.description || '').slice(0, 300),
       brand: { '@type': 'Brand', name: 'Aurae' },
-      offers: { '@type': 'Offer', url, priceCurrency: 'USD', price, availability, seller: { '@type': 'Organization', name: 'Aurae' } },
+      offers: {
+        '@type': 'Offer', url, priceCurrency: 'USD', price, availability,
+        seller: { '@type': 'Organization', name: 'Aurae' },
+        hasMerchantReturnPolicy: {
+          '@type': 'MerchantReturnPolicy',
+          applicableCountry: 'US',
+          returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+          merchantReturnDays: 14,
+          returnMethod: 'https://schema.org/ReturnByMail',
+          returnFees: 'https://schema.org/ReturnShippingFees',
+          refundType: 'https://schema.org/FullRefund'
+        },
+        shippingDetails: {
+          '@type': 'OfferShippingDetails',
+          shippingRate: {
+            '@type': 'ShippingRateSettings',
+            shippingRate: { '@type': 'MonetaryAmount', value: '5.99', currency: 'USD' },
+            shippingLabel: 'Standard Shipping'
+          },
+          deliveryTime: {
+            '@type': 'ShippingDeliveryTime',
+            handlingTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 4, unitCode: 'DAY' },
+            transitTime: { '@type': 'QuantitativeValue', minValue: 7, maxValue: 15, unitCode: 'DAY' }
+          }
+        }
+      },
       aggregateRating: (p.rating ? { '@type': 'AggregateRating', ratingValue: String(p.rating), reviewCount: String(p.reviews || 0) } : undefined)
     }, {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
