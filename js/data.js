@@ -1930,6 +1930,55 @@ const BLOG_POSTS = [
       <p>A minimal, high-impact setup: Garnet for stamina + Tiger's Eye for action + Clear Quartz to amplify. Wear them with one intention: "I have what I need to begin." If low energy is more emotional than physical, our <a href="/blog/crystals-for-emotional-healing-letting-go/">emotional healing guide</a> may speak to what's underneath the tiredness.</p>
       <h3>Pair It With the Basics</h3>
       <p>Crystals work best next to the unglamorous truths: water, real food, movement, and enough sleep. Let the stone be the nudge that makes those easier to do - not a replacement for them. Browse <a href="/shop/">our energy-supporting pieces</a> and pick the one your body is asking for.</p>`
+  },
+  {
+    id: "b28",
+    category: "spirituality",
+    readTime: "11 min read",
+    title: "Crystals for Manifestation: A Beginner's Guide to Setting Intentions",
+    excerpt: "Manifestation isn't magic - it's focused intention backed by action. Here are the crystals people use to clarify what they want, amplify their intent, and stay aligned while they work toward it.",
+    image: "/images/p012.webp",
+    content: `<p>Manifestation gets a mystical reputation, but strip away the hype and it's something ordinary: decide what you want, hold it clearly in mind, and take small aligned steps toward it every day. Crystals won't do the work for you - but many people find that a stone assigned the job "keep me pointed at my goal" becomes a quiet, constant reminder. Here are the crystals most often used for manifestation, and how to actually work with them.</p>
+      <h3>What Manifestation Means Here</h3>
+      <p>Not wishful thinking. The practical version is three parts: clarity (know the specific outcome), consistency (return to it daily), and action (do the next small thing). A crystal sits at the center of all three as a physical anchor for your attention. When you touch it, you're reminded of the intention - and reminded to act on it.</p>
+      <h3>The Best Crystals for Manifestation</h3>
+      <p><strong>Clear Quartz - the amplifier.</strong> The <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz master healer bracelet</a> magnifies whatever you point it at. Use it to charge your intention: hold it while you state what you want, so the goal feels sharper.</p>
+      <p><strong>Citrine - the abundance stone.</strong> The <a href="/products/citrine-merchant-s-ring/">Citrine Merchant's ring</a> carries sunny, confident energy linked to prosperity and "I can" momentum. A favorite for goals around work, income, and creative output.</p>
+      <p><strong>Green Phantom - the wealth stone.</strong> The <a href="/products/green-phantom-wealth-bracelet/">Green Phantom wealth bracelet</a> is tied to growth and abundance - the slow, real kind that builds over time. Wear it when your goal is financial steadiness rather than a lottery win.</p>
+      <p><strong>Rose Quartz - the worthiness stone.</strong> The <a href="/products/rose-quartz-love-bracelet/">Rose Quartz love bracelet</a> matters more than people expect: you can't receive what you don't feel worthy of. It keeps the foundation - self-love - under your goal.</p>
+      <p><strong>Rutilated Quartz - the connector.</strong> The <a href="/products/rutilated-quartz-power-bracelet/">Rutilated Quartz power bracelet</a> is said to link intention to action, useful when you know the goal but keep stalling on step one.</p>
+      <p><strong>Moonstone - the new-beginnings stone.</strong> The <a href="/products/moonstone-divine-feminine-pendant/">Moonstone divine feminine pendant</a> supports fresh starts and the patience manifestation actually requires.</p>
+      <h3>A Simple Manifestation Ritual</h3>
+      <p><strong>1.</strong> Hold your Clear Quartz and name the goal in one specific sentence. <strong>2.</strong> State why it matters and what you'll do today, however small. <strong>3.</strong> Place the stone somewhere you'll see it - desk, wallet, nightstand. <strong>4.</strong> Each time you notice it, take one action toward the goal. <strong>5.</strong> Once a week, revisit and adjust. For a more visual method, see our <a href="/blog/crystal-grids-manifestation-sacred-geometry-for-your-goals/">crystal grids guide</a>.</p>
+      <h3>Build a Manifestation Stack</h3>
+      <p>A clean, high-impact setup: Clear Quartz to clarify + Citrine for confident action + Green Phantom for steady growth. Wear them with one sentence: "I am moving toward this, a little every day." For goal-specific energy, pair with our <a href="/blog/crystals-for-career-success-confidence-at-work/">career success guide</a> or <a href="/blog/crystals-for-love-self-love-open-your-heart/">self-love guide</a>.</p>
+      <h3>Pair It With Real Action</h3>
+      <p>A stone focuses you; it doesn't replace the doing. Let your crystal be the cue that makes the next step easier to start - then close the tab, pick up the phone, write the page. Browse <a href="/shop/">our intention-setting pieces</a> and choose the one your goal keeps returning to.</p>`
+  },
+  {
+    id: "b29",
+    category: "guides",
+    readTime: "10 min read",
+    title: "Crystals for Meditation & Mindfulness: Build a Calmer Daily Practice",
+    excerpt: "Starting a meditation habit is harder than it sounds - the mind wanders, the timer feels long. Here are the crystals that help you drop into stillness faster, plus a simple 5-minute practice to begin with.",
+    image: "/images/p015.webp",
+    content: `<p>Meditation sounds simple and rarely feels that way. You sit down, close your eyes, and within thirty seconds the to-do list, the argument from yesterday, and what's for dinner all show up at once. A crystal won't silence the noise - but it gives the wandering mind a single, calm thing to return to. Here are the stones most often used to support a meditation or mindfulness practice, and a short routine to actually start one.</p>
+      <h3>Why Crystals Help You Meditate</h3>
+      <p>They're a tactile anchor. When attention drifts, the weight of a stone in your palm or the coolness of one against the skin becomes the thing you come back to - gentler than fighting the thoughts. Over time the stone itself becomes a cue: "this is the quiet part." That consistency is what turns a one-off sit into a habit.</p>
+      <h3>The Best Crystals for Meditation</h3>
+      <p><strong>Amethyst - the still mind.</strong> The <a href="/products/amethyst-crown-of-wisdom-necklace/">Amethyst Crown of Wisdom necklace</a> is linked to calm, clarity, and a quieter inner voice - the classic choice for sitting practice.</p>
+      <p><strong>Blue Quartz - the clear thought.</strong> The <a href="/products/blue-quartz-serenity-bracelet/">Blue Quartz serenity bracelet</a> supports uncluttered, peaceful thinking, helpful when the mind is busy rather than anxious.</p>
+      <p><strong>Aquamarine - the ocean calm.</strong> The <a href="/products/aquamarine-ocean-calm-necklace/">Aquamarine ocean calm necklace</a> carries a soft, flowing stillness - a good stone for breath-focused meditation.</p>
+      <p><strong>Clear Quartz - the clarity stone.</strong> <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> keeps the space clear and your attention clean, so you're noticing rather than narrating.</p>
+      <p><strong>Moonstone - the gentle presence.</strong> The <a href="/products/moonstone-divine-feminine-pendant/">Moonstone divine feminine pendant</a> encourages soft, non-judging awareness - exactly the tone a good practice has.</p>
+      <p><strong>Black Obsidian - the grounding stone.</strong> The <a href="/products/black-obsidian-mirror-of-truth-pendant/">Black Obsidian mirror of truth pendant</a> helps you sit with what's actually there instead of avoiding it - useful for shadow-work style meditation.</p>
+      <p><strong>Labradorite - the inner vision.</strong> The <a href="/products/labradorite-magic-weaver-bracelet/">Labradorite Magic Weaver bracelet</a> supports inward focus and the quieter insights that surface in stillness.</p>
+      <h3>A 5-Minute Crystal Meditation</h3>
+      <p><strong>1.</strong> Sit somewhere comfortable and hold your Amethyst in both hands. <strong>2.</strong> Breathe in for four, out for six, five times, letting the shoulders drop. <strong>3.</strong> When thoughts arrive, name them "thinking" and return to the stone's weight. <strong>4.</strong> Do this for five minutes - that's it. <strong>5.</strong> Thank the stone and carry its calm into the next task. For restless nights, see our <a href="/blog/crystals-for-sleep-anxiety-calm-your-mind-at-night/">sleep & anxiety guide</a>.</p>
+      <h3>Build a Meditation Stack</h3>
+      <p>A minimal, calming setup: Amethyst for stillness + Blue Quartz for clear thought + Clear Quartz for clarity. Keep them on a small dish where you sit, and let them mark the spot as "the quiet corner." If what's underneath the busyness is emotional, our <a href="/blog/crystals-for-emotional-healing-letting-go/">emotional healing guide</a> may help you meet it.</p>
+      <h3>Pair It With a Tiny Habit</h3>
+      <p>Five minutes daily beats an hour once a month. Let the crystal be the reason you sit - then let the sitting do the rest. Browse <a href="/shop/">our calm-supporting pieces</a> and pick the one your hand keeps reaching for.</p>`
   }
 ];
 
