@@ -1873,6 +1873,21 @@ app.get('/api/validate-coupon', (req, res) => {
   res.json({ ok: r.ok, discount: r.discount, code: r.ok ? r.coupon.code : '', message: r.message });
 });
 
+// ===== API: Public — List active coupons for storefront display =====
+app.get('/api/public-coupons', (req, res) => {
+  const coupons = loadCoupons()
+    .filter(c => c.active)
+    .map(c => ({
+      code: c.code,
+      type: c.type,
+      value: c.value,
+      description: c.description || '',
+      minSubtotal: c.minSubtotal || 0,
+      firstOrderOnly: !!c.firstOrderOnly
+    }));
+  res.json({ coupons });
+});
+
 // ===== API: Admin — List Orders =====
 app.get('/api/admin/orders', requireAdmin, (req, res) => {
   const orders = loadOrders().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

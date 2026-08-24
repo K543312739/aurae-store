@@ -389,6 +389,38 @@ function handlePopState() {
 }
 
 // ===== Render Home Page =====
+async function loadPublicCoupons() {
+  const strip = document.getElementById('couponsStrip');
+  if (!strip) return;
+  try {
+    const resp = await fetch('/api/public-coupons');
+    if (!resp.ok) { strip.style.display = 'none'; return; }
+    const data = await resp.json();
+    const coupons = (data.coupons || []).filter(c => c.code);
+    if (!coupons.length) { strip.style.display = 'none'; return; }
+    strip.innerHTML = coupons.map(c => `
+      <div class="coupon-card">
+        <div class="coupon-info">
+          <span class="coupon-desc">${escapeHtml(c.description || 'Special offer')}</span>
+          ${c.firstOrderOnly ? '<span class="coupon-tag">First order only</span>' : ''}
+        </div>
+        <button class="coupon-code" type="button" onclick="copyCoupon('${escapeHtml(c.code)}', this)">${escapeHtml(c.code)}</button>
+      </div>`).join('');
+  } catch (e) { strip.style.display = 'none'; }
+}
+
+function copyCoupon(code, btn) {
+  const done = () => { const old = btn.dataset.label || btn.textContent; btn.dataset.label = old; btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = old; }, 1500); };
+  const fallback = () => {
+    const ta = document.createElement('textarea'); ta.value = code; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta); done();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(done).catch(() => fallback());
+  } else { fallback(); }
+}
+
 function renderHome() {
   // Best sellers (badge === 'Best Seller')
   const bestSellers = PRODUCTS.filter(p => p.badge === 'Best Seller').slice(0, 4);
@@ -3284,6 +3316,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const isStorePage = !!document.getElementById('homeView');
   if (isStorePage) {
     renderHome();
+    loadPublicCoupons();
   }
   renderCart();
   updateCartCount();
