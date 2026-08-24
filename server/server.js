@@ -74,7 +74,7 @@ app.use(cors({
 // (payments), Pinterest (tag), Google Fonts, Google Analytics 4 (gtag).
 const CSP_DIRECTIVES = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.paypal.com https://www.sandbox.paypal.com https://s.pinimg.com https://*.googletagmanager.com",
+  "script-src 'self' 'unsafe-inline' https://www.paypal.com https://www.sandbox.paypal.com https://s.pinimg.com https://ct.pinterest.com https://ajax.googleapis.com https://*.googletagmanager.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https: https://*.google-analytics.com https://stats.g.doubleclick.net",
