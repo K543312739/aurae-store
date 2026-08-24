@@ -164,12 +164,12 @@ function doc({ title, desc, canonical, domain, bodyHTML, jsonLd, gscMeta }) {
 ${gscMeta || ''}<meta name="p:domain_verify" content="8b5eb8e9d7b52fafb4763d382061e459"/>
 ${og}${ld}
   <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K0E0KLVVP0X"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
+    gtag('config', 'G-K0E0KLVVP0X');
   </script>
   <!-- End Google Analytics 4 -->
 </head>
