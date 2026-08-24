@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#9b7bd4">
   <title>Payment Success - Aurae</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
@@ -236,6 +237,24 @@
         } catch (e) {
           console.warn('Could not save order to account history:', e);
         }
+
+        // GA4 purchase conversion event
+        try {
+          if (typeof gtag === 'function' && orderData) {
+            const purchaseValue = typeof amount === 'number' ? amount : (parseFloat(amount) || 0);
+            gtag('event', 'purchase', {
+              transaction_id: String(orderData.orderId || orderId || ''),
+              value: purchaseValue,
+              currency: 'USD',
+              items: (items || []).map(function(i){ return {
+                item_id: String(i.id || ''),
+                item_name: String(i.name || ''),
+                price: Number(i.price) || 0,
+                quantity: Number(i.qty || i.quantity || 1)
+              }; })
+            });
+          }
+        } catch (e) { console.warn('GA4 purchase event failed:', e); }
 
         // Clear the cart in localStorage
         localStorage.removeItem('crystalCart');

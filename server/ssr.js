@@ -157,6 +157,7 @@ function doc({ title, desc, canonical, domain, bodyHTML, jsonLd, gscMeta }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#9b7bd4">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -340,6 +341,13 @@ ${p.ritual ? `<h2>Ritual</h2><p>${esc(p.ritual)}</p>` : ''}
       datePublished: new Date().toISOString(),
       author: { '@type': 'Organization', name: 'Aurae' },
       publisher: { '@type': 'Organization', name: 'Aurae', logo: { '@type': 'ImageObject', url: domain + '/images/p001.png' } }
+    },
+    {
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: domain + '/' },
+        { '@type': 'ListItem', position: 2, name: blog.title, item: url }
+      ]
     }];
     return { status: 200, html: doc({ title: `${blog.title} | Aurae`, desc, canonical: url, domain, bodyHTML: body, jsonLd, gscMeta }) };
   }
