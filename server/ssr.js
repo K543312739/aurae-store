@@ -163,6 +163,15 @@ function doc({ title, desc, canonical, domain, bodyHTML, jsonLd, gscMeta }) {
 <link rel="canonical" href="${esc(canonical)}">
 ${gscMeta || ''}<meta name="p:domain_verify" content="8b5eb8e9d7b52fafb4763d382061e459"/>
 ${og}${ld}
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  <!-- End Google Analytics 4 -->
 </head>
 <body>
 <header class="site-header"><a href="/" class="logo">Aur<span>ae</span></a>

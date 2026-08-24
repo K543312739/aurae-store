@@ -327,6 +327,16 @@ function navigate(view, param, opts) {
     window.history.pushState({ view, param }, '', url);
   }
   renderView(view, param);
+  // Google Analytics 4 — send a page_view on in-app (SPA) navigation.
+  // Skip the very first call (bootstrap navigate) because the gtag snippet
+  // already fires an initial page_view on script load.
+  if (window.gtag) {
+    if (window.__gaFirstNav) {
+      gtag('event', 'page_view', { page_path: url, page_title: document.title });
+    } else {
+      window.__gaFirstNav = true;
+    }
+  }
 }
 
 // Parse a static path into a {view, param} route. Returns null for "/" (home)
@@ -3256,6 +3266,12 @@ async function submitRefund(orderId, reason) {
 }
 
 // ===== Initialize =====
+// Track SPA back/forward navigation in Google Analytics 4
+window.addEventListener('popstate', () => {
+  if (window.gtag) {
+    gtag('event', 'page_view', { page_path: window.location.pathname + window.location.search, page_title: document.title });
+  }
+});
 document.addEventListener('DOMContentLoaded', async () => {
   // Load the latest product data (admin-managed images/stock) from the backend
   // before the first render, so the storefront reflects admin changes.
