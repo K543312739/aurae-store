@@ -70,15 +70,15 @@ app.use(cors({
 // handlers (onclick) and inline styles, so 'unsafe-inline' is permitted for
 // script/style. The policy still blocks the most dangerous XSS vector — loading
 // scripts/styles/frames from untrusted external origins — and locks down
-// base-uri, form-action and frame-ancestors. PayPal SDK + iframe are the only
-// allowed third parties (payments). Google Fonts is the only allowed font/src.
+// base-uri, form-action and frame-ancestors. Allowed third parties: PayPal
+// (payments), Pinterest (tag), Google Fonts, Google Analytics 4 (gtag).
 const CSP_DIRECTIVES = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.paypal.com https://www.sandbox.paypal.com https://s.pinimg.com",
+  "script-src 'self' 'unsafe-inline' https://www.paypal.com https://www.sandbox.paypal.com https://s.pinimg.com https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
-  "img-src 'self' data: https:",
-  "connect-src 'self' https://ct.pinterest.com https://s.pinimg.com https://www.paypal.com https://www.sandbox.paypal.com",
+  "img-src 'self' data: https: https://www.google-analytics.com",
+  "connect-src 'self' https://ct.pinterest.com https://s.pinimg.com https://www.paypal.com https://www.sandbox.paypal.com https://www.google-analytics.com",
   "frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://ct.pinterest.com",
   "frame-ancestors 'self'",
   "base-uri 'self'",
