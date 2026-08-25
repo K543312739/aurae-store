@@ -247,9 +247,11 @@ function serveCleanStaticFile(fileName, contentType) {
   };
 }
 app.get('/sitemap.xml', serveCleanStaticFile('sitemap.xml', 'text/xml; charset=utf-8'));
+// Alternate sitemap filename to bypass GSC cached "Couldn't fetch" failures.
+// Content is identical to sitemap.xml; submit this one in GSC if /sitemap.xml stays stuck.
+app.get('/sitemap-v3.xml', serveCleanStaticFile('sitemap-v3.xml', 'text/xml; charset=utf-8'));
 // Legacy sitemap URLs are removed — return 404 so crawlers drop them.
 app.get('/sitemap-google.xml', (req, res) => res.status(404).end());
-app.get('/sitemap-v3.xml', (req, res) => res.status(404).end());
 app.get('/robots.txt', serveCleanStaticFile('robots.txt', 'text/plain; charset=utf-8'));
 
 app.use(express.static(frontendDir, {
@@ -540,14 +542,16 @@ function writeSitemapFile(domain, products) {
   if (!domain) return;
   const xml = generateSitemapXML(domain, products);
   const filePath = path.join(frontendDir, 'sitemap.xml');
+  const altFilePath = path.join(frontendDir, 'sitemap-v3.xml');
   fs.writeFileSync(filePath, xml, 'utf8');
-  // Only sitemap.xml is kept. Remove legacy mirror sitemaps so the old
-  // URLs (sitemap-google.xml / sitemap-v3.xml) go away and return 404.
-  for (const legacy of ['sitemap-google.xml', 'sitemap-v3.xml']) {
-    const lp = path.join(frontendDir, legacy);
-    if (fs.existsSync(lp)) { try { fs.unlinkSync(lp); } catch (e) { /* ignore */ } }
-  }
-  console.log('[sitemap] wrote', filePath, `(${(products || []).length} products, ${(generateSitemapXML.BLOG_IDS || []).length} blogs)`);
+  fs.writeFileSync(altFilePath, xml, 'utf8');
+  // Keep sitemap-google.xml as a legacy 404. sitemap-v3.xml is now the
+  // alternate filename for GSC in case /sitemap.xml is stuck in a cached
+  // "Couldn't fetch" state.
+  const legacy = 'sitemap-google.xml';
+  const lp = path.join(frontendDir, legacy);
+  if (fs.existsSync(lp)) { try { fs.unlinkSync(lp); } catch (e) { /* ignore */ } }
+  console.log('[sitemap] wrote', filePath, 'and', altFilePath, `(${(products || []).length} products, ${(generateSitemapXML.BLOG_IDS || []).length} blogs)`);
 }
 
 // Write a real static sitemap.xml on startup. Google Search Console is more
