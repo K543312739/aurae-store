@@ -96,7 +96,10 @@ app.use((req, res, next) => {
   // Do not send CSP on plain-text/XML static resources (sitemap, robots) to avoid
   // confusing crawlers / Search Console parsers.
   const p = (req.path || '').toLowerCase();
-  if (!p.endsWith('/sitemap.xml') && !p.endsWith('/robots.txt')) {
+  // Crawler files should never carry a CSP directive; some search-console
+  // parsers are strict about extra security headers on XML/plain-text feeds.
+  const isCrawlerFeed = p.endsWith('/sitemap.xml') || p.endsWith('/sitemap-v3.xml') || p.endsWith('/robots.txt');
+  if (!isCrawlerFeed) {
     res.setHeader('Content-Security-Policy', CSP_DIRECTIVES);
   }
   next();
@@ -238,6 +241,7 @@ function serveCleanStaticFile(fileName, contentType) {
     res.removeHeader('Last-Modified');
     res.removeHeader('Accept-Ranges');
     res.removeHeader('Cache-Control');
+    res.removeHeader('Content-Security-Policy');
     res.set('Content-Type', contentType);
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('Pragma', 'no-cache');
