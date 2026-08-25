@@ -2029,6 +2029,74 @@ const BLOG_POSTS = [
       <p>Communication is one of seven energy centers. Our <a href="/blog/chakra-healing-with-crystals-a-beginner-s-map-of-the-7-energy-centers/">chakra healing map</a> shows where the others live, and the <a href="/blog/crystal-meditation-for-beginners-a-step-by-step-ritual/">meditation for beginners ritual</a> or the <a href="/blog/crystals-for-meditation-mindfulness-build-a-calmer-daily-practice/">mindfulness practice</a> helps you stay centered while you speak. Keep your stones clear with the <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">crystal care guide</a>.</p>
       <h3>Pick Your Voice Stone</h3>
       <p>Start with the stone you're drawn to - Aquamarine for calm, Lapis for boldness, Blue Quartz for clarity. Browse <a href="/shop/">our communication-supporting pieces</a> and choose the one that feels like your voice.</p>`
+  },
+  {
+    id: "b32",
+    category: "spirituality",
+    readTime: "13 min read",
+    title: "Crystals for Each Zodiac Sign: A Birthstone-Inspired Guide",
+    excerpt: "Not sure which crystal is 'yours'? Start with your sun sign. This birthstone-inspired guide pairs all 12 zodiac signs with a crystal that matches their natural energy - and links the exact Aurae piece to wear it.",
+    image: "/images/p002.webp",
+    content: `<p>Not sure which crystal is "yours"? A simple, time-tested place to start is your sun sign. For thousands of years, people have paired each zodiac sign with stones that mirror its natural energy - fiery signs with bright, activating crystals, watery signs with soft, intuitive ones. Below is a birthstone-inspired guide to all 12 signs, with the exact Aurae piece that lets you wear your match every day.</p>
+      <h3>How to Use Your Zodiac Crystal</h3>
+      <p>Wear it on the wrist or near the heart, set one intention when you first put it on, and cleanse it weekly (our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">crystal care guide</a> covers the easiest methods). Your sign is a starting point - if a different stone pulls at you, trust that too. For a wider view, see our <a href="/blog/healing-crystals-a-guide-for-beginners/">beginner's guide</a> and the <a href="/blog/chakra-healing-with-crystals-a-beginner-s-map-of-the-7-energy-centers/">chakra healing map</a>.</p>
+      <h3>Aries (Mar 21 - Apr 19): Tiger's Eye for Courage</h3>
+      <p>Bold, fast-moving Aries benefits from grounding courage. The <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye Warrior bracelet</a> blends earthy focus with fearless confidence - perfect for a sign that charges first and thinks later.</p>
+      <h3>Taurus (Apr 20 - May 20): Rose Quartz for Steady Love</h3>
+      <p>Sensual, loyal Taurus thrives on warmth and self-worth. The <a href="/products/rose-quartz-love-bracelet/">Rose Quartz love bracelet</a> opens the heart while keeping Taurus rooted in what feels safe and real.</p>
+      <h3>Gemini (May 21 - Jun 20): Blue Quartz for Clear Expression</h3>
+      <p>Quick-thinking Gemini needs calm, organized thought. The <a href="/products/blue-quartz-serenity-bracelet/">Blue Quartz serenity bracelet</a> supports clear communication - a gift for the sign of the twins.</p>
+      <h3>Cancer (Jun 21 - Jul 22): Moonstone for Emotional Comfort</h3>
+      <p>Gentle, protective Cancer is ruled by the moon. The <a href="/products/moonstone-divine-feminine-pendant/">Moonstone divine feminine pendant</a> softens mood swings and helps sensitive Cancers feel at home in their own skin.</p>
+      <h3>Leo (Jul 23 - Aug 22): Citrine for Warm Abundance</h3>
+      <p>Generous, spotlight-loving Leo shines with solar energy. The <a href="/products/citrine-merchant-s-ring/">Citrine Merchant's Ring</a> carries the warmth of the sun and invites the recognition Leo naturally attracts.</p>
+      <h3>Virgo (Aug 23 - Sep 22): Clear Quartz for Pure Focus</h3>
+      <p>Precise, calming Virgo likes clarity without clutter. The <a href="/products/clear-quartz-purity-bracelet/">Clear Quartz purity bracelet</a> amplifies intention and keeps a busy Virgo mind on what matters.</p>
+      <h3>Libra (Sep 23 - Oct 22): Rose & Strawberry Quartz for Harmony</h3>
+      <p>Charming, balance-seeking Libra lives for connection. The <a href="/products/rose-strawberry-quartz-harmony-bracelet/">Rose & Strawberry Quartz harmony bracelet</a> blends heart energy with light, social joy - Libra's natural language.</p>
+      <h3>Scorpio (Oct 23 - Nov 21): Black Obsidian for Truth</h3>
+      <p>Intense, private Scorpio needs a strong, honest shield. The <a href="/products/black-obsidian-mirror-of-truth-pendant/">Black Obsidian mirror of truth pendant</a> reflects negativity outward and supports Scorpio's love of depth and realness.</p>
+      <h3>Sagittarius (Nov 22 - Dec 21): Lapis Lazuli for Bold Truth</h3>
+      <p>Adventurous, philosophical Sagittarius speaks from conviction. The <a href="/products/lapis-lazuli-royal-phoenix-tassel-earrings/">Lapis Lazuli earrings</a> link to honest self-expression and the courage to be heard.</p>
+      <h3>Capricorn (Dec 22 - Jan 19): Garnet for Steady Drive</h3>
+      <p>Ambitious, resilient Capricorn builds for the long term. The <a href="/products/garnet-phoenix-vitality-bracelet/">Garnet Phoenix vitality bracelet</a> fuels the endurance and quiet power Capricorn is known for.</p>
+      <h3>Aquarius (Jan 20 - Feb 18): Amethyst for Calm Vision</h3>
+      <p>Original, idealistic Aquarius thinks ten steps ahead. The <a href="/products/amethyst-serenity-bracelet/">Amethyst serenity bracelet</a> quiets mental noise so Aquarius can channel its big ideas with calm focus.</p>
+      <h3>Pisces (Feb 19 - Mar 20): Aquamarine for Soft Flow</h3>
+      <p>Dreamy, empathetic Pisces flows with feeling. The <a href="/products/aquamarine-ocean-calm-necklace/">Aquamarine ocean calm necklace</a> brings a cooling, soothing current to Pisces' deep emotional world.</p>
+      <h3>Beyond the Sun Sign</h3>
+      <p>Your sun sign is just one layer. Many people also resonate with their rising or moon sign, or simply the stone they're drawn to in the moment. Browse <a href="/shop/">our full collection</a> and let intuition finish the sentence your birth chart started.</p>`
+  },
+  {
+    id: "b33",
+    category: "guides",
+    readTime: "11 min read",
+    title: "How to Charge Your Crystals: 9 Methods Compared (Sun, Moon, Sound & More)",
+    excerpt: "Cleansing clears old energy; charging fills your stone with fresh intention. This guide compares 9 ways to charge crystals - sunlight, moonlight, sound, smoke and more - with the pros, cons, and which stones suit each.",
+    image: "/images/p005_2.webp",
+    content: `<p>Cleansing and charging are often said in the same breath, but they do different jobs. Cleansing clears away stale or borrowed energy; charging fills the stone back up with fresh, intentional vibration. If you only cleanse, your crystal ends up empty. If you charge with intention, it becomes a focused tool again. Here are 9 ways to charge your crystals - with the pros, the cons, and which stones love each method.</p>
+      <h3>1. Moonlight (Safest All-Rounder)</h3>
+      <p>Place stones on a windowsill during the full moon (or any clear night). Moonlight is gentle and safe for every crystal, including soft and water-sensitive ones. It pairs beautifully with our <a href="/blog/crystals-for-empaths-highly-sensitive-people/">empath guide</a> for a monthly reset.</p>
+      <h3>2. Sunlight (Fast & Bright - Use With Care)</h3>
+      <p>A few hours of morning sun is energizing, great for Citrine, Carnelian, and Clear Quartz. But avoid long exposure for amethyst, rose quartz, and any stone that fades - sunlight can bleach color over time.</p>
+      <h3>3. Sound (Non-Touch & Group-Friendly)</h3>
+      <p>A singing bowl, tuning fork, or even a soft bell sends vibration through the stone without touching it. Ideal for charging a whole collection at once and for delicate pieces like the <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz master healer bracelet</a>.</p>
+      <h3>4. Smoke (Smudge, Ancient & Simple)</h3>
+      <p>Pass the stone through sage, palo santo, or incense smoke. Smoke is portable and works for any crystal. It doubles as cleansing, so it's a two-in-one favorite - see the full routine in our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">crystal care guide</a>.</p>
+      <h3>5. Earth / Burial (Deep Grounding)</h3>
+      <p>Bury the stone in soil for a day or two to reconnect it with the earth. Best for heavily used grounding stones like the <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian shield bracelet</a>. Keep it in a cloth so you don't lose it.</p>
+      <h3>6. Selenite Plate (Hands-Free)</h3>
+      <p>Lay stones on a Selenite plate overnight. Selenite both cleanses and charges, so it's a low-effort daily dock for your favorites. Great for busy people who want a set-and-forget option.</p>
+      <h3>7. Breath & Intention (No Tools Needed)</h3>
+      <p>Hold the stone, exhale onto it while naming your intention. This is the most personal method and works anywhere - perfect before wearing the <a href="/products/amethyst-crown-of-wisdom-necklace/">Amethyst Crown of Wisdom necklace</a> for focus.</p>
+      <h3>8. Crystal Clusters (Amplify in a Group)</h3>
+      <p>Rest smaller stones on a Clear Quartz cluster or beside a Citrine point. The cluster acts like a charger, refreshing the stones around it. A Citrine point on your desk keeps abundance energy circulating.</p>
+      <h3>9. Visualization (Pure Mind)</h3>
+      <p>Close your eyes, picture golden light pouring from your hands into the stone until it feels full. Sound simple? It is - and it's surprisingly effective when paired with the <a href="/blog/crystals-for-manifestation-a-beginner-s-guide-to-setting-intentions/">manifestation practice</a>.</p>
+      <h3>Which Method Should You Pick?</h3>
+      <p>New to this? Start with moonlight (safe) or smoke (simple). Short on time? Breath and intention take thirty seconds. Want a weekly habit? A Selenite plate by your bed makes charging automatic. Avoid water for charging unless you know your stone is hard and non-porous - and never charge a stone you wouldn't cleanse that way (our <a href="/blog/crystal-care-mistakes-avoid-these-common-errors/">care mistakes guide</a> lists the risky ones).</p>
+      <h3>Make It a Ritual</h3>
+      <p>Charge at the same time each week - Sunday evening works for many - and your crystals become a quiet, reliable part of your routine. Browse <a href="/shop/">the full collection</a> and pick the piece you'll actually wear and recharge.</p>`
   }
 ];
 
