@@ -2144,8 +2144,56 @@ const BLOG_POSTS = [
       <h3>Care So Your Jewelry Keeps Shining</h3>
       <p>Styling is only half of it - care keeps pieces looking new. Wipe after wearing, keep them off in the shower and pool, and recharge them weekly. Our <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">9 charging methods guide</a> and the <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">full care guide</a> cover the routine.</p>
       <h3>Build Your Everyday Stack</h3>
-      <p>Start with one hero piece, add one accent, and you're done. Browse <a href="/shop/">the full collection</a> and choose the designs you'll actually reach for - jewelry you love wearing is jewelry that works.</p>`
-  }
+      <p>Start with one hero piece, add one accent, and you're done. Browse <a href="/shop/">the full collection</a> and choose the designs you'll actually reach for - jewelry you love wearing is jewelry that works.</p>`,
+    },
+    {
+      id: "b36",
+      category: "spirituality",
+      readTime: "11 min read",
+      title: "Crystals for Intuition, the Third Eye & Trusting Your Gut",
+      excerpt: "Ever ignored a gut feeling and regretted it? These intuition crystals - amethyst, moonstone, labradorite and clear quartz - quiet the mental noise so your inner knowing comes through. Here is the exact Aurae piece for each.",
+      image: "/images/p004.webp",
+      content: `<p>You know that feeling - the quiet "don't do it" before a decision, or the instant certainty about someone you just met. We call it a gut feeling, a hunch, intuition. Most of us talk ourselves out of it. The right crystal won't make choices for you, but it can quiet the overthinking long enough for that inner signal to actually be heard. Below, the best stones for intuition and the third eye, with the exact Aurae piece to wear.</p>
+      <h3>What Is the Third Eye, Anyway?</h3>
+      <p>The "third eye" is the sixth chakra (Ajna), imagined at the center of the brow. In crystal tradition it is the seat of inner sight - pattern recognition, instinct, and the calm knowing that isn't based on logic. When it is open, you trust your gut. When it is cloudy, you second-guess everything. Our <a href="/blog/chakra-healing-with-crystals-a-beginner-s-map-of-the-7-energy-centers/">beginner's chakra map</a> walks through all seven if you want the full picture.</p>
+      <h3>Amethyst - The Classic Third-Eye Stone</h3>
+      <p>If you work with one stone for intuition, make it amethyst. Its violet frequency is linked to the brow and crown, and it is brilliant at silencing mental chatter so insight can surface. The <a href="/products/amethyst-serenity-bracelet/">Amethyst serenity bracelet</a> is an easy daily wear; for deeper meditation, the <a href="/products/amethyst-crown-of-wisdom-necklace/">Amethyst Crown of Wisdom necklace</a> sits right at the third eye. Pair it with our <a href="/blog/crystals-for-meditation-mindfulness-build-a-calmer-daily-practice/">meditation guide</a> for a stronger practice.</p>
+      <h3>Moonstone - Intuition & Cyclical Knowing</h3>
+      <p>Moonstone carries a softer, feminine intuition - the kind tied to timing, cycles, and "the moment feels right." It is the stone for people who are deeply empathetic but get overwhelmed by others' energy; our <a href="/blog/crystals-for-empaths-highly-sensitive-people/">empath's guide</a> explains why. The <a href="/products/moonstone-divine-feminine-pendant/">Moonstone Divine Feminine pendant</a> rests at the throat and heart, keeping that knowing close without flooding you.</p>
+      <h3>Labradorite - Trust the Unknown</h3>
+      <p>Labradorite is the stone of synchronicity - those "how did that line up?" moments. It builds trust in the path you can't yet see, which is exactly what intuition asks of you. The <a href="/products/labradorite-magic-weaver-bracelet/">Labradorite Magic Weaver bracelet</a> is a beautiful everyday pick, flashing blue when it catches the light like a quiet reminder to stay open.</p>
+      <h3>Clear Quartz - Clarity & Amplifier</h3>
+      <p>Clear quartz doesn't add its own voice - it clears the line and turns the volume up on whatever stone you pair it with. Wear the <a href="/products/clear-quartz-purity-bracelet/">Clear Quartz Purity bracelet</a> alongside any of the above, or keep a point on your desk while you journal. It is the cleanest signal you can get.</p>
+      <h3>How to Actually Use Them</h3>
+      <p>Wear intuition stones on the left wrist (receiving side) or place a small point on the center of the brow for a minute before decisions. Meditate with one for five quiet minutes in the morning - no app needed. Cleanse them weekly so the signal stays clean; our <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">9 charging methods guide</a> covers the easiest ways.</p>
+      <h3>A 2-Minute Intuition Check</h3>
+      <p>Facing a decision, hold your stone and ask the question once. Then stop thinking about it. The first answer that arrives before the analysis - that is the one. Write it down. Do this for a week and you'll notice the hits outnumber the misses. Start with one piece from <a href="/shop/">the collection</a> and let your gut pick the stone.</p>`
+    },
+    {
+      id: "b37",
+      category: "guides",
+      readTime: "10 min read",
+      title: "Crystals for Weddings & Bridal Parties: Stones for the Big Day",
+      excerpt: "Something old, something new - and a crystal with a meaning. This guide pairs the best wedding crystals with the exact Aurae pieces for the bride, bridesmaids, groom, and unforgettable gifts.",
+      image: "/images/p001.webp",
+      content: `<p>"Something old, something new, something borrowed, something blue" - crystal lovers just add a stone with a story. Weddings are built on intention, and a crystal is the easiest way to carry a meaning through the day (and the marriage after). Here is how to weave the best wedding crystals into the big day, with the exact Aurae piece for each role.</p>
+      <h3>Why Crystals at a Wedding?</h3>
+      <p>A wedding is one of the few days with a single, shared intention: love, luck, and a good start. Crystals make that intention tangible - something you can hold, gift, and keep. They also solve the "something blue" problem elegantly. New to pairing stones? Our <a href="/blog/crystal-pairings-the-best-stone-combinations-for-love-protection-abundance/">pairing guide</a> has the classic combos.</p>
+      <h3>Rose Quartz - The Bride's Stone</h3>
+      <p>Rose quartz is unconditional love in stone form - the obvious pick for the bride. It softens pre-ceremony nerves and keeps the heart open through a long day. The <a href="/products/rose-quartz-love-bracelet/">Rose Quartz Love bracelet</a> is delicate enough for any dress and meaningful enough to wear for years after. Give matching ones to bridesmaids and you have got a unified bridal party with a story.</p>
+      <h3>Amethyst - Calm & "Something Old-Soul"</h3>
+      <p>Amethyst steadies the jittery energy of a big day, and its deep violet reads as "something blue" if you squint (or pair it with a blue stone). The <a href="/products/amethyst-serenity-bracelet/">Amethyst serenity bracelet</a> is a calm, grounding pick for a bride who feels everything. It also layers beautifully - see our <a href="/blog/crystal-bracelet-stacking-build-intentional-combos-for-any-goal/">stacking guide</a>.</p>
+      <h3>Clear Quartz - Clarity & Unity</h3>
+      <p>Clear quartz stands for clear intention and, paired with rose quartz, for two becoming one. The <a href="/products/clear-quartz-purity-bracelet/">Clear Quartz Purity bracelet</a> is a clean, versatile gift for the couple - and a "something new" that isn't another toaster.</p>
+      <h3>Citrine - Joy & Sunny Warmth</h3>
+      <p>Citrine brings the literal sunshine - bright, uplifting, celebratory. The <a href="/products/citrine-merchants-ring/">Citrine Merchant's Ring</a> adds a warm gold flash to the bride's hand or makes a cheerful bridesmaid gift. It is the stone of shared joy, not just wealth.</p>
+      <h3>Black Obsidian - Protection for the Couple</h3>
+      <p>Every union needs a boundary. Black Obsidian shields the pair's energy from outside static - useful on a day when everyone wants a piece of you. The <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian Shield bracelet</a> reads as a sleek dark bead, so the groom or best man can wear it without a second thought.</p>
+      <h3>Ways to Use Them on the Day</h3>
+      <p><strong>Bridal party:</strong> matching rose quartz bracelets for bride + bridesmaids. <strong>Groom's party:</strong> black obsidian or tiger's eye for steady confidence. <strong>Something blue:</strong> an amethyst or blue-quartz piece. <strong>Unity ritual:</strong> hold one clear quartz together during vows and keep it on the nightstand. <strong>Gifts:</strong> a birthstone or intention bracelet for parents and the couple.</p>
+      <h3>Start With One Piece</h3>
+      <p>You don't need a crystal for every role - start with the one that fits your day, then build from there. Browse <a href="/shop/">the full collection</a> and choose pieces that match both the outfit and the intention; the best wedding crystal is the one you'll actually keep wearing.</p>`
+    }
 ];
 
 window.PRODUCTS = PRODUCTS;
