@@ -2097,6 +2097,54 @@ const BLOG_POSTS = [
       <p>New to this? Start with moonlight (safe) or smoke (simple). Short on time? Breath and intention take thirty seconds. Want a weekly habit? A Selenite plate by your bed makes charging automatic. Avoid water for charging unless you know your stone is hard and non-porous - and never charge a stone you wouldn't cleanse that way (our <a href="/blog/crystal-care-mistakes-avoid-these-common-errors/">care mistakes guide</a> lists the risky ones).</p>
       <h3>Make It a Ritual</h3>
       <p>Charge at the same time each week - Sunday evening works for many - and your crystals become a quiet, reliable part of your routine. Browse <a href="/shop/">the full collection</a> and pick the piece you'll actually wear and recharge.</p>`
+  },
+  {
+    id: "b34",
+    category: "crystals",
+    readTime: "12 min read",
+    title: "Crystals for Friendship, Social Confidence & Deeper Connection",
+    excerpt: "Want warmer friendships and easier conversations? These crystals for friendship and social confidence help you show up open, calm, and genuinely yourself - with the exact Aurae piece to wear for every occasion.",
+    image: "/images/p013.webp",
+    content: `<p>Some people seem to make friends effortlessly. The rest of us rehearse what to say, worry we'll be awkward, and leave a gathering wishing we'd spoken up. Crystals won't write the text for you - but the right stone in your pocket or on your wrist can take the edge off the nervous energy so the real you comes through. This guide pairs the best friendship and social-confidence crystals with the exact Aurae piece to wear.</p>
+      <h3>Why Crystals for Friendship?</h3>
+      <p>Friendship is a soft, two-way current: you have to be open enough to receive it and steady enough to offer it. The stones below work on both ends - calming the nerves that block connection and warming the energy that invites it. Start with the one you're drawn to, then layer if you like. Our <a href="/blog/healing-crystals-a-guide-for-beginners/">beginner's guide</a> covers the basics if you're new.</p>
+      <h3>Rose Quartz - The Friendship Stone</h3>
+      <p>Gentle, pink Rose Quartz is the classic stone of warm, easy connection. It softens self-consciousness so you can be kind without performing. Wear the <a href="/products/rose-quartz-love-bracelet/">Rose Quartz love bracelet</a> to keep heart energy close, or pair it with the <a href="/products/rose-strawberry-quartz-harmony-bracelet/">Rose & Strawberry Quartz harmony bracelet</a> when you want a little extra social warmth. See also our <a href="/blog/crystals-for-love-relationships-self-love-a-gentle-guide/">love & relationships guide</a>.</p>
+      <h3>Blue Quartz - Calm, Easy Conversation</h3>
+      <p>If your mind goes blank in groups, Blue Quartz is your friend. It quiets the mental static so words come out clear and unhurried. The <a href="/products/blue-quartz-serenity-bracelet/">Blue Quartz serenity bracelet</a> is an easy everyday pick - pair it with our <a href="/blog/crystals-for-communication-the-throat-chakra-speak-with-confidence/">throat-chakra communication guide</a> for deeper effect.</p>
+      <h3>Aquamarine - Soft Courage to Reach Out</h3>
+      <p>Aquamarine carries a cooling, brave current - perfect for the message you keep drafting and deleting. It helps you reach out without overthinking. The <a href="/products/aquamarine-ocean-calm-necklace/">Aquamarine ocean calm necklace</a> sits near the throat and heart at once, so connection feels natural rather than forced.</p>
+      <h3>Tiger's Eye - Walk In With Confidence</h3>
+      <p>For the room where you don't know anyone, Tiger's Eye grounds shaky energy into steady confidence. It's the stone of "I belong here." The <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye Warrior bracelet</a> is a strong pick - more on this in our <a href="/blog/crystals-for-confidence-courage-self-esteem-wear-your-inner-power/">confidence & courage guide</a>.</p>
+      <h3>How to Wear Them for Social Settings</h3>
+      <p>Left wrist for receiving warmth (Rose Quartz, Aquamarine), right wrist for projecting confidence (Tiger's Eye). Keep one stone in your pocket as a quiet touchstone - hold it for a breath before you speak. Sensitive to crowds? Our <a href="/blog/crystals-for-empaths-highly-sensitive-people/">empath's guide</a> has a fuller routine for staying open without burning out.</p>
+      <h3>A Simple Friendship Ritual</h3>
+      <p>Once a week, hold your friendship stone, name one person you're grateful for, and set the intention to show up a little more openly. Cleanse it monthly (our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">crystal care guide</a> has the easiest methods). Small, repeated intent beats a big once-off gesture.</p>
+      <h3>Pick the Piece You'll Actually Wear</h3>
+      <p>The best friendship crystal is the one you'll keep on. Browse <a href="/shop/">the full collection</a> and choose the piece that matches both your energy and your wardrobe - connection starts with showing up as yourself.</p>`
+  },
+  {
+    id: "b35",
+    category: "guides",
+    readTime: "11 min read",
+    title: "How to Style Crystal Jewelry: Wear Crystals for Work, Dates & Everyday",
+    excerpt: "Crystal jewelry should look as good as it feels. This styling guide shows how to wear bracelets, necklaces, and rings for work, dates, and everyday - and which Aurae pieces pair best with your outfits.",
+    image: "/images/p002.webp",
+    content: `<p>A crystal bracelet only works if you wear it - and you'll only wear it if it looks right. The good news: crystal jewelry is easy to style once you know a few rules. Below, a practical guide to wearing your pieces for work, dates, and everyday life, with the exact Aurae designs that pair best.</p>
+      <h3>Start With One Hero Piece</h3>
+      <p>Don't stack your whole collection at once. Pick one hero piece - usually a bracelet or a pendant - and let it lead. Everything else stays quiet. This keeps the look intentional instead of busy, and it keeps your crystal's energy focused. New to choosing? Our <a href="/blog/how-to-choose-your-first-crystal-a-beginner-s-buying-guide/">first-crystal guide</a> helps you start.</p>
+      <h3>Bracelet Styling for Work</h3>
+      <p>For the office, go subtle and grounded. A single <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian shield bracelet</a> reads as a sleek dark bead and quietly supports focus, while an <a href="/products/amethyst-serenity-bracelet/">Amethyst serenity bracelet</a> adds a soft violet note that pairs with almost anything. See our <a href="/blog/crystal-bracelet-stacking-build-intentional-combos-for-any-goal/">bracelet-stacking guide</a> for combo ideas.</p>
+      <h3>Necklaces & Pendants for Dates</h3>
+      <p>Dates call for something that catches the light. A <a href="/products/moonstone-divine-feminine-pendant/">Moonstone pendant</a> glows with a soft inner sheen, and the <a href="/products/aquamarine-ocean-calm-necklace/">Aquamarine necklace</a> brings a cool, oceanic calm that photographs beautifully. Keep the neckline simple so the stone is the focus.</p>
+      <h3>Rings & Earrings for Everyday Sparkle</h3>
+      <p>For daily wear, small and durable wins. The <a href="/products/citrine-merchant-s-ring/">Citrine Merchant's Ring</a> adds a warm gold flash to any hand, and the <a href="/products/lapis-lazuli-royal-phoenix-tassel-earrings/">Lapis Lazuli earrings</a> bring a touch of royal blue without shouting. These are the pieces you forget you're wearing - until someone compliments them.</p>
+      <h3>Color Matching by Outfit</h3>
+      <p>Warm metals and creams love Citrine and Tiger's Eye. Cool blues and greys love Aquamarine and Blue Quartz. All-black outfits make any crystal pop. Rose Quartz and Strawberry Quartz blend with soft pinks and nudes. When in doubt, match the stone to one color already in your clothes.</p>
+      <h3>Care So Your Jewelry Keeps Shining</h3>
+      <p>Styling is only half of it - care keeps pieces looking new. Wipe after wearing, keep them off in the shower and pool, and recharge them weekly. Our <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">9 charging methods guide</a> and the <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">full care guide</a> cover the routine.</p>
+      <h3>Build Your Everyday Stack</h3>
+      <p>Start with one hero piece, add one accent, and you're done. Browse <a href="/shop/">the full collection</a> and choose the designs you'll actually reach for - jewelry you love wearing is jewelry that works.</p>`
   }
 ];
 
