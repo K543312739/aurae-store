@@ -2193,7 +2193,57 @@ const BLOG_POSTS = [
       <p><strong>Bridal party:</strong> matching rose quartz bracelets for bride + bridesmaids. <strong>Groom's party:</strong> black obsidian or tiger's eye for steady confidence. <strong>Something blue:</strong> an amethyst or blue-quartz piece. <strong>Unity ritual:</strong> hold one clear quartz together during vows and keep it on the nightstand. <strong>Gifts:</strong> a birthstone or intention bracelet for parents and the couple.</p>
       <h3>Start With One Piece</h3>
       <p>You don't need a crystal for every role - start with the one that fits your day, then build from there. Browse <a href="/shop/">the full collection</a> and choose pieces that match both the outfit and the intention; the best wedding crystal is the one you'll actually keep wearing.</p>`
-    }
+    },
+  {
+    id: "b38",
+    category: "crystals",
+    readTime: "11 min read",
+    title: "Crystals for Grief, Loss & Comforting the Heart",
+    excerpt: "Grief is love with nowhere to go. These crystals won't erase a loss, but they can hold space for it - a small, steady anchor for the days that feel like too much.",
+    image: "/images/p001.webp",
+    content: `<p>Grief is often described as love with nowhere to go. When you lose a person, a pet, a chapter, or even a version of yourself, the heart needs something to hold onto - and a crystal can be that something. Stones do not erase loss, and they are not a substitute for the people who love you. But they can give your hands and your nervous system a small, steady anchor on the days that feel like too much.</p>
+      <h3>Rose Quartz - Tenderness for a Heart That Has Cracked Open</h3>
+      <p>Rose Quartz is the stone of gentle, unconditional love. After a loss, the heart does not need pressure to "get over it" - it needs kindness. Hold a <a href="/products/rose-quartz-love-bracelet/">Rose Quartz Love bracelet</a> when the missing shows up, or keep a tumbled piece in your pocket. It is a quiet reminder that being soft is not the same as being broken. For more on working with this stone, see our <a href="/blog/crystals-for-love-relationships-self-love-a-gentle-guide/">self-love guide</a>.</p>
+      <h3>Amethyst - Calm for the Mind That Will Not Stop</h3>
+      <p>Grief arrives at 3 a.m. as a loop of memories and "what ifs." Amethyst slows that spin. Keep an <a href="/products/amethyst-serenity-bracelet/">Amethyst serenity bracelet</a> on the nightstand, or a cluster where you sit, to take the edge off the racing thoughts. If sleep is the hard part, our <a href="/blog/crystals-for-sleep-anxiety-calm-a-practical-nighttime-ritual/">nighttime ritual guide</a> pairs it with a simple evening practice.</p>
+      <h3>Black Obsidian - A Container for the Heaviness You Cannot Name</h3>
+      <p>Some grief is wordless. Black Obsidian holds it without asking you to explain. The <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian Shield bracelet</a> reads as a sleek dark bead, so you can wear it anywhere and let it quietly absorb the static of a hard day. It is a boundary stone - useful when the world expects you to be fine before you are. Our <a href="/blog/crystals-for-protection-grounding-build-your-everyday-energy-shield/">protection guide</a> explains how to use it daily.</p>
+      <h3>Moonstone - For the Waves, and the Slow Way Forward</h3>
+      <p>Moonstone moves with you instead of against you. Grief is not linear, and this stone honours that - it supports the ebb and flow rather than forcing a brave face. The <a href="/products/moonstone-divine-feminine-pendant/">Moonstone pendant</a> sits close to the heart and is a soft companion through the up-and-down weeks. Pair it with the <a href="/blog/crystals-for-emotional-healing-letting-go/">emotional healing guide</a> for a fuller heart practice.</p>
+      <h3>Clear Quartz - Clarity When Everything Is Fog</h3>
+      <p>Early grief is a fog where nothing feels real. Clear Quartz brings you back to the moment - one clear breath at a time. The <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz Master Healer bracelet</a> is the reset stone: hold it when you need to feel present, not better, just present. Because these stones absorb a lot, keep them clean - our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">care guide</a> has the gentle methods.</p>
+      <h3>Labradorite - For the Days You Cannot Find Yourself</h3>
+      <p>Loss can make you feel like a stranger in your own life. Labradorite helps you remember who you are underneath the sadness. The <a href="/products/labradorite-magic-weaver-bracelet/">Labradorite bracelet</a> is for the in-between: not healed, not stuck, just becoming. It also sparks the small creative outlets that grief sometimes unlocks - see our <a href="/blog/crystals-for-creativity-inspiration-unblock-your-artistic-flow/">creativity guide</a>.</p>
+      <h3>A Simple Grief Ritual With Stones</h3>
+      <p>You do not need a ceremony. Each morning, hold the stone for the feeling you have that day - Rose Quartz for tenderness, Amethyst for a loud mind, Obsidian for heaviness. Name it out loud: "Today this hurts." Then set the stone somewhere you will see it, and let it carry the weight so you don't have to all day. At week's end, cleanse them (moonlight or smoke) and start again. For charging methods, our <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">9-methods guide</a> walks through what suits which stone.</p>
+      <h3>Start With One Stone</h3>
+      <p>You don't need the whole set. Pick the single stone that meets the feeling you have most often right now, and let it be enough. Browse <a href="/shop/">the full collection</a> and choose the piece that feels like a hand on your shoulder - because the right grief stone is simply the one that helps you keep going.</p>`
+  },
+  {
+    id: "b39",
+    category: "guides",
+    readTime: "12 min read",
+    title: "Crystals to Welcome a New Home: Placement Ideas for Every Room",
+    excerpt: "A new home is a fresh start you can feel in the walls. Here is a room-by-room guide to setting the energy of your space with crystals - no interior-design degree required.",
+    image: "/images/p001.webp",
+    content: `<p>A new home is a fresh start you can feel in the walls. Before the boxes are even unpacked, the energy of a space is yours to set - and crystals are the easiest, prettiest way to do it. You don't need to be a decorator. You need a few stones with intent, placed where they'll quietly do their job. Here is a room-by-room guide to welcoming a new home with crystals.</p>
+      <h3>Entryway - A Clean Boundary at the Door</h3>
+      <p>The front door is where outside energy enters. A protective stone here acts like a filter. The <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian Shield bracelet</a> (or a tumbled obsidian) by the entry catches the static of the day so it doesn't follow you in. Our <a href="/blog/crystals-for-protection-grounding-build-your-everyday-energy-shield/">protection guide</a> explains why a boundary stone belongs at the threshold of any home.</p>
+      <h3>Living Room - Warm, Open, Gathering Energy</h3>
+      <p>This is where people land. Clear Quartz keeps the space clear and amplifies whatever mood you set, while Citrine brings sunny, welcoming warmth. Place the <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz Master Healer bracelet</a> on a shelf and the <a href="/products/citrine-merchants-ring/">Citrine Merchant's Ring</a> in a bowl by the sofa. The combo reads as "come in, stay a while."</p>
+      <h3>Bedroom - Rest and Tenderness</h3>
+      <p>Bedrooms want calm and love, not buzz. Rose Quartz softens the room; Amethyst quiets the mind. The <a href="/products/rose-quartz-love-bracelet/">Rose Quartz Love bracelet</a> on the nightstand and an <a href="/products/amethyst-serenity-bracelet/">Amethyst serenity bracelet</a> near the bed build a space that helps you actually sleep. If nights are the hard part, our <a href="/blog/crystals-for-sleep-anxiety-calm-a-practical-nighttime-ritual/">nighttime ritual</a> pairs well with this setup.</p>
+      <h3>Kitchen and Dining - Abundance and Togetherness</h3>
+      <p>The kitchen is where a home feeds its people. Green Aventurine draws luck and easy gatherings; a wealth bracelet here keeps the mood generous. The <a href="/products/green-phantom-wealth-bracelet/">Green Phantom wealth bracelet</a> on the windowsill is a quiet wish for full tables and good company. For the abundance mindset behind it, our <a href="/blog/crystals-for-love-relationships-self-love-a-gentle-guide/">self-love and openness guide</a> pairs with the practice.</p>
+      <h3>Workspace or Office - Focus You Can Feel</h3>
+      <p>A home office needs clear, steady energy. Tiger's Eye gives grounded nerve; Clear Quartz keeps the screen-time fog away. The <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye Warrior bracelet</a> on the desk is the "I can do this" cue. Our <a href="/blog/crystals-for-focus-productivity-study-build-a-clear-mind-workspace/">focus guide</a> has the full setup for a calm, productive corner.</p>
+      <h3>Bathroom - A Small Calm Ritual</h3>
+      <p>The bathroom is the reset room. Blue Quartz or Aquamarine turns a rushed shower into a minute of calm. The <a href="/products/blue-quartz-serenity-bracelet/">Blue Quartz serenity bracelet</a> on the shelf (kept away from long water baths) keeps the energy light. Aquamarine wearers can see the <a href="/products/aquamarine-ocean-calm-necklace/">Aquamarine necklace</a> for the matching piece.</p>
+      <h3>A Simple House-Blessing With Stones</h3>
+      <p>Once placed, walk the rooms with one Clear Quartz in hand and set one sentence per space: "this home is safe," "this home is calm," "this home is full of good people." That's the whole ritual. Keep the stones cleansed monthly - our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">care guide</a> has the gentle methods, and the <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">charging guide</a> refreshes them. For a deeper intention-setting practice, our <a href="/blog/crystals-for-manifestation-a-practical-step-by-step-guide/">manifestation guide</a> shows how to anchor a wish to a space.</p>
+      <h3>Start With One Room</h3>
+      <p>You don't need a stone for every corner. Start with the one room you spend the most time in, place a single stone with one intention, and let the home build from there. Browse <a href="/shop/">the full collection</a> and pick the piece that makes the space feel like yours - because the best new-home crystal is the one you'll actually keep in sight.</p>`
+  }
 ];
 
 window.PRODUCTS = PRODUCTS;
