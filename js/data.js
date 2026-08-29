@@ -2243,6 +2243,54 @@ const BLOG_POSTS = [
       <p>Once placed, walk the rooms with one Clear Quartz in hand and set one sentence per space: "this home is safe," "this home is calm," "this home is full of good people." That's the whole ritual. Keep the stones cleansed monthly - our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">care guide</a> has the gentle methods, and the <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">charging guide</a> refreshes them. For a deeper intention-setting practice, our <a href="/blog/crystals-for-manifestation-a-practical-step-by-step-guide/">manifestation guide</a> shows how to anchor a wish to a space.</p>
       <h3>Start With One Room</h3>
       <p>You don't need a stone for every corner. Start with the one room you spend the most time in, place a single stone with one intention, and let the home build from there. Browse <a href="/shop/">the full collection</a> and pick the piece that makes the space feel like yours - because the best new-home crystal is the one you'll actually keep in sight.</p>`
+  },
+  {
+    id: "b40",
+    category: "guides",
+    readTime: "13 min read",
+    title: "How to Spot Fake & Treated Crystals: A Practical Buyer's Guide",
+    excerpt: "Not every pretty stone is what it claims to be. Learn the simple, no-tools checks that separate genuine crystals from glass, resin, and over-treated impostors - so you can buy with confidence.",
+    image: "/images/p013.webp",
+    content: `<p>The crystal market is gorgeous and a little wild. Between glass imitations, resin castings, dyed stones, and heat-treated look-alikes, even a careful buyer can end up with something that is not what the listing promised. This guide gives you practical, mostly no-tools ways to tell genuine crystals from impostors - so the piece on your wrist is the real thing.</p>
+      <h3>Why It Matters</h3>
+      <p>A fake crystal is not just a wasted purchase. When you are choosing a stone for comfort, focus, or a meaningful gift, you want the genuine article. The good news: most fakes reveal themselves with a few seconds of attention. You do not need a lab, just your senses and a little patience. For background on picking well, our <a href="/blog/healing-crystals-a-guide-for-beginners/">beginner's guide</a> is a calm place to start.</p>
+      <h3>Glass & Resin Impostors - The Temperature Test</h3>
+      <p>Clear Quartz and Amethyst are the most commonly faked. Glass and resin feel warm and hold heat; real quartz feels cool to the touch and warms slowly. Hold the stone for thirty seconds, then press it to your lip - genuine crystal stays noticeably cool. Glass also shows round, swirly bubbles if you look closely, while real quartz has angular inclusions or nothing at all. If a cluster is perfectly uniform and suspiciously flawless, trust the doubt.</p>
+      <h3>Dyed & Stabilized Stones - Reading an Unnatural Color</h3>
+      <p>White Howlite is often dyed to imitate Turquoise, and pale Quartz is dyed every shade of the rainbow. Dyed color sits in the cracks and crevices - look at the surface with a loupe or even your phone camera. If the color is concentrated in fissures and the stone looks painted, it is treated. Genuine color runs through the body evenly. When in doubt, compare against a stone you know is real from a trusted source like <a href="/shop/">our collection</a>.</p>
+      <h3>Heat-Treated Citrine vs Natural - Lemon vs Orange</h3>
+      <p>Natural Citrine is pale, lemony, and rare. Most "Citrine" on the market is actually Amethyst heated to orange-brown. Heat-treated pieces show a sharp white-to-brown gradient near the base; natural Citrine is a soft, even yellow. Neither is bad, but you should know what you are buying. Our <a href="/products/citrine-merchants-ring/">Citrine Merchant's Ring</a> is described honestly so you always know exactly what you are getting.</p>
+      <h3>The Weight, Surface & Sound Checks</h3>
+      <p>Real crystals have density. A bracelet that feels oddly light for its size may be glass or resin. Run a fingernail across the surface - genuine stones have micro-texture; resin feels uniformly slick. And if you are allowed to, a gentle tap of two like stones gives a bright, glassy ring for quartz and a duller thud for softer or fake material. None of these alone is proof, but together they tell a story.</p>
+      <h3>Price & Seller Red Flags</h3>
+      <p>If a "rare" stone is shockingly cheap, or a seller cannot name the mine, treatment, or genus, slow down. Reputable shops disclose heat treatment, dyeing, and stabilization up front - because an honest seller has nothing to hide. Vague origins and pressure to buy now are signals to walk away. For the wellness side of choosing well, our <a href="/blog/crystals-for-health-vitality-physical-wellness/">vitality guide</a> covers what different stones are actually used for.</p>
+      <h3>How Aurae Keeps It Honest</h3>
+      <p>We list treatments plainly and source from established suppliers, so the bracelet you receive matches its description. Caring for genuine stones is also simpler than you think - our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">crystal care guide</a> and the <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">9-methods charging guide</a> walk you through keeping them at their best. A real stone, cared for, lasts for decades.</p>
+      <h3>Start With Trust</h3>
+      <p>You don't need to be an expert on day one. Pick one reputable source, learn one stone deeply, and let your confidence grow from there. Browse <a href="/shop/">the full collection</a> and choose a piece that is clearly described and honestly sourced - because the best crystal is the one you can trust completely.</p>`
+  },
+  {
+    id: "b41",
+    category: "crystals",
+    readTime: "11 min read",
+    title: "Crystals for Pregnancy, Fertility & New Mothers",
+    excerpt: "A gentle, non-medical look at the stones many expecting and new mothers keep close for calm, comfort, and a sense of steadiness through a big life transition.",
+    image: "/images/p001.webp",
+    content: `<p>Bringing a child into the world - whether you are hoping, expecting, or already holding one - is one of life's most profound transitions. This is a gentle, supportive look at the crystals many mothers keep close during this time. A quick, important note first: crystals are a wellness and emotional-support tool, not medical advice or treatment. Always follow your doctor's guidance, especially before using anything new.</p>
+      <h3>Rose Quartz - Tenderness for Two</h3>
+      <p>The stone of gentle, unconditional love is a natural companion through pregnancy and early motherhood. Its soft pink energy is less about results and more about reminding you to be kind to yourself on the hard days. The <a href="/products/rose-quartz-love-bracelet/">Rose Quartz Love bracelet</a> is easy to wear and a quiet anchor of self-compassion when everything feels new.</p>
+      <h3>Moonstone - For the Emotional Ebb & Flow</h3>
+      <p>Hormones and emotions move in waves, and Moonstone is the stone of cycles - it honors the ups and downs rather than fighting them. Many mothers wear it through the shifting months for a sense of rhythm and calm. The <a href="/products/moonstone-divine-feminine-pendant/">Moonstone Divine Feminine pendant</a> sits close to the heart and feels like a soft, steady companion.</p>
+      <h3>Amethyst - Calm for Anxious, Sleepless Nights</h3>
+      <p>Worry has a way of arriving at 3 a.m. Amethyst quiets a racing mind and takes the edge off restless nights, which any expecting or new mother understands deeply. Keep an <a href="/products/amethyst-serenity-bracelet/">Amethyst Serenity bracelet</a> on the nightstand, or simply hold one before sleep. If emotional heaviness runs deeper, our <a href="/blog/crystals-for-grief-loss-comforting-the-heart/">grief and comfort guide</a> speaks to holding space for hard feelings.</p>
+      <h3>Clear Quartz - A Steady Center</h3>
+      <p>When everything is changing at once, Clear Quartz is the reset stone - clarity, presence, and a moment to breathe. The <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz Master Healer bracelet</a> is the "come back to now" cue for overwhelm. Because it absorbs a lot, keep it cleansed - our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">care guide</a> has the gentle methods.</p>
+      <h3>Garnet - Warmth & Vitality</h3>
+      <p>Garnet carries a deep, grounding warmth - a little rallying energy for the days when motherhood feels physically draining. The <a href="/products/garnet-phoenix-vitality-bracelet/">Garnet Phoenix Vitality bracelet</a> is a comforting, earthy red that reads as jewelry, not a statement. Pair it with the <a href="/blog/crystals-for-health-vitality-physical-wellness/">vitality guide</a> for a fuller picture of supportive stones.</p>
+      <h3>A Gentle Daily Ritual</h3>
+      <p>You don't need a ceremony. Each morning, hold the one stone that matches how you feel - Rose Quartz for tenderness, Amethyst for a loud mind, Clear Quartz for overwhelm - and set one sentence: "Today I am doing enough." Place it where you'll see it, and let it carry the weight so you don't have to all day. At week's end, refresh the stones gently (moonlight or smoke) using the <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">9-methods guide</a>.</p>
+      <h3>One Stone for This Season</h3>
+      <p>You don't need the whole set. Pick the single stone that meets the feeling you have most often right now, and let it be enough. Browse <a href="/shop/">the full collection</a> and choose the piece that feels like a hand on your shoulder - because the right motherhood crystal is simply the one that helps you keep going, one calm breath at a time.</p>`
   }
 ];
 
