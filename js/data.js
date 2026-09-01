@@ -2331,6 +2331,58 @@ const BLOG_POSTS = [
       <p>New to mixing? Try this: pick one anchor stone for your main intention, add Clear Quartz as the amplifier, then one supporting stone. Wear it for three days. If you feel more like yourself, keep it. If it feels noisy, drop the third. Our <a href="/blog/how-to-choose-your-first-crystal-a-beginner-s-buying-guide/">first-crystal guide</a> helps if you're still choosing a base, and the <a href="/blog/crystal-grids-how-to-build-one-for-manifestation/">crystal-grid guide</a> shows how to scale a combo into a space.</p>
       <h3>Start With One Good Pair</h3>
       <p>You don't need a ten-stone arsenal. One anchor plus one amplifier is a complete practice. Browse <a href="/shop/">the full collection</a> and build the pair that matches the week you're having - because the best crystal combo is simply the one you'll actually wear and feel.</p>`
+  },
+  {
+    id: "b44",
+    category: "crystals",
+    readTime: "10 min read",
+    title: "Crystals for Stress Relief & Beating Burnout",
+    excerpt: "Constant notifications, endless to-do lists, that wired-but-tired feeling at 11pm - stress isn't a phase, it's the background noise of modern life. Here are the stones people reach for to slow the nervous system down, and a simple way to actually use them.",
+    image: "/images/p003.webp",
+    content: `<p>Stress isn't a diagnosis - it's the default setting of a busy life. But "manage your stress" lands like one more chore on a full list. Crystals won't cancel your inbox. What they can offer is a small, physical anchor that says "pause" a few times a day, and a few stones are genuinely known for taking the edge off a frazzled nervous system. Here are the ones to reach for, and how to build a tiny stress ritual that actually fits a real life.</p>
+      <h3>Amethyst - The Nervous-System Settler</h3>
+      <p>If you keep one stone for stress, make it Amethyst. Its soft purple frequency is the classic "quiet the mental static" stone - the one people keep by the bed so the 11pm spiral doesn't run the whole night. The <a href="/products/amethyst-serenity-bracelet/">Amethyst Serenity bracelet</a> is an easy everyday wear; a small cluster on the desk does the same job in the workspace. Once a week, reset it with smoke or moonlight using the <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">crystal care guide</a> so it stays clean.</p>
+      <h3>Blue Quartz - The Calm Thinker</h3>
+      <p>When stress shows up as a racing, cluttered mind, Blue Quartz is the cooler. It's linked to clear, unhurried thought - the stone for the kind of day where everything feels urgent at once. The <a href="/products/blue-quartz-serenity-bracelet/">Blue Quartz serenity bracelet</a> keeps that "one thing at a time" feeling within reach. For a deeper calm stack, pair it with Amethyst using our <a href="/blog/crystal-bracelet-stacking-build-intentional-combos-for-any-goal/">stacking guide</a>.</p>
+      <h3>Rose Quartz - The Soft Landing</h3>
+      <p>Stress often turns inward as self-criticism. Rose Quartz is the antidote - its gentle pink energy invites you to speak to yourself the way you'd speak to someone you love. Wear the <a href="/products/rose-quartz-love-bracelet/">Rose Quartz Love bracelet</a> on the left wrist (your receiving side) so its warmth filters in before the inner critic wakes up. It's the heart-side of any stress practice.</p>
+      <h3>Aquamarine - The Exhale Stone</h3>
+      <p>Cool, oceanic Aquamarine is linked to a sense of ease in the body - the "long exhale" stone for tense, overheated, over-deadline days. The <a href="/products/aquamarine-ocean-calm-necklace/">Aquamarine Ocean Calm necklace</a> sits at the throat, a quiet reminder to unclench the jaw and breathe. For the communication side of stress, our <a href="/blog/how-to-combine-crystals-synergy-duos-clashes-to-avoid/">combining guide</a> shows how to build a supportive stack.</p>
+      <h3>Black Gold Obsidian - The Grounding Anchor</h3>
+      <p>Sometimes stress isn't mental, it's a buzzing, ungrounded body. Black Gold Obsidian pulls that energy down into the earth so you feel like a person standing on the floor instead of a vibrating phone. The <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian shield bracelet</a> on the right wrist is everyday armor for crowded, overstimulating days. It's the root of the calming combo.</p>
+      <h3>A 3-Minute Stress Reset (No Incense Required)</h3>
+      <p>You don't need a ritual longer than the stress it relieves. Next time your shoulders hit your ears: put one hand on your Amethyst or Blue Quartz, exhale longer than you inhale four times, and name one thing you can control right now. That's it. The stone is the cue that tells your body "we're allowed to downshift." Do it twice a day for a week and it starts happening on its own.</p>
+      <h3>Build the Calm Combo</h3>
+      <p>A minimal, high-impact stress setup is Amethyst for the mind + Rose Quartz for the heart + Black Gold Obsidian for the ground - three stones, one clear job: "I get to come back to myself." Browse <a href="/shop/">the full collection</a> and choose the pieces that feel like an exhale in your pocket, because the best anti-stress crystal is simply the one you'll actually keep close.</p>`
+  },
+  {
+    id: "b45",
+    category: "guides",
+    readTime: "11 min read",
+    title: "How to Cleanse Your Crystals: 7 Safe Methods (and What Not to Do)",
+    excerpt: "Every guide says cleanse your stones - few explain how, or warn you about the methods that quietly ruin them. Here are 7 safe ways to reset a crystal, plus the three mistakes that end more stones than anything else.",
+    image: "/images/p004.webp",
+    content: `<p>Every crystal guide tells you to "cleanse" your stones - but rarely explains how, or warns you about the methods that quietly damage them. Cleansing isn't a superstition; it's the reset that keeps a stone feeling like itself instead of a sponge for everyone's day. Here are 7 safe ways to do it, and the few mistakes that send good stones to an early grave.</p>
+      <h3>Why Cleansing Matters</h3>
+      <p>Stones are porous to more than just physical dirt - they pick up the charge of everything around them. Wear one through a hard conversation or a crowded train and it's carrying that too. A quick reset returns it to neutral so your intention, not the day's static, is what it broadcasts. Think of it like rinsing a glass before you pour something fresh.</p>
+      <h3>Method 1 - Smoke (Sage, Palo Santo, Incense)</h3>
+      <p>The classic. Pass the stone through rising smoke for 20-30 seconds with a clear "reset" thought. Safe for every stone, including soft ones and the pieces you should never get wet. Keep a <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz</a> nearby and you can use it to clear the others too.</p>
+      <h3>Method 2 - Moonlight</h3>
+      <p>Set stones on a windowsill overnight during the full moon (or any clear night). Gentle, safe for all stones, and free. Avoid leaving them where morning sun will hit them - more on that below. This is the go-to for the <a href="/products/rose-quartz-love-bracelet/">Rose Quartz Love bracelet</a> and other heart stones you wear daily.</p>
+      <h3>Method 3 - Sound (Singing Bowl, Bells, Tuning Fork)</h3>
+      <p>Sound clears without touching the stone at all - ideal for delicate or broken pieces. A minute of bowl tone or a few rings of a bell is enough. Great for a whole shelf at once, which is why it pairs with our <a href="/blog/crystal-grids-how-to-build-one-for-manifestation/">crystal-grid guide</a> when you've built a layout you don't want to disturb.</p>
+      <h3>Method 4 - Dry Rice or Salt</h3>
+      <p>Bury the stone in dry rice or salt for a few hours, then discard the medium - it has taken the charge. Don't reuse the rice or salt for food. Safe for hard stones; skip it for anything with cracks or a soft surface.</p>
+      <h3>Method 5 - Running Water (With Caution)</h3>
+      <p>A brief rinse under cool running water works for hard, non-porous stones (Quartz, most Agates). Hold the intention as the water runs. This is exactly where people go wrong - see the warnings below before you reach for the tap.</p>
+      <h3>Method 6 - Visualization</h3>
+      <p>Hold the stone, imagine a clean white light washing through it, and state "clear." It works mostly because it gives you thirty seconds of focused intention, which is the whole point. Perfect in public when smoke or water aren't an option.</p>
+      <h3>Method 7 - Earth Burial</h3>
+      <p>For a deep reset, bury a stone in soil (a pot works) for 24-48 hours. The earth takes back what it lent. Best for grounding stones like <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian</a>; skip it for anything you'd hate to lose in the garden.</p>
+      <h3>What NOT to Do (The Quiet Killers)</h3>
+      <p>Three mistakes end more crystals than anything else. First, sunlight - amethyst, rose quartz, and most pinks fade in direct sun within days; charge by moonlight instead (see our <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">9-methods charging guide</a>). Second, water on soft stones - Selenite, Lapis, and anything with a name ending in "-lite" can crumble or leach; keep them dry. Third, salt-water soaks - the mix etches and pits even sturdy stones over time. When in doubt, smoke or sound. For the full keep-them-alive routine, our <a href="/blog/crystal-care-101-how-to-cleanse-charge-store-your-stones/">Crystal Care 101 guide</a> covers storage too.</p>
+      <h3>A Simple Cleansing Cadence</h3>
+      <p>You don't need to cleanse everything weekly. Rule of thumb: reset a stone you wore through something heavy that day; reset your daily pieces every Sunday; reset a grid or shelf monthly. Keep it light and it becomes a rhythm, not a chore. Browse <a href="/shop/">the full collection</a> and pick one piece to start the habit with - because a cleansed stone is simply a stone that works.</p>`
   }
 ];
 
