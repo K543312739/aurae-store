@@ -2435,6 +2435,56 @@ const BLOG_POSTS = [
       <p>The shimmering stones - like the <a href="/products/labradorite-magic-weaver-bracelet/">Labradorite Magic Weaver bracelet</a> - are the "magic and intuition" hues, the color of things just below the surface. Earthy browns like the <a href="/products/tea-quartz-grounding-bracelet/">Tea Quartz Grounding bracelet</a> are the stay-here, stay-steady hues for anxious or scattered days.</p>
       <h3>How to Use Color to Choose</h3>
       <p>Start with the feeling you want, match it to a hue above, then let your eye land on the specific stone that pulls you. Color gets you to the right room; your gut picks the seat. Once you have two or three, learn how they combine in our <a href="/blog/crystal-pairings-the-best-stone-combinations-for-love-protection-abundance/">pairings guide</a> and the <a href="/blog/how-to-combine-crystals-synergy-duos-clashes-to-avoid/">combining guide</a>. Browse <a href="/shop/">the full collection</a> and begin with the color you keep coming back to - because the right stone is usually the one your eye finds first.</p>`
+  },
+  {
+    id: "b48",
+    category: "crystals",
+    readTime: "9 min read",
+    title: "Crystals for Anger, Irritability and Finding Patience",
+    excerpt: "When the fuse is short and everything feels like too much, certain stones can help you cool the heat and lengthen the pause before you react. Here are the crystals people reach for to calm irritation and rebuild patience, with simple rituals you can actually keep.",
+    image: "/images/p003.webp",
+    content: `<p>Anger is not the enemy. It is a signal - usually that something matters, that a boundary got crossed, or that you are running on empty. The problem is rarely the feeling; it is how fast it arrives and how little room there is to choose. Crystals will not solve the thing that upset you, but a few well-chosen stones can buy you the half-second of space between trigger and reaction. That space is where patience lives.</p>
+      <h3>Start With the Body, Not the Story</h3>
+      <p>Irritability is often physical before it is emotional - poor sleep, low blood sugar, a tense neck. Before reaching for a stone, name what your body needs. Then let the crystal do what it is good at: giving your nervous system something calm and steady to return to. The <a href="/blog/crystals-for-stress-relief-beating-burnout/">stress-relief guide</a> covers the wider toolkit; this one is about the stones specifically for heat and short fuses.</p>
+      <h3>Amethyst - The Cool-Down Stone</h3>
+      <p>Amethyst is the go-to for mental heat. It reads as a quiet exhale - the stone for when your thoughts are spinning and every small thing feels huge. Keep the <a href="/products/amethyst-serenity-bracelet/">Amethyst Serenity bracelet</a> on your wrist or a tumble in your pocket, and when irritation spikes, hold it and take three slow breaths. Pair it with the <a href="/blog/crystals-for-sleep-anxiety-calm-a-practical-nighttime-ritual/">nighttime calm ritual</a> so the short fuse is shorter to begin with.</p>
+      <h3>Blue Quartz and Aquamarine - Cooling the Mind</h3>
+      <p>Blue stones cool where purple soothes. Blue Quartz is the everyday mental coolant for racing, snappy days; the <a href="/products/blue-quartz-serenity-bracelet/">Blue Quartz Serenity bracelet</a> is easy to wear to work. Aquamarine carries a softer, oceanic calm - the <a href="/products/aquamarine-ocean-calm-necklace/">Aquamarine Ocean Calm necklace</a> is the one to reach for before a hard conversation, because it keeps the voice even while the feelings move.</p>
+      <h3>Rose Quartz - Softening the Anger Turned Inward</h3>
+      <p>A lot of irritability is self-directed - frustration that you are not coping, not fast enough, not calmer. Rose Quartz is the reminder to be gentle with yourself, not just others. The <a href="/products/rose-quartz-love-bracelet/">Rose Quartz Love bracelet</a> is the classic; the <a href="/blog/crystals-for-emotional-healing-letting-go/">emotional-healing guide</a> explains why softening toward yourself is the first step out of the loop.</p>
+      <h3>Lapis Lazuli - Say the True Thing, Calmly</h3>
+      <p>Much anger leaks out as sharp words. Lapis Lazuli sits at the throat and helps you say what is actually true instead of what is loud. The <a href="/products/lapis-lazuli-royal-phoenix-tassel-earrings/">Lapis Lazuli earrings</a> keep that energy near the voice; the <a href="/blog/crystals-for-communication-the-throat-chakra-speak-with-confidence/">throat-chakra guide</a> builds the practice of speaking without exploding or swallowing it whole.</p>
+      <h3>When Rage Is Really Overwhelm - Ground First</h3>
+      <p>Sometimes what looks like anger is a nervous system that is overloaded and trying to protect you. Ground before you process. The <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian Shield bracelet</a> gives that rooted, nothing-gets-through feel, and the <a href="/blog/crystals-for-protection-grounding-build-your-everyday-energy-shield/">everyday protection guide</a> shows how to wear it so you are less reactive to noise, people, and demands.</p>
+      <h3>A 2-Minute Patience Reset</h3>
+      <p>You do not need a long ritual. When the heat rises: put a hand on your stone, name the feeling in one word (frustrated, ashamed, rushed), and breathe out longer than you breathed in. The stone is just the anchor that tells your body this is the moment to pause. Cleanse it weekly - sweat and anger both leave residue - using the <a href="/blog/how-to-cleanse-your-crystals-7-safe-methods-and-what-not-to-do/">safe cleansing methods</a>. The <a href="/blog/the-crystal-color-meaning-guide-what-each-hue-symbolizes/">color guide</a> helps you pick by hue if you are new to this.</p>
+      <h3>Choosing Yours</h3>
+      <p>If your anger is hot and fast, start with Amethyst plus a black grounding stone. If it is cold and resentful, lean into Rose Quartz and Lapis. Browse <a href="/shop/">the full collection</a> and trust the stone your eye lands on first - that pull is usually the one you need this season.</p>`
+  },
+  {
+    id: "b49",
+    category: "guides",
+    readTime: "10 min read",
+    title: "Crystals for New Beginnings, Fresh Starts and Big Transitions",
+    excerpt: "A new job, a move, a breakup, a blank page - beginnings are exciting and terrifying at once. These are the crystals people carry into fresh starts to stay grounded, open, and a little braver, with a simple ritual to mark the threshold.",
+    image: "/images/p001.webp",
+    content: `<p>Every new beginning is two things at once: a door opening and something being left behind. That mix - hope plus grief, momentum plus fear - is exactly why transitions feel so physically heavy. Crystals will not make the change smaller, but they can help you walk through it steadier: one stone to keep you rooted, one to keep you open, one to remind you that you have done hard things before.</p>
+      <h3>Clear Quartz - The Blank Page</h3>
+      <p>Clear Quartz is the fresh start itself. It holds no fixed program, which is precisely why it is the stone for a new chapter - you get to decide what this era is for, and it amplifies that intention. The <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz Master Healer bracelet</a> is the everyday reset; charge it with a single sentence about what you want this beginning to be, using the <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">charging methods</a> that fit your life.</p>
+      <h3>Moonstone - For Cycles and Second Chances</h3>
+      <p>Moonstone is the stone of new cycles - new moon, new month, new you. It carries a soft, intuitive shimmer that is perfect for the uncertain first weeks of anything. The <a href="/products/moonstone-divine-feminine-pendant/">Moonstone Divine Feminine pendant</a> sits close to the heart and reminds you that beginnings are allowed to be wobbly.</p>
+      <h3>Green Phantom - Growth You Can Feel</h3>
+      <p>New things need to take root. Green Phantom is the builder's stone - slow, steady growth rather than a sprint. The <a href="/products/green-phantom-wealth-bracelet/">Green Phantom Wealth bracelet</a> is the one to wear when you are planting, applying, or starting from zero and need proof that roots form. It pairs naturally with the <a href="/blog/crystals-for-abundance-prosperity-a-practical-wealth-guide/">abundance guide</a> if the beginning is a business or a financial reset.</p>
+      <h3>Citrine - Optimism for the Scary Leap</h3>
+      <p>Beginnings stall on fear. Citrine is sunny, forward-leaning confidence - the stone for when you need to believe the leap will land. The <a href="/products/citrine-merchant-s-ring/">Citrine Merchant's Ring</a> is the classic prosperity-and-courage piece; the <a href="/blog/crystals-for-luck-good-fortune-opening-doors/">luck guide</a> builds on the same open-doors energy.</p>
+      <h3>Tiger's Eye - Courage to Actually Start</h3>
+      <p>Planning is safe; starting is exposed. Tiger's Eye is grounded action - the push to do the thing instead of rehearse it. The <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye Warrior bracelet</a> is for the first awkward weeks; the <a href="/blog/crystals-for-career-success-workplace-confidence/">career-confidence guide</a> is its natural companion if the new beginning is work.</p>
+      <h3>If the Beginning Follows a Loss</h3>
+      <p>Not every fresh start is chosen. Some are forced by endings you did not want. If that is your season, start with the <a href="/blog/crystals-for-grief-loss-comforting-the-heart/">grief and comfort guide</a> before you reach for the forward-looking stones - you are allowed to grieve and begin at the same time.</p>
+      <h3>A Threshold Ritual</h3>
+      <p>Mark the start so your brain registers it. On the first day - of the job, the move, the new routine - hold your chosen stone, say one sentence out loud about what you are beginning, and set it somewhere you will see it daily. Refresh it monthly. If you are moving, the <a href="/blog/crystals-to-welcome-a-new-home-placement-ideas-for-every-room/">new-home placement guide</a> tells you where each stone wants to live. Combine a rooting stone with an opening one using the <a href="/blog/how-to-combine-crystals-synergy-duos-clashes-to-avoid/">combining guide</a> so you are steady and reaching at once.</p>
+      <h3>Choosing Yours</h3>
+      <p>Pick one stone for grounding (Black Obsidian or Green Phantom), one for opening (Clear Quartz or Moonstone), and carry both until the new feels normal. Browse <a href="/shop/">the full collection</a> and let the first stone your eye finds set the tone for the chapter - because the right beginning often starts with the stone that found you.</p>`
   }
 ];
 
