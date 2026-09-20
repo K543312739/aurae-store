@@ -2485,6 +2485,56 @@ const BLOG_POSTS = [
       <p>Mark the start so your brain registers it. On the first day - of the job, the move, the new routine - hold your chosen stone, say one sentence out loud about what you are beginning, and set it somewhere you will see it daily. Refresh it monthly. If you are moving, the <a href="/blog/crystals-to-welcome-a-new-home-placement-ideas-for-every-room/">new-home placement guide</a> tells you where each stone wants to live. Combine a rooting stone with an opening one using the <a href="/blog/how-to-combine-crystals-synergy-duos-clashes-to-avoid/">combining guide</a> so you are steady and reaching at once.</p>
       <h3>Choosing Yours</h3>
       <p>Pick one stone for grounding (Black Obsidian or Green Phantom), one for opening (Clear Quartz or Moonstone), and carry both until the new feels normal. Browse <a href="/shop/">the full collection</a> and let the first stone your eye finds set the tone for the chapter - because the right beginning often starts with the stone that found you.</p>`
+  },
+  {
+    id: "b50",
+    category: "crystals",
+    readTime: "10 min read",
+    title: "Crystals for Self-Worth & Setting Boundaries",
+    excerpt: "Self-worth is quiet work, and boundaries are how you protect it. These are the crystals people turn to when they need to believe in themselves and say no without guilt - with simple, keepable rituals.",
+    image: "/images/p013.webp",
+    content: `<p>Self-worth and boundaries are two sides of the same coin. Worth is the belief that you matter; boundaries are what you do when that belief is tested - when someone asks too much, crosses a line, or you realize you have been shrinking to keep the peace. Crystals cannot do the hard conversations for you, but a few well-chosen stones can hold the part of you that forgets your own value, so the "no" comes from steadiness instead of panic.</p>
+      <h3>Start by Naming the Pattern</h3>
+      <p>Most boundary trouble is not a lack of courage - it is a habit of overriding yourself. Before picking a stone, notice where you consistently give too much: time, energy, opinions, body. That is the area to protect first. The <a href="/blog/crystals-for-stress-relief-beating-burnout/">stress-relief guide</a> covers the wider "I'm running on empty" toolkit; this one is about the stones for worth and edges specifically.</p>
+      <h3>Rose Quartz - Worth That Starts With You</h3>
+      <p>Boundaries are easier when you actually like yourself. Rose Quartz is the stone of self-compassion - the reminder that you are allowed to take up space. The <a href="/products/rose-quartz-love-bracelet/">Rose Quartz Love bracelet</a> is the everyday piece; the <a href="/blog/crystals-for-love-relationships-self-love-a-gentle-guide/">love and self-love guide</a> explains why softening toward yourself is the foundation everything else rests on.</p>
+      <h3>Garnet - The Inner Fire</h3>
+      <p>When your worth feels thin, Garnet rebuilds it from the body up - vitality, appetite for life, the sense that you are a person with claims. The <a href="/products/garnet-phoenix-vitality-bracelet/">Garnet Phoenix Vitality bracelet</a> carries that grounded, I-matter heat. It pairs naturally with the <a href="/blog/crystals-for-confidence-courage-self-esteem-wear-your-inner-power/">confidence guide</a> if the struggle is more about self-esteem than edges.</p>
+      <h3>Black Obsidian - The Clean "No"</h3>
+      <p>A boundary is just a shield with a voice. Black Obsidian is the stone of clear, unapologetic protection - it helps you feel what is yours to carry and what is not. The <a href="/products/black-gold-obsidian-shield-bracelet/">Black Gold Obsidian Shield bracelet</a> gives that nothing-gets-through feel, and the <a href="/blog/crystals-for-protection-grounding-build-your-everyday-energy-shield/">everyday protection guide</a> shows how to wear it so you stop absorbing other people's moods and demands.</p>
+      <h3>Lapis Lazuli - Say the True Thing</h3>
+      <p>Boundaries fail in the gap between knowing and speaking. Lapis Lazuli sits at the throat and helps you say the actual truth instead of the agreeable version. The <a href="/products/lapis-lazuli-royal-phoenix-tassel-earrings/">Lapis Lazuli earrings</a> keep that energy near the voice; the <a href="/blog/crystals-for-communication-the-throat-chakra-speak-with-confidence/">throat-chakra guide</a> builds the practice of speaking without exploding or swallowing it whole.</p>
+      <h3>Tiger's Eye - Hold the Line</h3>
+      <p>Saying no once is easy; holding it when pressured is the skill. Tiger's Eye is grounded, non-reactive strength - the stone for when someone pushes back and you need to stay standing. The <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye Warrior bracelet</a> is the one to wear on the days boundaries get tested.</p>
+      <h3>A 3-Minute Worth Reset</h3>
+      <p>When you catch yourself about to over-give: put a hand on your stone, name one thing you are not responsible for today, and breathe until your shoulders drop. The stone is the anchor that tells your body this is allowed. Cleanse it weekly - resentment leaves residue - using the <a href="/blog/how-to-cleanse-your-crystals-7-safe-methods-and-what-not-to-do/">safe cleansing methods</a>. If you are new to this, the <a href="/blog/the-crystal-color-meaning-guide-what-each-hue-symbolizes/">color guide</a> helps you pick by hue.</p>
+      <h3>Choosing Yours</h3>
+      <p>If the wound is self-doubt, start with Rose Quartz plus Garnet. If it is people-pleasing and porous edges, add Black Obsidian and Lapis. Browse <a href="/shop/">the full collection</a> and trust the stone your eye lands on first - the one that finds you is usually the one this season is asking for.</p>`
+  },
+  {
+    id: "b51",
+    category: "guides",
+    readTime: "10 min read",
+    title: "Crystals for Memory, Mental Clarity & Better Decisions",
+    excerpt: "When thoughts are foggy or a choice feels impossible, certain stones help you think clearly and decide cleanly. Here are the crystals for memory, focus and sharp decision-making - and how to use them.",
+    image: "/images/p008_2.webp",
+    content: `<p>There are two different "brain" problems people bring to crystals. One is staying on task - that is focus, and it has its own guide. The other is foggier: you walk into a room and forget why, the options all blur together, or a decision you need to make feels like wading through soup. This guide is for the second one - memory, mental clarity, and the kind of clean decision-making that comes from a calm, ordered mind rather than a panicked one.</p>
+      <h3>Clear Quartz - The Clear Lens</h3>
+      <p>Clarity starts with a clean signal. Clear Quartz is the stone of clear thought - it does not add an agenda, it removes the noise, so you can actually see the thing in front of you. The <a href="/products/clear-quartz-master-healer-bracelet/">Clear Quartz Master Healer bracelet</a> is the everyday clarity piece; charge it with a single question before a big decision using the <a href="/blog/how-to-charge-your-crystals-9-methods-compared-sun-moon-sound-more/">charging methods</a> that fit your life.</p>
+      <h3>Amethyst - Calm, Orderly Thinking</h3>
+      <p>Mental fog is often just an overthinking mind running too hot. Amethyst cools the static so thoughts line up instead of collide. The <a href="/products/amethyst-serenity-bracelet/">Amethyst Serenity bracelet</a> is easy to wear through a workday; the <a href="/products/amethyst-crown-of-wisdom-necklace/">Amethyst Crown of Wisdom necklace</a> keeps that calm-clarity energy near the head. It is the natural companion to the <a href="/blog/crystals-for-focus-productivity-study-build-a-clear-mind-workspace/">focus and productivity guide</a> if your issue is sustained attention.</p>
+      <h3>Blue Quartz - The Mental Coolant</h3>
+      <p>When decisions feel emotionally charged, Blue Quartz helps you think instead of react. It is the everyday "let me see this clearly" stone for messy, high-stakes calls. The <a href="/products/blue-quartz-serenity-bracelet/">Blue Quartz Serenity bracelet</a> is the one to reach for before a hard conversation or a choice with no obvious answer.</p>
+      <h3>Lapis Lazuli - Wisdom and the Right Word</h3>
+      <p>Some decisions are really about speaking the truth you already know. Lapis Lazuli carries old "wisdom" energy - it helps you access what you actually think, not what you have been told to think. The <a href="/products/lapis-lazuli-royal-phoenix-tassel-earrings/">Lapis Lazuli earrings</a> keep that energy near the voice; the <a href="/blog/crystals-for-communication-the-throat-chakra-speak-with-confidence/">throat-chakra guide</a> builds the habit of deciding and then stating it cleanly.</p>
+      <h3>Rutilated Quartz - Mental Power</h3>
+      <p>When you need to push a thought through - memorize, analyze, commit - Rutilated Quartz adds the mental horsepower. The <a href="/products/rutilated-quartz-power-bracelet/">Rutilated Quartz Power bracelet</a> is the one for exam season, a dense project, or any week your brain needs to show up strong. It pairs well with the <a href="/blog/crystals-for-energy-motivation-beat-the-afternoon-slump-naturally/">energy and motivation guide</a> for the low-afternoon hours.</p>
+      <h3>Tiger's Eye - Decide and Commit</h3>
+      <p>Clarity is useless if you cannot pull the trigger. Tiger's Eye is grounded, decisive action - the stone for when you have thought long enough and need to choose. The <a href="/products/tiger-s-eye-warrior-bracelet/">Tiger's Eye Warrior bracelet</a> is for the moment of commitment; the <a href="/blog/crystals-for-confidence-courage-self-esteem-wear-your-inner-power/">confidence guide</a> backs it up when the fear is "what if I'm wrong."</p>
+      <h3>A Clarity Ritual Before Big Decisions</h3>
+      <p>Hold your Clear Quartz or Amethyst, write the decision as a single sentence, and list only the two or three facts that actually matter - most fog is just too many unimportant details. Breathe until the list feels honest, then decide. Refresh the stone's charge before each major call. If stress is what is clouding you, the <a href="/blog/crystals-for-stress-relief-beating-burnout/">stress-relief guide</a> and the <a href="/blog/how-to-cleanse-your-crystals-7-safe-methods-and-what-not-to-do/">cleansing methods</a> help clear the residue that builds up. The <a href="/blog/how-to-combine-crystals-synergy-duos-clashes-to-avoid/">combining guide</a> shows how to pair a clarity stone with a grounding one so you think sharp and stay steady.</p>
+      <h3>Choosing Yours</h3>
+      <p>If the problem is fog, start with Clear Quartz plus Amethyst. If it is emotionally charged decisions, add Blue Quartz and Lapis. Browse <a href="/shop/">the full collection</a> and let the first stone your eye finds set the tone - because the right crystal usually shows up the moment you stop overthinking and look.</p>`
   }
 ];
 
